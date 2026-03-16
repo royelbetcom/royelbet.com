@@ -6212,5 +6212,1731 @@ document.addEventListener('DOMContentLoaded', function() {
   }, 1000);
 });
 </script>
+
+<!-- ===== NEW ROYAL BET PROFESSIONAL SYSTEM START ===== -->
+<!-- Premium Casino Upgrade - Advanced User Systems, VIP, Achievements, Dashboard, Global Chat, Notifications, Tournaments -->
+
+<!-- New CSS for Professional Systems -->
+<style>
+/* ===== PREMIUM CASINO PROFESSIONAL SYSTEMS ===== */
+:root {
+  --neon-blue: #00f3ff;
+  --neon-purple: #b026ff;
+  --casino-gold: #ffd700;
+  --glass-bg: rgba(10, 20, 30, 0.6);
+  --glass-border: rgba(0, 243, 255, 0.2);
+}
+
+/* VIP SYSTEM CARDS */
+.vip-container {
+  background: linear-gradient(145deg, #0a1a2a, #0a1525);
+  border: 2px solid var(--neon-blue);
+  border-radius: 24px;
+  padding: 20px;
+  margin: 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+  animation: glowPulse 3s infinite;
+}
+.vip-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(0, 243, 255, 0.1), transparent);
+  transform: rotate(45deg);
+  animation: sheen 6s infinite;
+}
+.vip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.vip-title {
+  font-family: 'Cinzel', serif;
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--casino-gold);
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+.vip-level-badge {
+  background: linear-gradient(135deg, #ffd700, #ffb347);
+  padding: 8px 20px;
+  border-radius: 40px;
+  color: #0a0a0a;
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 18px;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+.vip-progress {
+  background: rgba(255,255,255,0.1);
+  border-radius: 20px;
+  height: 20px;
+  margin: 20px 0;
+  overflow: hidden;
+  border: 1px solid var(--neon-blue);
+}
+.vip-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+  width: 0%;
+  transition: width 0.5s;
+  position: relative;
+  animation: progressPulse 2s infinite;
+}
+.vip-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin: 20px 0;
+}
+.vip-stat-card {
+  background: rgba(0, 243, 255, 0.1);
+  border: 1px solid var(--neon-blue);
+  border-radius: 16px;
+  padding: 15px;
+  text-align: center;
+  backdrop-filter: blur(5px);
+}
+.vip-stat-value {
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--casino-gold);
+}
+.vip-stat-label {
+  font-size: 10px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 2px;
+}
+.vip-rewards {
+  background: rgba(176, 38, 255, 0.1);
+  border: 1px solid var(--neon-purple);
+  border-radius: 16px;
+  padding: 15px;
+  margin-top: 15px;
+}
+.vip-reward-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid rgba(255,215,0,0.2);
+}
+.vip-reward-item:last-child { border-bottom: none; }
+
+/* ACHIEVEMENTS SYSTEM */
+.achievements-container {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 20px;
+  margin: 16px;
+}
+.achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 15px;
+}
+.achievement-card {
+  background: linear-gradient(145deg, rgba(0,243,255,0.1), rgba(176,38,255,0.1));
+  border: 1px solid rgba(255,215,0,0.3);
+  border-radius: 12px;
+  padding: 15px 5px;
+  text-align: center;
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.achievement-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--casino-gold);
+  box-shadow: 0 10px 30px rgba(255,215,0,0.3);
+}
+.achievement-card.completed {
+  background: linear-gradient(145deg, rgba(0,255,0,0.1), rgba(0,200,0,0.1));
+  border-color: #00ff00;
+}
+.achievement-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+  animation: bounce 2s infinite;
+}
+.achievement-name {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--casino-gold);
+}
+.achievement-progress {
+  font-size: 9px;
+  color: rgba(255,255,255,0.5);
+  margin-top: 5px;
+}
+.achievement-reward {
+  font-size: 8px;
+  background: rgba(255,215,0,0.2);
+  padding: 3px;
+  border-radius: 10px;
+  margin-top: 5px;
+}
+.achievement-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 12px;
+}
+
+/* STATISTICS DASHBOARD */
+.stats-dashboard {
+  background: linear-gradient(145deg, #0a1525, #0a1a2a);
+  border: 2px solid var(--neon-purple);
+  border-radius: 24px;
+  padding: 20px;
+  margin: 16px;
+}
+.stats-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.stats-title {
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  color: var(--neon-purple);
+  letter-spacing: 2px;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+.stat-box {
+  background: rgba(0,243,255,0.05);
+  border: 1px solid var(--neon-blue);
+  border-radius: 16px;
+  padding: 15px;
+  text-align: center;
+}
+.stat-number {
+  font-family: 'Cinzel', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--casino-gold);
+  line-height: 1;
+}
+.stat-number span { font-size: 14px; color: var(--neon-blue); }
+.stat-label {
+  font-size: 10px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 2px;
+  margin-top: 5px;
+}
+.chart-container {
+  background: rgba(0,0,0,0.3);
+  border-radius: 16px;
+  padding: 15px;
+  margin: 15px 0;
+  height: 200px;
+  position: relative;
+}
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 150px;
+  margin-top: 20px;
+}
+.chart-bar {
+  width: 30px;
+  background: linear-gradient(180deg, var(--neon-blue), var(--neon-purple));
+  border-radius: 8px 8px 0 0;
+  transition: height 0.5s;
+  position: relative;
+  animation: barRise 1s ease-out;
+}
+.chart-bar::after {
+  content: attr(data-label);
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: var(--casino-gold);
+}
+.chart-label {
+  text-align: center;
+  font-size: 9px;
+  color: rgba(255,255,255,0.3);
+  margin-top: 5px;
+}
+.win-rate-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: conic-gradient(#00ff00 0deg 270deg, #ff4444 270deg 360deg);
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.win-rate-circle::after {
+  content: '75%';
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  background: #0a1a2a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--casino-gold);
+}
+
+/* LIVE ACTIVITY FEED */
+.live-feed {
+  background: rgba(0,0,0,0.5);
+  border: 1px solid var(--neon-blue);
+  border-radius: 20px;
+  padding: 16px;
+  margin: 16px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.feed-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-bottom: 1px solid rgba(255,215,0,0.1);
+  animation: slideInRight 0.3s;
+}
+.feed-item:last-child { border-bottom: none; }
+.feed-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.feed-content { flex: 1; }
+.feed-name {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--casino-gold);
+}
+.feed-action {
+  font-size: 11px;
+  color: rgba(255,255,255,0.7);
+}
+.feed-amount {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  font-weight: 900;
+  color: #00ff88;
+}
+.feed-time {
+  font-size: 8px;
+  color: rgba(255,255,255,0.3);
+}
+
+/* PUSH NOTIFICATIONS */
+.notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  pointer-events: none;
+}
+.notification {
+  background: linear-gradient(145deg, #0a1a2a, #0a1525);
+  border: 2px solid var(--neon-blue);
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin-bottom: 10px;
+  min-width: 280px;
+  max-width: 350px;
+  transform: translateX(400px);
+  animation: slideInNotification 0.5s forwards;
+  pointer-events: auto;
+  cursor: pointer;
+  box-shadow: 0 10px 40px rgba(0,243,255,0.3);
+}
+.notification.success { border-color: #00ff00; }
+.notification.error { border-color: #ff4444; }
+.notification.warning { border-color: #ffa500; }
+.notification-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.notification-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.notification-title {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  font-weight: 700;
+  flex: 1;
+}
+.notification-close {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.5);
+  font-size: 18px;
+  cursor: pointer;
+}
+.notification-message {
+  font-size: 12px;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.5;
+}
+.notification-time {
+  font-size: 9px;
+  color: rgba(255,255,255,0.3);
+  margin-top: 5px;
+  text-align: right;
+}
+
+/* GLOBAL CASINO CHAT */
+.global-chat {
+  position: fixed;
+  bottom: 80px;
+  left: 20px;
+  width: 300px;
+  background: linear-gradient(160deg, #0a1525, #0a1a2a);
+  border: 2px solid var(--neon-purple);
+  border-radius: 20px;
+  overflow: hidden;
+  z-index: 1000;
+  transform: translateY(100%);
+  transition: transform 0.3s;
+  box-shadow: 0 10px 40px rgba(176,38,255,0.3);
+}
+.global-chat.open { transform: translateY(0); }
+.chat-header {
+  background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+.chat-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.chat-title {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0a0a0a;
+}
+.chat-online {
+  font-size: 10px;
+  background: rgba(0,0,0,0.2);
+  padding: 2px 8px;
+  border-radius: 12px;
+  color: #0a0a0a;
+}
+.chat-messages {
+  height: 250px;
+  overflow-y: auto;
+  padding: 12px;
+  background: rgba(0,0,0,0.5);
+}
+.chat-message {
+  margin-bottom: 10px;
+  animation: fadeIn 0.3s;
+}
+.chat-message-user {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 2px;
+}
+.chat-message-name {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--casino-gold);
+}
+.chat-message-time {
+  font-size: 8px;
+  color: rgba(255,255,255,0.3);
+}
+.chat-message-text {
+  font-size: 11px;
+  color: #fff;
+  background: rgba(255,255,255,0.05);
+  padding: 6px 10px;
+  border-radius: 12px;
+  display: inline-block;
+  max-width: 80%;
+}
+.chat-message-text .emoji { font-size: 14px; }
+.chat-input-area {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid rgba(255,215,0,0.1);
+  background: rgba(0,0,0,0.3);
+}
+.chat-input {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(176,38,255,0.3);
+  border-radius: 20px;
+  padding: 8px 12px;
+  color: #fff;
+  font-size: 12px;
+  outline: none;
+}
+.chat-send {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+  border: none;
+  border-radius: 50%;
+  color: #0a0a0a;
+  margin-left: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.emoji-picker {
+  display: flex;
+  gap: 5px;
+  padding: 5px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 20px;
+  margin-bottom: 5px;
+}
+.emoji-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 2px;
+  transition: transform 0.2s;
+}
+.emoji-btn:hover { transform: scale(1.2); }
+
+/* TOURNAMENT SYSTEM */
+.tournament-container {
+  background: linear-gradient(145deg, #1a0a2a, #2a0a3a);
+  border: 3px solid var(--casino-gold);
+  border-radius: 30px;
+  padding: 20px;
+  margin: 16px;
+  position: relative;
+  overflow: hidden;
+  animation: tournamentGlow 2s infinite;
+}
+.tournament-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255,215,0,0.1), transparent);
+  animation: sheen 4s infinite;
+}
+.tournament-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.tournament-title {
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--casino-gold);
+  text-shadow: 0 0 20px rgba(255,215,0,0.5);
+}
+.tournament-prize {
+  background: rgba(255,215,0,0.2);
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--casino-gold);
+  border: 1px solid var(--casino-gold);
+}
+.tournament-timer {
+  text-align: center;
+  margin: 20px 0;
+}
+.timer-display {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--neon-blue);
+  text-shadow: 0 0 20px rgba(0,243,255,0.5);
+  background: rgba(0,0,0,0.5);
+  padding: 10px;
+  border-radius: 20px;
+  display: inline-block;
+}
+.tournament-leaderboard {
+  background: rgba(0,0,0,0.5);
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+.tournament-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255,215,0,0.1);
+}
+.tournament-row:last-child { border-bottom: none; }
+.tournament-rank {
+  width: 40px;
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  font-weight: 900;
+}
+.tournament-rank-1 { color: #ffd700; }
+.tournament-rank-2 { color: #c0c0c0; }
+.tournament-rank-3 { color: #cd7f32; }
+.tournament-player {
+  flex: 1;
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  color: #fff;
+}
+.tournament-score {
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--neon-blue);
+}
+.tournament-prize-badge {
+  background: rgba(255,215,0,0.2);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  color: var(--casino-gold);
+  margin-left: 10px;
+}
+
+/* RESPONSIBLE GAMBLING PAGE */
+.responsible-page {
+  background: linear-gradient(145deg, #0a1a2a, #0a1525);
+  border: 2px solid #00ff88;
+  border-radius: 30px;
+  padding: 20px;
+  margin: 16px;
+}
+.responsible-title {
+  font-family: 'Cinzel', serif;
+  font-size: 24px;
+  font-weight: 900;
+  color: #00ff88;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.responsible-section {
+  background: rgba(0,255,136,0.1);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 15px;
+}
+.responsible-section h3 {
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  color: #00ff88;
+  margin-bottom: 10px;
+}
+.responsible-section p {
+  font-size: 12px;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.6;
+}
+.limit-controls {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+}
+.limit-input {
+  flex: 1;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid #00ff88;
+  border-radius: 8px;
+  padding: 10px;
+  color: #fff;
+  font-family: 'Cinzel', serif;
+}
+.limit-btn {
+  background: linear-gradient(135deg, #00aa55, #00ff88);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  color: #0a0a0a;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* WALLET SYSTEM */
+.wallet-container {
+  background: linear-gradient(145deg, #0a1a2a, #0a1525);
+  border: 2px solid var(--neon-blue);
+  border-radius: 24px;
+  padding: 20px;
+  margin: 16px;
+}
+.wallet-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.wallet-tab {
+  flex: 1;
+  padding: 12px;
+  background: rgba(0,243,255,0.1);
+  border: 1px solid var(--neon-blue);
+  border-radius: 12px;
+  color: #fff;
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
+}
+.wallet-tab.active {
+  background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+  color: #0a0a0a;
+  font-weight: 700;
+}
+.wallet-balance {
+  background: rgba(0,0,0,0.3);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.wallet-balance-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 2px;
+}
+.wallet-balance-amount {
+  font-family: 'Cinzel', serif;
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--casino-gold);
+  line-height: 1;
+}
+.wallet-balance-amount span { font-size: 16px; color: var(--neon-blue); }
+.wallet-transfer {
+  background: rgba(176,38,255,0.1);
+  border: 1px solid var(--neon-purple);
+  border-radius: 16px;
+  padding: 16px;
+}
+.transfer-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.transfer-select {
+  flex: 1;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--neon-purple);
+  border-radius: 8px;
+  padding: 10px;
+  color: #fff;
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+}
+.transfer-arrow {
+  font-size: 24px;
+  color: var(--neon-blue);
+}
+.transfer-input {
+  flex: 1;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--neon-blue);
+  border-radius: 8px;
+  padding: 10px;
+  color: #fff;
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  text-align: center;
+}
+.transfer-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+  border: none;
+  border-radius: 12px;
+  color: #0a0a0a;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.crypto-address {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--casino-gold);
+  border-radius: 12px;
+  padding: 15px;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.crypto-address-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--casino-gold);
+}
+.crypto-copy {
+  background: rgba(255,215,0,0.2);
+  border: 1px solid var(--casino-gold);
+  border-radius: 8px;
+  padding: 5px 10px;
+  color: var(--casino-gold);
+  font-size: 10px;
+  cursor: pointer;
+}
+
+/* ANIMATIONS */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(0,243,255,0.3); }
+  50% { box-shadow: 0 0 40px rgba(0,243,255,0.6); }
+}
+@keyframes progressPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+@keyframes barRise {
+  from { height: 0; }
+  to { height: var(--height); }
+}
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slideInNotification {
+  to { transform: translateX(0); }
+}
+@keyframes tournamentGlow {
+  0%, 100% { box-shadow: 0 0 30px rgba(255,215,0,0.3); }
+  50% { box-shadow: 0 0 60px rgba(255,215,0,0.6); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+</style>
+
+<!-- New HTML Sections for Professional Systems -->
+<!-- VIP System Section -->
+<div class="vip-container" id="vipSystem">
+  <div class="vip-header">
+    <div class="vip-title">👑 VIP LOYALTY</div>
+    <div class="vip-level-badge" id="vipLevel">VIP 1</div>
+  </div>
+  <div class="vip-progress">
+    <div class="vip-progress-fill" id="vipProgress" style="width: 0%"></div>
+  </div>
+  <div class="vip-stats-grid">
+    <div class="vip-stat-card">
+      <div class="vip-stat-value" id="vipTurnover">৳0</div>
+      <div class="vip-stat-label">TOTAL TURNOVER</div>
+    </div>
+    <div class="vip-stat-card">
+      <div class="vip-stat-value" id="vipNext">৳10K</div>
+      <div class="vip-stat-label">TO NEXT LEVEL</div>
+    </div>
+  </div>
+  <div class="vip-rewards" id="vipRewards">
+    <div class="vip-reward-item"><span>🎁</span> VIP 1: Bonus ৳200</div>
+    <div class="vip-reward-item"><span>💎</span> VIP 5: Weekly Cashback</div>
+    <div class="vip-reward-item"><span>👑</span> VIP 10: Personal Manager</div>
+  </div>
+</div>
+
+<!-- Achievements System -->
+<div class="achievements-container">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+    <div class="stats-title">🏆 ACHIEVEMENTS</div>
+    <div style="font-family: 'Cinzel'; font-size: 12px; color: var(--casino-gold);" id="achievementPoints">0/12</div>
+  </div>
+  <div class="achievement-grid" id="achievementsGrid">
+    <!-- Achievements will be populated by JS -->
+  </div>
+</div>
+
+<!-- Statistics Dashboard -->
+<div class="stats-dashboard">
+  <div class="stats-header">
+    <div class="stats-title">📊 PLAYER STATISTICS</div>
+    <div style="font-size: 10px; color: var(--neon-blue);">LIVE</div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-box">
+      <div class="stat-number" id="statTotalBets">0</div>
+      <div class="stat-label">TOTAL BETS</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number" id="statTotalWin">৳0</div>
+      <div class="stat-label">TOTAL WIN</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number" id="statTotalLoss">৳0</div>
+      <div class="stat-label">TOTAL LOSS</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number" id="statProfit">৳0</div>
+      <div class="stat-label">NET PROFIT</div>
+    </div>
+  </div>
+  <div class="chart-container">
+    <div class="win-rate-circle" id="winRateCircle"></div>
+    <div class="chart-bars" id="betChart">
+      <div class="chart-bar" style="height: 120px;" data-label="Mon"></div>
+      <div class="chart-bar" style="height: 80px;" data-label="Tue"></div>
+      <div class="chart-bar" style="height: 150px;" data-label="Wed"></div>
+      <div class="chart-bar" style="height: 90px;" data-label="Thu"></div>
+      <div class="chart-bar" style="height: 110px;" data-label="Fri"></div>
+      <div class="chart-bar" style="height: 130px;" data-label="Sat"></div>
+      <div class="chart-bar" style="height: 100px;" data-label="Sun"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Live Activity Feed -->
+<div class="live-feed" id="liveFeed">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+    <div class="stats-title">🔴 LIVE ACTIVITY</div>
+    <div style="display: flex; gap: 5px;">
+      <span class="lb-dot"></span>
+      <span style="font-size: 10px; color: #2ecc71;">LIVE</span>
+    </div>
+  </div>
+  <div id="feedItems">
+    <div class="feed-item">
+      <div class="feed-avatar">👤</div>
+      <div class="feed-content">
+        <div class="feed-name">Rahim</div>
+        <div class="feed-action">won in <span style="color: var(--neon-blue);">Aviator</span></div>
+      </div>
+      <div class="feed-amount">+৳50,000</div>
+      <div class="feed-time">1m ago</div>
+    </div>
+  </div>
+</div>
+
+<!-- Global Casino Chat -->
+<div class="global-chat" id="globalChat">
+  <div class="chat-header" onclick="toggleGlobalChat()">
+    <div class="chat-header-left">
+      <span>💬</span>
+      <span class="chat-title">GLOBAL CHAT</span>
+    </div>
+    <div>
+      <span class="chat-online" id="chatOnline">128 online</span>
+      <span style="margin-left: 10px;">▼</span>
+    </div>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="emoji-picker" id="emojiPicker" style="display: none;">
+    <button class="emoji-btn" onclick="addEmoji('😊')">😊</button>
+    <button class="emoji-btn" onclick="addEmoji('🎉')">🎉</button>
+    <button class="emoji-btn" onclick="addEmoji('💎')">💎</button>
+    <button class="emoji-btn" onclick="addEmoji('👑')">👑</button>
+    <button class="emoji-btn" onclick="addEmoji('🔥')">🔥</button>
+    <button class="emoji-btn" onclick="addEmoji('💰')">💰</button>
+  </div>
+  <div class="chat-input-area">
+    <input type="text" class="chat-input" id="chatInput" placeholder="Type message..." onkeydown="if(event.key==='Enter')sendChatMessage()">
+    <button class="chat-send" onclick="toggleEmojiPicker()">😊</button>
+    <button class="chat-send" onclick="sendChatMessage()">➤</button>
+  </div>
+</div>
+
+<!-- Push Notification Container -->
+<div class="notification-container" id="notificationContainer"></div>
+
+<!-- Tournament System -->
+<div class="tournament-container">
+  <div class="tournament-header">
+    <div class="tournament-title">🏆 WEEKLY TOURNAMENT</div>
+    <div class="tournament-prize" id="tournamentPrize">৳500,000</div>
+  </div>
+  <div class="tournament-timer">
+    <div class="timer-display" id="tournamentTimer">02:15:30</div>
+    <div style="font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 5px;">ENDS IN</div>
+  </div>
+  <div class="tournament-leaderboard" id="tournamentLeaderboard">
+    <div class="tournament-row">
+      <div class="tournament-rank tournament-rank-1">🥇</div>
+      <div class="tournament-player">RahimBetKing</div>
+      <div class="tournament-score">৳485,000</div>
+      <div class="tournament-prize-badge">+৳200K</div>
+    </div>
+    <div class="tournament-row">
+      <div class="tournament-rank tournament-rank-2">🥈</div>
+      <div class="tournament-player">Sumon_Royal</div>
+      <div class="tournament-score">৳362,000</div>
+      <div class="tournament-prize-badge">+৳100K</div>
+    </div>
+    <div class="tournament-row">
+      <div class="tournament-rank tournament-rank-3">🥉</div>
+      <div class="tournament-player">NightHawk99</div>
+      <div class="tournament-score">৳298,000</div>
+      <div class="tournament-prize-badge">+৳50K</div>
+    </div>
+  </div>
+</div>
+
+<!-- Wallet System -->
+<div class="wallet-container">
+  <div class="wallet-tabs">
+    <div class="wallet-tab active" onclick="switchWalletTab('main')" id="walletTabMain">MAIN</div>
+    <div class="wallet-tab" onclick="switchWalletTab('bonus')" id="walletTabBonus">BONUS</div>
+    <div class="wallet-tab" onclick="switchWalletTab('game')" id="walletTabGame">GAME</div>
+  </div>
+  <div class="wallet-balance" id="walletBalance">
+    <div class="wallet-balance-label">MAIN WALLET</div>
+    <div class="wallet-balance-amount">৳<span id="mainWalletBalance">0</span></div>
+  </div>
+  <div class="wallet-transfer">
+    <div class="transfer-row">
+      <select class="transfer-select" id="transferFrom">
+        <option value="main">Main Wallet</option>
+        <option value="bonus">Bonus Wallet</option>
+        <option value="game">Game Wallet</option>
+      </select>
+      <span class="transfer-arrow">→</span>
+      <select class="transfer-select" id="transferTo">
+        <option value="main">Main Wallet</option>
+        <option value="bonus">Bonus Wallet</option>
+        <option value="game">Game Wallet</option>
+      </select>
+    </div>
+    <input type="number" class="transfer-input" id="transferAmount" placeholder="Amount ৳" value="1000">
+    <button class="transfer-btn" onclick="transferWallet()">🔄 TRANSFER</button>
+  </div>
+  <div class="crypto-address">
+    <span class="crypto-address-text" id="btcAddress">bc1sd9d8s8s7ss</span>
+    <button class="crypto-copy" onclick="copyToClipboard('btcAddress')">📋 Copy</button>
+  </div>
+  <div style="display: flex; gap: 10px; margin-top: 10px;">
+    <button class="crypto-copy" onclick="generateCrypto('BTC')">BTC</button>
+    <button class="crypto-copy" onclick="generateCrypto('ETH')">ETH</button>
+    <button class="crypto-copy" onclick="generateCrypto('USDT')">USDT</button>
+  </div>
+</div>
+
+<!-- Responsible Gambling Page -->
+<div class="page" id="responsiblePage">
+  <div class="prof-wrap">
+    <div class="prof-topbar" style="background: linear-gradient(135deg, #004d00, #008800);">
+      <button class="av-back" onclick="showPage('homePage')" style="position:absolute;left:16px;">←</button>
+      <div class="prof-title">🎯 RESPONSIBLE GAMBLING</div>
+    </div>
+    <div class="responsible-page">
+      <div class="responsible-title">Play Safe, Play Smart</div>
+      <div class="responsible-section">
+        <h3>⚖️ Set Your Limits</h3>
+        <div class="limit-controls">
+          <input type="number" class="limit-input" id="dailyLimit" placeholder="Daily Limit ৳">
+          <button class="limit-btn" onclick="setLimit('daily')">SET</button>
+        </div>
+        <div class="limit-controls">
+          <input type="number" class="limit-input" id="weeklyLimit" placeholder="Weekly Limit ৳">
+          <button class="limit-btn" onclick="setLimit('weekly')">SET</button>
+        </div>
+        <div class="limit-controls">
+          <input type="number" class="limit-input" id="monthlyLimit" placeholder="Monthly Limit ৳">
+          <button class="limit-btn" onclick="setLimit('monthly')">SET</button>
+        </div>
+      </div>
+      <div class="responsible-section">
+        <h3>⏱️ Time Management</h3>
+        <p>Set session time limits to control your play duration.</p>
+        <div class="limit-controls">
+          <select class="limit-input" id="sessionTime">
+            <option value="30">30 minutes</option>
+            <option value="60">1 hour</option>
+            <option value="120">2 hours</option>
+            <option value="180">3 hours</option>
+          </select>
+          <button class="limit-btn" onclick="setSessionLimit()">START</button>
+        </div>
+      </div>
+      <div class="responsible-section">
+        <h3>🚪 Self-Exclusion</h3>
+        <p>Temporarily block access to your account for a selected period.</p>
+        <div class="limit-controls">
+          <select class="limit-input" id="exclusionPeriod">
+            <option value="1">1 day</option>
+            <option value="7">7 days</option>
+            <option value="30">30 days</option>
+            <option value="90">90 days</option>
+          </select>
+          <button class="limit-btn" style="background: linear-gradient(135deg, #aa0000, #ff4444);" onclick="selfExclusion()">LOCK</button>
+        </div>
+      </div>
+      <div class="responsible-section">
+        <h3>📞 Help & Support</h3>
+        <p>If gambling affects your life, seek help:</p>
+        <p style="color: var(--neon-blue);">📞 16427 (Gambling Helpline)</p>
+        <p style="color: var(--neon-blue);">🌐 www.responsiblegambling.org</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Terms & Conditions Page -->
+<div class="page" id="termsPage">
+  <div class="prof-wrap">
+    <div class="prof-topbar" style="background: linear-gradient(135deg, #8a6a1f, #c9a84c);">
+      <button class="av-back" onclick="showPage('homePage')" style="position:absolute;left:16px;">←</button>
+      <div class="prof-title">📜 TERMS & CONDITIONS</div>
+    </div>
+    <div style="padding: 20px; color: #fff; line-height: 1.8;">
+      <h3 style="color: var(--casino-gold);">1. Acceptance of Terms</h3>
+      <p style="font-size: 12px; margin-bottom: 15px;">By accessing Royal Bet, you agree to be bound by these terms.</p>
+      <h3 style="color: var(--casino-gold);">2. Eligibility</h3>
+      <p style="font-size: 12px; margin-bottom: 15px;">You must be 18+ to use our services.</p>
+      <h3 style="color: var(--casino-gold);">3. Account Terms</h3>
+      <p style="font-size: 12px; margin-bottom: 15px;">One account per user. Duplicate accounts will be banned.</p>
+      <h3 style="color: var(--casino-gold);">4. Deposits & Withdrawals</h3>
+      <p style="font-size: 12px; margin-bottom: 15px;">Minimum deposit: 50 USDT / ৳200. Withdrawals processed within 24 hours.</p>
+      <h3 style="color: var(--casino-gold);">5. Bonus Rules</h3>
+      <p style="font-size: 12px; margin-bottom: 15px;">Bonuses require 1x turnover before withdrawal.</p>
+      <h3 style="color: var(--casino-gold);">6. Fair Play</h3>
+      <p style="font-size: 12px; margin-bottom: 15px;">Any fraudulent activity leads to permanent ban.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Privacy Policy Page -->
+<div class="page" id="privacyPage">
+  <div class="prof-wrap">
+    <div class="prof-topbar" style="background: linear-gradient(135deg, #1a5c9b, #3498db);">
+      <button class="av-back" onclick="showPage('homePage')" style="position:absolute;left:16px;">←</button>
+      <div class="prof-title">🔒 PRIVACY POLICY</div>
+    </div>
+    <div style="padding: 20px; color: #fff; line-height: 1.8;">
+      <h3 style="color: var(--neon-blue);">Data Collection</h3>
+      <p style="font-size: 12px; margin-bottom: 15px;">We collect email, name, and transaction data for service provision.</p>
+      <h3 style="color: var(--neon-blue);">Data Usage</h3>
+      <p style="font-size: 12px; margin-bottom: 15px;">Your data is used only for platform operations and security.</p>
+      <h3 style="color: var(--neon-blue);">Data Protection</h3>
+      <p style="font-size: 12px; margin-bottom: 15px;">256-bit encryption protects all your information.</p>
+      <h3 style="color: var(--neon-blue);">Third Party</h3>
+      <p style="font-size: 12px; margin-bottom: 15px;">We never sell your data to third parties.</p>
+      <h3 style="color: var(--neon-blue);">Cookies</h3>
+      <p style="font-size: 12px; margin-bottom: 15px;">We use cookies to enhance your experience.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ Page -->
+<div class="page" id="faqPage">
+  <div class="prof-wrap">
+    <div class="prof-topbar" style="background: linear-gradient(135deg, #b026ff, #8a2be2);">
+      <button class="av-back" onclick="showPage('homePage')" style="position:absolute;left:16px;">←</button>
+      <div class="prof-title">❓ FAQ</div>
+    </div>
+    <div style="padding: 20px;">
+      <div class="faq-item" style="margin-bottom: 15px;">
+        <div style="font-family: 'Cinzel'; color: var(--neon-purple);">How to deposit?</div>
+        <p style="font-size: 12px;">Click Deposit, choose method, upload screenshot for Binance.</p>
+      </div>
+      <div class="faq-item" style="margin-bottom: 15px;">
+        <div style="font-family: 'Cinzel'; color: var(--neon-purple);">How to withdraw?</div>
+        <p style="font-size: 12px;">Go to Withdraw, select method, enter amount and account.</p>
+      </div>
+      <div class="faq-item" style="margin-bottom: 15px;">
+        <div style="font-family: 'Cinzel'; color: var(--neon-purple);">What is VIP?</div>
+        <p style="font-size: 12px;">VIP levels based on turnover, with exclusive rewards.</p>
+      </div>
+      <div class="faq-item" style="margin-bottom: 15px;">
+        <div style="font-family: 'Cinzel'; color: var(--neon-purple);">How to get bonus?</div>
+        <p style="font-size: 12px;">Daily rewards, achievements, and referral bonuses.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- New JavaScript for Professional Systems -->
+<script>
+// =================== PROFESSIONAL SYSTEMS ===================
+// VIP System
+const vipLevels = [
+  { level: 1, turnover: 10000, reward: 'Bonus ৳200' },
+  { level: 2, turnover: 20000, reward: 'Bonus ৳500' },
+  { level: 3, turnover: 50000, reward: 'Bonus ৳1000' },
+  { level: 4, turnover: 100000, reward: 'Bonus ৳2000' },
+  { level: 5, turnover: 200000, reward: 'Weekly Cashback 5%' },
+  { level: 6, turnover: 500000, reward: 'Weekly Cashback 7%' },
+  { level: 7, turnover: 1000000, reward: 'Weekly Cashback 10%' },
+  { level: 8, turnover: 2000000, reward: 'VIP Monthly Bonus' },
+  { level: 9, turnover: 5000000, reward: 'VIP Monthly Bonus + Gifts' },
+  { level: 10, turnover: 10000000, reward: 'Personal VIP Manager' }
+];
+
+function updateVIPSystem() {
+  if (!window._userProfile) return;
+  
+  const totalBets = window._userProfile.totalBets || 0;
+  const totalProfit = Math.abs(window._userProfile.totalProfit || 0);
+  const turnover = totalBets * 200; // Approximate turnover
+  
+  let currentLevel = 1;
+  for (let i = vipLevels.length - 1; i >= 0; i--) {
+    if (turnover >= vipLevels[i].turnover) {
+      currentLevel = vipLevels[i].level;
+      break;
+    }
+  }
+  
+  const nextLevel = currentLevel < 10 ? vipLevels[currentLevel] : vipLevels[9];
+  const progress = currentLevel < 10 ? (turnover / nextLevel.turnover) * 100 : 100;
+  
+  document.getElementById('vipLevel').textContent = `VIP ${currentLevel}`;
+  document.getElementById('vipProgress').style.width = Math.min(progress, 100) + '%';
+  document.getElementById('vipTurnover').textContent = '৳' + turnover.toLocaleString('en');
+  document.getElementById('vipNext').textContent = currentLevel < 10 ? '৳' + (nextLevel.turnover - turnover).toLocaleString('en') : 'MAX LEVEL';
+  
+  let rewardsHtml = '';
+  for (let i = Math.max(0, currentLevel - 2); i < Math.min(vipLevels.length, currentLevel + 3); i++) {
+    rewardsHtml += `<div class="vip-reward-item"><span>${i === currentLevel - 1 ? '👉' : '🎁'}</span> VIP ${vipLevels[i].level}: ${vipLevels[i].reward}</div>`;
+  }
+  document.getElementById('vipRewards').innerHTML = rewardsHtml;
+}
+
+// Achievements System
+const achievements = [
+  { id: 'firstBet', name: 'First Bet', icon: '🎲', requirement: 'Place first bet', reward: 50, completed: false },
+  { id: 'bet100', name: '100 Bets', icon: '💯', requirement: 'Place 100 bets', reward: 200, completed: false },
+  { id: 'win10k', name: 'Win ৳10,000', icon: '💰', requirement: 'Win 10,000 total', reward: 500, completed: false },
+  { id: 'highRoller', name: 'High Roller', icon: '👑', requirement: 'Single bet ৳10,000', reward: 1000, completed: false },
+  { id: 'aviatorAce', name: 'Aviator Ace', icon: '✈️', requirement: 'Cash out 50x', reward: 300, completed: false },
+  { id: 'cricketKing', name: 'Cricket King', icon: '🏏', requirement: 'Win 5 cricket bets', reward: 250, completed: false },
+  { id: 'diceMaster', name: 'Dice Master', icon: '🎲', requirement: 'Win 10 dice rolls', reward: 150, completed: false },
+  { id: 'minesLegend', name: 'Mines Legend', icon: '💣', requirement: 'Reveal 20 gems', reward: 400, completed: false },
+  { id: 'coinFlipper', name: 'Coin Flipper', icon: '🪙', requirement: 'Win 5 coin flips', reward: 100, completed: false },
+  { id: 'spinWinner', name: 'Spin Winner', icon: '🎰', requirement: 'Win 50x multiplier', reward: 600, completed: false },
+  { id: 'chickenRun', name: 'Chicken Run', icon: '🐔', requirement: 'Cash out 16x', reward: 350, completed: false },
+  { id: 'referralKing', name: 'Referral King', icon: '👥', requirement: 'Refer 5 friends', reward: 1000, completed: false }
+];
+
+function renderAchievements() {
+  const grid = document.getElementById('achievementsGrid');
+  if (!grid) return;
+  
+  let completedCount = 0;
+  let html = '';
+  
+  achievements.forEach(ach => {
+    if (ach.completed) completedCount++;
+    html += `
+      <div class="achievement-card ${ach.completed ? 'completed' : ''}">
+        <div class="achievement-icon">${ach.icon}</div>
+        <div class="achievement-name">${ach.name}</div>
+        <div class="achievement-progress">${ach.requirement}</div>
+        <div class="achievement-reward">+৳${ach.reward}</div>
+        ${ach.completed ? '<div class="achievement-badge">✅</div>' : ''}
+      </div>
+    `;
+  });
+  
+  grid.innerHTML = html;
+  document.getElementById('achievementPoints').textContent = `${completedCount}/${achievements.length}`;
+}
+
+function checkAchievements() {
+  if (!window._userProfile || !window._curUser) return;
+  
+  const bets = window._userProfile.totalBets || 0;
+  const profit = window._userProfile.totalProfit || 0;
+  
+  // First Bet
+  if (bets >= 1 && !achievements[0].completed) {
+    completeAchievement(0);
+  }
+  
+  // 100 Bets
+  if (bets >= 100 && !achievements[1].completed) {
+    completeAchievement(1);
+  }
+  
+  // Win 10k
+  if (profit >= 10000 && !achievements[2].completed) {
+    completeAchievement(2);
+  }
+  
+  // High Roller (check last bet from history)
+  if (!achievements[3].completed) {
+    checkHighRoller();
+  }
+}
+
+async function completeAchievement(index) {
+  if (achievements[index].completed) return;
+  
+  achievements[index].completed = true;
+  const reward = achievements[index].reward;
+  
+  // Add bonus to balance
+  window._realBal += reward;
+  updateBals();
+  await window._writeBalance(window._realBal);
+  
+  // Save to user profile
+  if (window._userProfile && window._curUser && window._db) {
+    const userAchievements = window._userProfile.achievements || [];
+    userAchievements.push(achievements[index].id);
+    await window._update(window._ref(window._db, 'users/' + window._curUser.uid), { achievements: userAchievements });
+  }
+  
+  // Show notification
+  showNotification('🎉 Achievement Unlocked!', `You earned ${achievements[index].name} +৳${reward}`, 'success');
+  
+  renderAchievements();
+}
+
+async function checkHighRoller() {
+  if (!window._curUser || !window._db) return;
+  
+  try {
+    const snap = await window._get(window._ref(window._db, 'users/' + window._curUser.uid + '/bets'));
+    if (snap.exists()) {
+      const bets = Object.values(snap.val());
+      const hasHighRoller = bets.some(b => b.bet >= 10000);
+      if (hasHighRoller && !achievements[3].completed) {
+        completeAchievement(3);
+      }
+    }
+  } catch (e) {
+    console.error("Error checking high roller:", e);
+  }
+}
+
+// Statistics Dashboard
+function updateStatistics() {
+  if (!window._userProfile) return;
+  
+  const bets = window._userProfile.totalBets || 0;
+  const profit = window._userProfile.totalProfit || 0;
+  const wins = profit > 0 ? profit : 0;
+  const losses = profit < 0 ? Math.abs(profit) : 0;
+  
+  document.getElementById('statTotalBets').textContent = bets;
+  document.getElementById('statTotalWin').textContent = '৳' + wins.toLocaleString('en');
+  document.getElementById('statTotalLoss').textContent = '৳' + losses.toLocaleString('en');
+  document.getElementById('statProfit').textContent = '৳' + profit.toLocaleString('en');
+  
+  // Update win rate circle
+  if (bets > 0) {
+    const winRate = (wins / (wins + losses)) * 100 || 0;
+    const circle = document.getElementById('winRateCircle');
+    if (circle) {
+      circle.style.background = `conic-gradient(#00ff00 0deg ${winRate * 3.6}deg, #ff4444 ${winRate * 3.6}deg 360deg)`;
+      circle.querySelector('::after')?.remove();
+    }
+  }
+}
+
+// Live Activity Feed
+let feedInterval = null;
+const feedMessages = [
+  { name: 'Rahim', game: 'Aviator', amount: 50000, time: '1m ago' },
+  { name: 'Sumon', game: 'Cricket', amount: 5000, time: '2m ago' },
+  { name: 'Karim', game: 'Mines', amount: 12000, time: '3m ago' },
+  { name: 'NightHawk', game: 'Aviator', amount: 75000, time: '4m ago' },
+  { name: 'GoldRush', game: 'Dice', amount: 2500, time: '5m ago' },
+  { name: 'TigerBet', game: 'Coin Flip', amount: 800, time: '6m ago' },
+  { name: 'AcePlayer', game: 'Spin', amount: 15000, time: '7m ago' },
+  { name: 'LuckyKing', game: 'Chicken', amount: 3200, time: '8m ago' }
+];
+
+function startLiveFeed() {
+  if (feedInterval) clearInterval(feedInterval);
+  
+  const feed = document.getElementById('feedItems');
+  
+  function addFeedItem() {
+    const random = feedMessages[Math.floor(Math.random() * feedMessages.length)];
+    const item = document.createElement('div');
+    item.className = 'feed-item';
+    item.innerHTML = `
+      <div class="feed-avatar">👤</div>
+      <div class="feed-content">
+        <div class="feed-name">${random.name}</div>
+        <div class="feed-action">won in <span style="color: var(--neon-blue);">${random.game}</span></div>
+      </div>
+      <div class="feed-amount">+৳${random.amount.toLocaleString('en')}</div>
+      <div class="feed-time">just now</div>
+    `;
+    
+    feed.prepend(item);
+    if (feed.children.length > 5) {
+      feed.removeChild(feed.lastChild);
+    }
+  }
+  
+  feedInterval = setInterval(addFeedItem, 8000);
+}
+
+// Push Notification System
+function showNotification(title, message, type = 'info', duration = 5000) {
+  const container = document.getElementById('notificationContainer');
+  const id = 'notif_' + Date.now();
+  
+  const icons = {
+    success: '✅',
+    error: '❌',
+    warning: '⚠️',
+    info: 'ℹ️'
+  };
+  
+  const colors = {
+    success: '#00ff00',
+    error: '#ff4444',
+    warning: '#ffa500',
+    info: '#00f3ff'
+  };
+  
+  const notification = document.createElement('div');
+  notification.className = `notification ${type}`;
+  notification.id = id;
+  notification.innerHTML = `
+    <div class="notification-header">
+      <div class="notification-icon" style="background: ${colors[type]}20; color: ${colors[type]};">${icons[type]}</div>
+      <div class="notification-title" style="color: ${colors[type]};">${title}</div>
+      <button class="notification-close" onclick="document.getElementById('${id}').remove()">✕</button>
+    </div>
+    <div class="notification-message">${message}</div>
+    <div class="notification-time">just now</div>
+  `;
+  
+  container.appendChild(notification);
+  
+  setTimeout(() => {
+    const notif = document.getElementById(id);
+    if (notif) notif.remove();
+  }, duration);
+}
+
+// Global Chat System
+let chatMessages = [];
+let chatInterval = null;
+let chatOnline = 128;
+
+function toggleGlobalChat() {
+  document.getElementById('globalChat').classList.toggle('open');
+}
+
+function toggleEmojiPicker() {
+  const picker = document.getElementById('emojiPicker');
+  picker.style.display = picker.style.display === 'none' ? 'flex' : 'none';
+}
+
+function addEmoji(emoji) {
+  const input = document.getElementById('chatInput');
+  input.value += emoji;
+  input.focus();
+  document.getElementById('emojiPicker').style.display = 'none';
+}
+
+function sendChatMessage() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  
+  const user = window._curUser;
+  const name = user ? (window._userProfile?.name || user.displayName || 'Player') : 'Guest';
+  
+  addChatMessage(name, msg);
+  input.value = '';
+  
+  // Simulate random replies
+  if (Math.random() > 0.7) {
+    setTimeout(() => {
+      const replies = ['Nice!', 'Good luck!', 'Let\'s go!', '🎉', '💰'];
+      addChatMessage('System', replies[Math.floor(Math.random() * replies.length)]);
+    }, 2000);
+  }
+}
+
+function addChatMessage(name, msg, time = 'just now') {
+  const messages = document.getElementById('chatMessages');
+  const msgDiv = document.createElement('div');
+  msgDiv.className = 'chat-message';
+  msgDiv.innerHTML = `
+    <div class="chat-message-user">
+      <span class="chat-message-name">${name}</span>
+      <span class="chat-message-time">${time}</span>
+    </div>
+    <div class="chat-message-text">${msg}</div>
+  `;
+  messages.appendChild(msgDiv);
+  messages.scrollTop = messages.scrollHeight;
+  
+  chatMessages.push({ name, msg, time });
+  if (chatMessages.length > 50) chatMessages.shift();
+}
+
+function updateChatOnline() {
+  chatOnline += Math.floor(Math.random() * 5) - 2;
+  chatOnline = Math.max(50, Math.min(300, chatOnline));
+  document.getElementById('chatOnline').textContent = chatOnline + ' online';
+}
+
+// Tournament System
+let tournamentTimer = null;
+let tournamentEndTime = Date.now() + 7 * 24 * 60 * 60 * 1000; // 7 days
+
+function startTournamentTimer() {
+  if (tournamentTimer) clearInterval(tournamentTimer);
+  
+  tournamentTimer = setInterval(() => {
+    const now = Date.now();
+    const diff = tournamentEndTime - now;
+    
+    if (diff <= 0) {
+      clearInterval(tournamentTimer);
+      document.getElementById('tournamentTimer').textContent = '00:00:00';
+      endTournament();
+      return;
+    }
+    
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    document.getElementById('tournamentTimer').textContent = 
+      `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }, 1000);
+}
+
+function endTournament() {
+  showNotification('🏆 Tournament Ended!', 'New tournament starting soon!', 'warning');
+  tournamentEndTime = Date.now() + 7 * 24 * 60 * 60 * 1000;
+}
+
+// Wallet System
+let mainWallet = 0;
+let bonusWallet = 0;
+let gameWallet = 0;
+
+function switchWalletTab(tab) {
+  document.querySelectorAll('.wallet-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('walletTab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+  
+  const balanceEl = document.getElementById('walletBalance');
+  if (tab === 'main') {
+    balanceEl.innerHTML = `<div class="wallet-balance-label">MAIN WALLET</div><div class="wallet-balance-amount">৳<span id="mainWalletBalance">${mainWallet.toLocaleString('en')}</span></div>`;
+  } else if (tab === 'bonus') {
+    balanceEl.innerHTML = `<div class="wallet-balance-label">BONUS WALLET</div><div class="wallet-balance-amount">৳<span id="bonusWalletBalance">${bonusWallet.toLocaleString('en')}</span></div>`;
+  } else {
+    balanceEl.innerHTML = `<div class="wallet-balance-label">GAME WALLET</div><div class="wallet-balance-amount">৳<span id="gameWalletBalance">${gameWallet.toLocaleString('en')}</span></div>`;
+  }
+}
+
+function transferWallet() {
+  const from = document.getElementById('transferFrom').value;
+  const to = document.getElementById('transferTo').value;
+  const amount = parseInt(document.getElementById('transferAmount').value);
+  
+  if (from === to) {
+    showNotification('⚠️ Transfer Error', 'Cannot transfer to same wallet', 'error');
+    return;
+  }
+  
+  if (isNaN(amount) || amount <= 0) {
+    showNotification('⚠️ Transfer Error', 'Invalid amount', 'error');
+    return;
+  }
+  
+  let fromBalance = 0;
+  if (from === 'main') fromBalance = mainWallet;
+  else if (from === 'bonus') fromBalance = bonusWallet;
+  else fromBalance = gameWallet;
+  
+  if (fromBalance < amount) {
+    showNotification('⚠️ Transfer Error', 'Insufficient balance', 'error');
+    return;
+  }
+  
+  // Deduct from source
+  if (from === 'main') mainWallet -= amount;
+  else if (from === 'bonus') bonusWallet -= amount;
+  else gameWallet -= amount;
+  
+  // Add to destination
+  if (to === 'main') mainWallet += amount;
+  else if (to === 'bonus') bonusWallet += amount;
+  else gameWallet += amount;
+  
+  // Update UI
+  document.getElementById('mainWalletBalance').textContent = mainWallet.toLocaleString('en');
+  
+  showNotification('✅ Transfer Complete', `৳${amount.toLocaleString('en')} transferred`, 'success');
+}
+
+function generateCrypto(currency) {
+  const addresses = {
+    BTC: 'bc1sd9d8s8s7ss',
+    ETH: '0x8f8e8d8c8b8a890',
+    USDT: 'TX8d9s8s7s6s5s4'
+  };
+  
+  document.getElementById('btcAddress').textContent = addresses[currency];
+  showNotification('✅ Address Generated', `${currency} address ready`, 'success');
+}
+
+function copyToClipboard(elementId) {
+  const text = document.getElementById(elementId).textContent;
+  navigator.clipboard.writeText(text);
+  showNotification('✅ Copied!', 'Address copied to clipboard', 'success');
+}
+
+// Responsible Gambling Functions
+function setLimit(type) {
+  const input = document.getElementById(type + 'Limit');
+  const limit = parseInt(input.value);
+  if (limit && limit > 0) {
+    showNotification('✅ Limit Set', `${type.charAt(0).toUpperCase() + type.slice(1)} limit: ৳${limit.toLocaleString('en')}`, 'success');
+    input.value = '';
+  }
+}
+
+function setSessionLimit() {
+  const minutes = document.getElementById('sessionTime').value;
+  showNotification('⏱️ Session Started', `You have ${minutes} minutes to play`, 'info');
+  setTimeout(() => {
+    showNotification('⚠️ Session Ended', 'Your playing session has ended', 'warning');
+  }, minutes * 60 * 1000);
+}
+
+function selfExclusion() {
+  const days = document.getElementById('exclusionPeriod').value;
+  if (confirm(`Self-exclude for ${days} day(s)? You cannot login during this period.`)) {
+    showNotification('🔒 Account Locked', `Self-exclusion for ${days} day(s)`, 'warning');
+    // In real implementation, this would block login
+  }
+}
+
+// Initialize Professional Systems
+function initProfessionalSystems() {
+  renderAchievements();
+  updateVIPSystem();
+  updateStatistics();
+  startLiveFeed();
+  startTournamentTimer();
+  
+  // Initialize wallet balances from real balance
+  mainWallet = window._realBal || 0;
+  bonusWallet = 0;
+  gameWallet = 0;
+  
+  // Check achievements periodically
+  setInterval(checkAchievements, 30000);
+  
+  // Update chat online count
+  setInterval(updateChatOnline, 10000);
+  
+  // Add sample welcome notification
+  setTimeout(() => {
+    showNotification('👋 Welcome to Royal Bet!', 'Enjoy our premium casino experience', 'info');
+  }, 2000);
+}
+
+// Add new navigation items to bottom nav
+document.addEventListener('DOMContentLoaded', function() {
+  // Add new pages to navigation
+  const bottomNav = document.getElementById('bottomNav');
+  
+  // Add new menu items to dot menu
+  const dotMenu = document.getElementById('bnDotMenu');
+  if (dotMenu) {
+    const newItems = [
+      { text: '🏆 Tournament', action: 'showTournamentInfo()' },
+      { text: '👥 Global Chat', action: 'toggleGlobalChat()' },
+      { text: '🎯 Responsible', action: "showPage('responsiblePage')" },
+      { text: '📜 Terms', action: "showPage('termsPage')" },
+      { text: '🔒 Privacy', action: "showPage('privacyPage')" },
+      { text: '❓ FAQ', action: "showPage('faqPage')" }
+    ];
+    
+    newItems.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'bn-dot-menu-item';
+      div.textContent = item.text;
+      div.onclick = new Function(item.action);
+      dotMenu.appendChild(div);
+    });
+  }
+  
+  // Initialize professional systems after user login
+  const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (document.getElementById('homePage').classList.contains('active') && window._curUser) {
+        initProfessionalSystems();
+        observer.disconnect();
+      }
+    });
+  });
+  
+  observer.observe(document.getElementById('homePage'), { attributes: true, attributeFilter: ['class'] });
+});
+
+// Tournament info function
+function showTournamentInfo() {
+  showNotification('🏆 Weekly Tournament', 'Prize pool: ৳500,000 - Join now!', 'info');
+}
+</script>
+<!-- ===== NEW ROYAL BET PROFESSIONAL SYSTEM END ===== -->
 </body>
 </html>
