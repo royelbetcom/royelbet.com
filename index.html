@@ -2396,74 +2396,131 @@ input::placeholder{color:rgba(253,246,227,0.18);}
 }
 </style>
 
-<!-- NEW CSS FOR ACTIVE USERS COUNTER (premium, neon, blinking) -->
+<!-- NEW STYLES FOR SIMPLE TOTAL USERS COUNTER AND USER REVIEWS -->
 <style>
-/* --- NEW FEATURE: ACTIVE USERS COUNTER --- */
-.active-users-container {
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-  background: linear-gradient(90deg, #0a0f1a, #1a1030);
-  border-bottom: 2px solid #ffd700;
-  box-shadow: 0 4px 20px rgba(255,215,0,0.3);
-  padding: 8px 16px;
+/* ----- FEATURE 1: SIMPLE TOTAL USERS COUNTER (minimal, clean) ----- */
+.total-users-bar {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  border-bottom: 1px solid rgba(255,215,0,0.2);
+  padding: 6px 16px;
+  text-align: center;
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: #f0f0f0;
+  border-bottom: 1px solid rgba(255,215,0,0.2);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  transition: all 0.2s;
+}
+.total-users-bar span {
+  font-weight: 700;
+  color: #ffd700;
+  margin-left: 4px;
+  margin-right: 2px;
+  text-shadow: 0 0 5px rgba(255,215,0,0.3);
+}
+
+/* ----- FEATURE 2: USER REVIEWS SECTION (clean cards, star rating) ----- */
+.user-reviews-section {
+  margin: 20px 16px 20px;
+  padding: 16px 16px 20px;
+  background: rgba(10, 15, 20, 0.7);
+  backdrop-filter: blur(4px);
+  border-radius: 18px;
+  border: 1px solid rgba(255,215,0,0.25);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  animation: fadeUp 0.6s ease;
+}
+
+.user-reviews-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: 'Cinzel', serif;
-  border-radius: 0 0 20px 20px;
-  animation: slideDown 0.5s ease;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(255,215,0,0.2);
+  padding-bottom: 8px;
 }
 
-.active-users-left {
+.user-reviews-title {
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffd700;
+  letter-spacing: 2px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
-.live-dot {
-  width: 10px;
-  height: 10px;
-  background: #00ff00;
-  border-radius: 50%;
-  box-shadow: 0 0 15px #00ff00;
-  animation: blink 1s infinite;
-}
-
-.active-users-label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: #ffd700;
-  text-transform: uppercase;
-}
-
-.active-users-counter {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 20px;
-  font-weight: 900;
-  background: linear-gradient(135deg, #ffd700, #ffaa00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 0 15px #ffd700;
-  margin-right: 4px;
-}
-
-.active-users-suffix {
+.user-reviews-count {
   font-size: 12px;
-  color: #aaa;
-  margin-left: 2px;
+  background: rgba(255,215,0,0.1);
+  border: 1px solid rgba(255,215,0,0.3);
+  border-radius: 30px;
+  padding: 2px 10px;
+  color: #ddd;
+  font-family: 'Lato', sans-serif;
 }
 
-.counter-arrow {
-  font-size: 18px;
-  color: #00ff88;
-  animation: pulse 1.5s infinite;
-  margin-left: 5px;
+.reviews-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.review-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,215,0,0.1);
+  border-radius: 14px;
+  padding: 12px 16px;
+  transition: all 0.3s;
+  animation: slideIn 0.4s ease;
+  backdrop-filter: blur(2px);
+}
+.review-card:hover {
+  border-color: rgba(255,215,0,0.4);
+  background: rgba(255,215,0,0.02);
+  transform: translateY(-2px);
+}
+
+.reviewer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.reviewer-name {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  color: #fff;
+  font-size: 14px;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.reviewer-name i {
+  color: #ffd700;
+  font-size: 12px;
+}
+
+.review-stars {
+  color: #ffd700;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 5px #ffd700;
+}
+
+.review-message {
+  font-size: 13px;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.5;
+  font-style: italic;
+  border-left: 2px solid #ffd700;
+  padding-left: 12px;
+  margin-top: 4px;
 }
 </style>
 </head>
@@ -2473,19 +2530,6 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   <div class="suit">♠</div><div class="suit">♥</div>
   <div class="suit">♦</div><div class="suit">♣</div>
   <div class="suit">♠</div><div class="suit">♦</div>
-</div>
-
-<!-- NEW: ACTIVE USERS COUNTER (will be appended via JS after login) -->
-<div id="activeUsersBar" style="display:none;" class="active-users-container">
-  <div class="active-users-left">
-    <span class="live-dot"></span>
-    <span class="active-users-label">LIVE PLAYERS</span>
-  </div>
-  <div style="display:flex; align-items:center;">
-    <span class="active-users-counter" id="activeUsersCount">21.2M</span>
-    <span class="active-users-suffix">users</span>
-    <span class="counter-arrow">↑</span>
-  </div>
 </div>
 
 <!-- LOGIN -->
@@ -2532,6 +2576,11 @@ input::placeholder{color:rgba(253,246,227,0.18);}
     <div class="announcement-bar" id="announcementBar" style="display: none;">
       <span id="announcementText">📢 Welcome to Royal Bet! New features added.</span>
       <button class="announcement-close" onclick="closeAnnouncement()">✕</button>
+    </div>
+    
+    <!-- ========== NEW FEATURE 1: SIMPLE TOTAL USERS COUNTER ========== -->
+    <div class="total-users-bar" id="totalUsersBar" style="display:none;">
+      👥 Total Users: <span id="totalUsersCount">21.3M</span>
     </div>
     
     <div class="action-row">
@@ -2702,6 +2751,16 @@ input::placeholder{color:rgba(253,246,227,0.18);}
         <div class="game-info"><div class="game-ci"><div class="game-ci-val" style="color:#ffa500">∞×</div><div class="game-ci-key">Multiplier</div></div><div class="game-ci"><div class="game-ci-val" style="color:#2ecc71">LIVE</div><div class="game-ci-key">Status</div></div></div>
       </div>
     </div>
+    
+    <!-- ========== NEW FEATURE 2: USER REVIEWS SECTION ========== -->
+    <div class="user-reviews-section" id="userReviewsSection" style="display:none;">
+      <div class="user-reviews-header">
+        <div class="user-reviews-title"><i class="fas fa-star" style="color:#ffd700;"></i> User Reviews</div>
+        <div class="user-reviews-count" id="reviewsCount">3 reviews</div>
+      </div>
+      <div class="reviews-grid" id="reviewsGrid"></div>
+    </div>
+    
     <!-- LEADERBOARD SECTION -->
     <div class="sec-title">🏆 Top Winners</div>
     <div style="margin:0 16px 14px">
@@ -7690,331 +7749,195 @@ loadAviatorHistory();
 })();
 </script>
 
-<!-- ========== NEW FEATURES: 1) BANGLA→ENGLISH CONVERTER (runtime) 2) ACTIVE USERS COUNTER (21.2M initial, +100K per day) ========== -->
+<!-- ========== NEW FEATURES: 1) SIMPLE TOTAL USERS COUNTER (auto-increment) 2) FAKE REVIEW SYSTEM (auto-growing) ========== -->
 <script>
 (function() {
-  // -------------------- FEATURE 1: FULL BANGLA TO ENGLISH CONVERSION (runtime) --------------------
-  const banglaToEnglishMap = {
-    'ডিপোজিট': 'Deposit',
-    'উইথড্র': 'Withdraw',
-    'ব্যালেন্স': 'Balance',
-    'হারালেন': 'lost',
-    'জিতুন': 'win',
-    'পেলেন': 'got',
-    'দিন': 'Day',
-    'রিওয়ার্ড': 'Reward',
-    'প্রশ্ন': 'question',
-    'উত্তর': 'answer',
-    'আমি': 'I am',
-    'আপনি': 'You',
-    'নিন': 'take',
-    'করুন': 'do',
-    'এখন': 'now',
-    'মিনিট': 'minutes',
-    'সেকেন্ড': 'seconds',
-    'জন্য': 'for',
-    'আছে': 'have',
-    'নেই': 'no',
-    'বাংলাদেশ': 'Bangladesh',
-    'ভারত': 'India',
-    'ক্রিকেট': 'Cricket',
-    'ম্যাচ': 'Match',
-    'স্কোর': 'Score',
-    'ওভার': 'Over',
-    'বেট': 'Bet',
-    'বাজি': 'Bet',
-    'অনুমোদন': 'Approve',
-    'বাতিল': 'Cancel',
-    'যোগ': 'Add',
-    'বিয়োগ': 'Subtract',
-    'সফল': 'Success',
-    'ব্যর্থ': 'Failed',
-    'লেনদেন': 'Transaction',
-    'ইতিহাস': 'History',
-    'প্রোফাইল': 'Profile',
-    'সেটিংস': 'Settings',
-    'সাহায্য': 'Help',
-    'তথ্য': 'Info',
-    'সতর্কতা': 'Warning',
-    'ভুল': 'Error',
-    'ঠিক': 'Correct',
-    'চালু': 'On',
-    'বন্ধ': 'Off',
-    'ডেমো': 'Demo',
-    'রিয়েল': 'Real',
-    'মুক্ত': 'Free',
-    'বোনাস': 'Bonus',
-    'ক্যাশবোনাস': 'Cash Bonus',
-    'রেফারেল': 'Referral',
-    'বন্ধু': 'Friend',
-    'কোড': 'Code',
-    'কপি': 'Copy',
-    'শেয়ার': 'Share',
-    'লিঙ্ক': 'Link',
-    'আপডেট': 'Update',
-    'নতুন': 'New',
-    'পুরনো': 'Old',
-    'সর্বোচ্চ': 'Maximum',
-    'সর্বনিম্ন': 'Minimum',
-    'পরিমাণ': 'Amount',
-    'মুদ্রা': 'Currency',
-    'টাকা': 'Taka',
-    'ডলার': 'Dollar',
-    'ইউরো': 'Euro',
-    'পাউন্ড': 'Pound',
-    'বিটকয়েন': 'Bitcoin',
-    'ক্রিপ্টো': 'Crypto',
-    'ওয়ালেট': 'Wallet',
-    'ঠিকানা': 'Address',
-    'পাসওয়ার্ড': 'Password',
-    'লগইন': 'Login',
-    'সাইন আউট': 'Sign Out',
-    'নিবন্ধন': 'Register',
-    'স্বাগতম': 'Welcome',
-    'ধন্যবাদ': 'Thank you',
-    'দয়া করে': 'Please',
-    'ক্ষমা': 'Sorry',
-    'ঠিক আছে': 'OK',
-    'বন্ধ করুন': 'Close',
-    'খুলুন': 'Open',
-    'দেখুন': 'View',
-    'লুকান': 'Hide',
-    'সম্পাদনা': 'Edit',
-    'মুছুন': 'Delete',
-    'সংরক্ষণ': 'Save',
-    'পরিবর্তন': 'Change',
-    'নির্বাচন': 'Select',
-    'সব': 'All',
-    'কিছু': 'Some',
-    'এবং': 'and',
-    'অথবা': 'or',
-    'কিন্তু': 'but',
-    'যে': 'that',
-    'এই': 'this',
-    'ওই': 'that',
-    'এখানে': 'here',
-    'সেখানে': 'there',
-    'উপরে': 'above',
-    'নিচে': 'below',
-    'ডানে': 'right',
-    'বামে': 'left',
-    'মাঝে': 'middle',
-    'আগে': 'before',
-    'পরে': 'after',
-    'এখনই': 'now',
-    'কাল': 'tomorrow',
-    'গতকাল': 'yesterday',
-    'আজ': 'today',
-    'সপ্তাহ': 'week',
-    'মাস': 'month',
-    'বছর': 'year',
-    'ঘন্টা': 'hour',
-    'মিনিট': 'minute',
-    'সেকেন্ড': 'second',
-    'বার': 'time',
-    'দুই': 'two',
-    'তিন': 'three',
-    'চার': 'four',
-    'পাঁচ': 'five',
-    'ছয়': 'six',
-    'সাত': 'seven',
-    'আট': 'eight',
-    'নয়': 'nine',
-    'দশ': 'ten',
-    'শত': 'hundred',
-    'হাজার': 'thousand',
-    'লাখ': 'lakh',
-    'কোটি': 'crore',
-    'বাংলা': 'Bengali',
-    'ইংরেজি': 'English'
-  };
+    // ----- FEATURE 1: TOTAL USERS COUNTER (initial 21.3M, +0.2M per day) -----
+    const USER_COUNT_KEY = 'royalBetTotalUsers';
+    const USER_LAST_UPDATE_KEY = 'royalBetUsersLastUpdate';
+    const BASE_USERS = 21.3; // in millions
+    const DAILY_INCREMENT = 0.2; // 200k = 0.2M
 
-  function replaceBanglaWithEnglish(text) {
-    if (!text) return text;
-    let result = text;
-    for (let [bn, en] of Object.entries(banglaToEnglishMap)) {
-      const regex = new RegExp(bn, 'gi');
-      result = result.replace(regex, en);
-    }
-    return result;
-  }
+    function getTotalUsers() {
+        const lastUpdate = localStorage.getItem(USER_LAST_UPDATE_KEY);
+        const now = Date.now();
+        const oneDay = 86400000;
+        let daysPassed = 0;
 
-  function translateAllTextNodes(root) {
-    if (!root) root = document.body;
-    const walker = document.createTreeWalker(
-      root,
-      NodeFilter.SHOW_TEXT,
-      {
-        acceptNode: function(node) {
-          // skip script, style, and elements that shouldn't be translated
-          if (node.parentElement && 
-              (node.parentElement.tagName === 'SCRIPT' || 
-               node.parentElement.tagName === 'STYLE' ||
-               node.parentElement.classList.contains('no-translate'))) {
-            return NodeFilter.FILTER_REJECT;
-          }
-          return NodeFilter.FILTER_ACCEPT;
+        if (lastUpdate) {
+            const last = parseInt(lastUpdate, 10);
+            daysPassed = Math.floor((now - last) / oneDay);
         }
-      }
-    );
-    const nodesToReplace = [];
-    while (walker.nextNode()) nodesToReplace.push(walker.currentNode);
-    nodesToReplace.forEach(node => {
-      if (node.nodeValue && node.nodeValue.trim().length > 0) {
-        const original = node.nodeValue;
-        const translated = replaceBanglaWithEnglish(original);
-        if (original !== translated) {
-          node.nodeValue = translated;
-        }
-      }
-    });
-  }
 
-  // run on initial load and whenever new content might appear (e.g., after login, after modal opens)
-  const observer = new MutationObserver(function(mutations) {
-    mutations.forEach(mutation => {
-      if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-        mutation.addedNodes.forEach(node => {
-          if (node.nodeType === Node.ELEMENT_NODE) {
-            translateAllTextNodes(node);
-          }
-        });
-      }
-    });
-  });
-  observer.observe(document.body, { childList: true, subtree: true });
-
-  // initial translation after DOM ready
-  document.addEventListener('DOMContentLoaded', () => {
-    translateAllTextNodes();
-  });
-
-  // also translate after each page show (since content changes)
-  const originalShowPage = window.showPage;
-  if (originalShowPage) {
-    window.showPage = function(id) {
-      originalShowPage.call(this, id);
-      setTimeout(() => translateAllTextNodes(document.getElementById(id)), 100);
-    };
-  }
-
-  // translate toast messages and AI messages after they appear
-  const originalToast = window.toast;
-  if (originalToast) {
-    window.toast = function(msg, isErr) {
-      const englishMsg = replaceBanglaWithEnglish(msg);
-      originalToast.call(this, englishMsg, isErr);
-    };
-  }
-
-  // translate AI send message
-  const originalSendAIMessage = window.sendAIMessage;
-  if (originalSendAIMessage) {
-    window.sendAIMessage = function() {
-      const input = document.getElementById('aiInput');
-      if (input) input.value = replaceBanglaWithEnglish(input.value);
-      originalSendAIMessage.call(this);
-    };
-  }
-
-  // -------------------- FEATURE 2: ACTIVE USERS COUNTER --------------------
-  const ACTIVE_USERS_KEY = 'royalBetActiveUsers';
-  const BASE_COUNT = 21.2; // in millions
-  const DAILY_INCREMENT = 0.1; // 100k = 0.1M
-  const STORAGE_UPDATE_KEY = 'royalBetLastUpdate';
-
-  function getActiveUsersCount() {
-    const lastUpdate = localStorage.getItem(STORAGE_UPDATE_KEY);
-    const now = Date.now();
-    const oneDay = 86400000; // 24*60*60*1000
-    let daysPassed = 0;
-    
-    if (lastUpdate) {
-      const last = parseInt(lastUpdate, 10);
-      daysPassed = Math.floor((now - last) / oneDay);
-    } else {
-      daysPassed = 0;
-    }
-
-    let storedCount = localStorage.getItem(ACTIVE_USERS_KEY);
-    let currentCount;
-    
-    if (storedCount && !isNaN(parseFloat(storedCount))) {
-      currentCount = parseFloat(storedCount);
-    } else {
-      currentCount = BASE_COUNT;
-    }
-
-    if (daysPassed > 0) {
-      currentCount = currentCount + daysPassed * DAILY_INCREMENT;
-      localStorage.setItem(ACTIVE_USERS_KEY, currentCount.toFixed(1));
-      localStorage.setItem(STORAGE_UPDATE_KEY, now.toString());
-    }
-
-    return currentCount;
-  }
-
-  function formatActiveUsers(count) {
-    return count.toFixed(1) + 'M';
-  }
-
-  // Inject counter bar if not already present (we added HTML, but ensure it appears after login)
-  const counterContainer = document.getElementById('activeUsersBar');
-  if (counterContainer) {
-    // move it to top of home page (after topbar but before action-row ideally)
-    const homePage = document.getElementById('homePage');
-    if (homePage && homePage.querySelector('.pg-wrap')) {
-      const pgWrap = homePage.querySelector('.pg-wrap');
-      // insert after topbar, before action-row
-      const topbar = pgWrap.querySelector('.topbar');
-      if (topbar && topbar.nextSibling) {
-        pgWrap.insertBefore(counterContainer, topbar.nextSibling);
-      } else {
-        pgWrap.prepend(counterContainer);
-      }
-    }
-  }
-
-  function updateActiveUsersDisplay() {
-    const countEl = document.getElementById('activeUsersCount');
-    if (countEl) {
-      const count = getActiveUsersCount();
-      countEl.textContent = formatActiveUsers(count);
-    }
-  }
-
-  // Show counter only when logged in
-  function toggleCounterVisibility(show) {
-    const bar = document.getElementById('activeUsersBar');
-    if (bar) {
-      bar.style.display = show ? 'flex' : 'none';
-    }
-  }
-
-  // Hook into auth state change
-  const originalOnAuthStateChanged = window._onAuthStateChanged; // not directly accessible, but we can override after login
-  // better: observe when bottomNav appears (logged in)
-  const observerCounter = new MutationObserver(function(mutations) {
-    mutations.forEach(mutation => {
-      if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-        const bottomNav = document.getElementById('bottomNav');
-        if (bottomNav && bottomNav.style.display !== 'none') {
-          toggleCounterVisibility(true);
-          updateActiveUsersDisplay();
+        let stored = localStorage.getItem(USER_COUNT_KEY);
+        let current;
+        if (stored && !isNaN(parseFloat(stored))) {
+            current = parseFloat(stored);
         } else {
-          toggleCounterVisibility(false);
+            current = BASE_USERS;
         }
-      }
+
+        if (daysPassed > 0) {
+            current = current + daysPassed * DAILY_INCREMENT;
+            localStorage.setItem(USER_COUNT_KEY, current.toFixed(1));
+            localStorage.setItem(USER_LAST_UPDATE_KEY, now.toString());
+        }
+
+        return current;
+    }
+
+    function formatUsers(count) {
+        return count.toFixed(1) + 'M';
+    }
+
+    function updateUserCounterDisplay() {
+        const el = document.getElementById('totalUsersCount');
+        if (el) {
+            const count = getTotalUsers();
+            el.textContent = formatUsers(count);
+        }
+    }
+
+    // ----- FEATURE 2: FAKE REVIEW SYSTEM (auto-growing) -----
+    const REVIEWS_KEY = 'royalBetReviews';
+    const REVIEW_LAST_UPDATE_KEY = 'royalBetReviewsLastUpdate';
+    const INITIAL_REVIEWS = [
+        { name: 'John D.', message: 'Amazing platform, very fast withdrawal!', stars: 5 },
+        { name: 'Alex M.', message: 'Best casino experience ever!', stars: 5 },
+        { name: 'Sarah K.', message: 'Loved the interface and smooth gameplay!', stars: 5 }
+    ];
+    const REVIEW_NAMES = [
+        'Chris P.', 'Jordan L.', 'Taylor W.', 'Morgan S.', 'Casey R.',
+        'Riley T.', 'Quinn V.', 'Sam B.', 'Jamie C.', 'Dakota F.',
+        'Skyler H.', 'Blake J.', 'Frankie K.', 'Cameron L.', 'Alexis P.'
+    ];
+    const REVIEW_MESSAGES = [
+        'Withdrawals are super fast, got my money in minutes!',
+        'This site is legit, won big on Aviator.',
+        'Customer support is very helpful and friendly.',
+        'Daily rewards are generous, love the bonuses.',
+        'Smooth gameplay and nice graphics.',
+        'Best odds compared to other casinos.',
+        'Quick deposit and no hidden fees.',
+        'VIP program is amazing, got cashback every week.',
+        'User-friendly interface, easy to navigate.',
+        'Live cricket betting is so exciting!',
+        'I recommend this to all my friends.',
+        'Biggest win of my life here!',
+        'Reliable and trustworthy platform.',
+        'Awesome selection of games.',
+        'Withdrawal process is hassle-free.'
+    ];
+
+    function getStoredReviews() {
+        const stored = localStorage.getItem(REVIEWS_KEY);
+        if (stored) {
+            try {
+                return JSON.parse(stored);
+            } catch (e) {
+                return [...INITIAL_REVIEWS];
+            }
+        }
+        return [...INITIAL_REVIEWS];
+    }
+
+    function saveReviews(reviews) {
+        localStorage.setItem(REVIEWS_KEY, JSON.stringify(reviews));
+    }
+
+    function generateNewReview() {
+        const name = REVIEW_NAMES[Math.floor(Math.random() * REVIEW_NAMES.length)];
+        const message = REVIEW_MESSAGES[Math.floor(Math.random() * REVIEW_MESSAGES.length)];
+        return { name, message, stars: 5 };
+    }
+
+    function updateReviews() {
+        const lastUpdate = localStorage.getItem(REVIEW_LAST_UPDATE_KEY);
+        const now = Date.now();
+        const oneDay = 86400000;
+        let daysPassed = 0;
+
+        if (lastUpdate) {
+            const last = parseInt(lastUpdate, 10);
+            daysPassed = Math.floor((now - last) / oneDay);
+        }
+
+        if (daysPassed > 0) {
+            let reviews = getStoredReviews();
+            for (let i = 0; i < daysPassed * 2; i++) { // +2 per day
+                reviews.push(generateNewReview());
+            }
+            // keep last 20 reviews max to avoid overcrowding
+            if (reviews.length > 20) reviews = reviews.slice(-20);
+            saveReviews(reviews);
+            localStorage.setItem(REVIEW_LAST_UPDATE_KEY, now.toString());
+        }
+    }
+
+    function renderReviews() {
+        const reviews = getStoredReviews();
+        const grid = document.getElementById('reviewsGrid');
+        if (!grid) return;
+        if (reviews.length === 0) {
+            grid.innerHTML = '<div class="review-card" style="text-align:center; color:#888;">No reviews yet.</div>';
+            return;
+        }
+        let html = '';
+        reviews.slice(-10).reverse().forEach(r => { // show latest 10
+            html += `<div class="review-card">
+                <div class="reviewer-row">
+                    <div class="reviewer-name"><i class="fas fa-user-circle"></i> ${r.name}</div>
+                    <div class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+                </div>
+                <div class="review-message">"${r.message}"</div>
+            </div>`;
+        });
+        grid.innerHTML = html;
+        const countEl = document.getElementById('reviewsCount');
+        if (countEl) countEl.textContent = reviews.length + ' reviews';
+    }
+
+    // ----- HOOK INTO LOGIN STATE -----
+    function toggleFeaturesVisibility(show) {
+        const usersBar = document.getElementById('totalUsersBar');
+        const reviewsSec = document.getElementById('userReviewsSection');
+        if (usersBar) usersBar.style.display = show ? 'block' : 'none';
+        if (reviewsSec) reviewsSec.style.display = show ? 'block' : 'none';
+    }
+
+    // Observe bottomNav display change (logged in)
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(mutation => {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                const nav = document.getElementById('bottomNav');
+                if (nav && nav.style.display !== 'none') {
+                    toggleFeaturesVisibility(true);
+                    updateUserCounterDisplay();
+                    updateReviews();
+                    renderReviews();
+                } else {
+                    toggleFeaturesVisibility(false);
+                }
+            }
+        });
     });
-  });
-  const bottomNav = document.getElementById('bottomNav');
-  if (bottomNav) observerCounter.observe(bottomNav, { attributes: true });
+    const nav = document.getElementById('bottomNav');
+    if (nav) observer.observe(nav, { attributes: true });
 
-  // initial update
-  updateActiveUsersDisplay();
+    // initial update if already logged in
+    if (document.getElementById('bottomNav') && document.getElementById('bottomNav').style.display !== 'none') {
+        toggleFeaturesVisibility(true);
+        updateUserCounterDisplay();
+        updateReviews();
+        renderReviews();
+    }
 
-  // update daily (re-check on each page load)
-  setInterval(updateActiveUsersDisplay, 3600000); // hourly check
+    // update counter every hour (to catch day changes)
+    setInterval(updateUserCounterDisplay, 3600000);
+    setInterval(() => {
+        updateReviews();
+        renderReviews();
+    }, 3600000);
 })();
 </script>
 </body>
