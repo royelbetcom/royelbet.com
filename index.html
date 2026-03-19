@@ -2523,49 +2523,6 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   margin-top: 4px;
 }
 </style>
-<!-- ========== NEW STYLES FOR WEEKLY TOURNAMENT SECTION ========== -->
-<style>
-.weekly-tournament-card {
-  margin: 0 16px 20px;
-  background: linear-gradient(145deg, #0a1a2a, #001f2f);
-  border: 2px solid #ffd700;
-  border-radius: 20px;
-  padding: 16px;
-  box-shadow: 0 10px 30px rgba(255,215,0,0.15);
-  animation: pulse 3s infinite;
-}
-.tournament-header {
-  font-family: 'Cinzel', serif;
-  font-size: 14px;
-  font-weight: 900;
-  color: #ffd700;
-  letter-spacing: 2px;
-  text-align: center;
-  margin-bottom: 12px;
-}
-.tournament-sub {
-  font-size: 11px;
-  color: rgba(255,255,255,0.6);
-  text-align: center;
-  margin-bottom: 16px;
-  border-bottom: 1px solid rgba(255,215,0,0.2);
-  padding-bottom: 8px;
-}
-.tournament-lb-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 10px;
-  border-bottom: 1px solid rgba(255,215,0,0.1);
-  font-family: 'Lato', sans-serif;
-  font-size: 13px;
-}
-.tournament-lb-row:last-child { border-bottom: none; }
-.tournament-rank { font-family: 'Cinzel', serif; font-weight: 700; color: #ffd700; width: 30px; }
-.tournament-name { flex: 1; color: #fff; }
-.tournament-amount { font-family: 'Share Tech Mono', monospace; color: #ffd700; font-weight: 700; }
-.tournament-prize { background: rgba(255,215,0,0.1); border-radius: 30px; padding: 12px; text-align: center; margin-top: 12px; font-family: 'Cinzel', serif; font-size: 16px; color: #ffd700; }
-</style>
 </head>
 <body>
 <div class="felt-bg"></div>
@@ -2641,14 +2598,6 @@ input::placeholder{color:rgba(253,246,227,0.18);}
         <div class="reward-streak" id="rewardStreak">Day 1</div>
       </div>
       <div class="reward-days" id="rewardDays"></div>
-    </div>
-    
-    <!-- ========== NEW WEEKLY TOURNAMENT SECTION ========== -->
-    <div class="weekly-tournament-card" id="weeklyTournamentCard">
-      <div class="tournament-header">🏆 WEEKLY TOURNAMENT 🏆</div>
-      <div class="tournament-sub">Top earner of the week will be the Weekly Tournament Winner</div>
-      <div id="weeklyTournamentLB"></div>
-      <div class="tournament-prize" id="tournamentPrizeDisplay">Prize Pool: ৳500,000</div>
     </div>
     
     <!-- ========== NEW FEATURE ICON GRID (APPENDED TO HOME PAGE) ========== -->
@@ -2922,8 +2871,6 @@ input::placeholder{color:rgba(253,246,227,0.18);}
       <button class="admin-tab" onclick="switchAdminTab('support_reply',this)">💬 Support</button>
       <button class="admin-tab" onclick="switchAdminTab('ban',this)">🚫 Ban System</button>
       <button class="admin-tab" onclick="switchAdminTab('control',this)">🎮 Control</button>
-      <button class="admin-tab" onclick="switchAdminTab('referralControl',this)">👥 Referral Ctrl</button>
-      <button class="admin-tab" onclick="switchAdminTab('orderSearch',this)">🔍 Order ID</button>
     </div>
     
     <!-- Withdrawals Tab -->
@@ -3141,40 +3088,6 @@ input::placeholder{color:rgba(253,246,227,0.18);}
             <input type="number" id="adminTournamentPrize" class="alb-inp-full" value="500000">
           </div>
           <button onclick="saveControlSettings()" class="btn-sub" style="margin-top:12px;">💾 SAVE SETTINGS</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ========== NEW FEATURE: REFERRAL CONTROL TAB ========== -->
-    <div class="admin-tab-content" id="atab-referralControl">
-      <div class="admin-section" style="margin-top:14px">
-        <div class="admin-sec-title">👥 REFERRAL CONTROL</div>
-        <div style="padding:16px">
-          <div class="igrp">
-            <label class="ilbl">User UID</label>
-            <input type="text" id="refUserUID" class="alb-inp-full" placeholder="Enter user UID">
-          </div>
-          <div class="igrp">
-            <label class="ilbl">Set Referral Count</label>
-            <input type="number" id="refCount" class="alb-inp-full" value="0">
-          </div>
-          <div class="igrp">
-            <label class="ilbl">Set Referral Earned (৳)</label>
-            <input type="number" id="refEarned" class="alb-inp-full" value="0">
-          </div>
-          <button onclick="setReferralData()" class="btn-sub" style="margin-top:12px;">💾 UPDATE REFERRAL</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ========== NEW FEATURE: ORDER ID SEARCH TAB ========== -->
-    <div class="admin-tab-content" id="atab-orderSearch">
-      <div class="admin-section" style="margin-top:14px">
-        <div class="admin-sec-title">🔍 ORDER ID SEARCH</div>
-        <div style="padding:16px">
-          <input type="text" id="searchOrderId" class="alb-inp-full" placeholder="Enter Order ID (e.g., DEP_ss_1234567890 or WD_1234567890)" style="margin-bottom:10px;">
-          <button onclick="searchOrderById()" class="btn-sub" style="margin-bottom:16px;">🔎 SEARCH</button>
-          <div id="orderSearchResult" style="background:rgba(0,0,0,0.3); border-radius:8px; padding:12px; font-size:12px; color:#fff;"></div>
         </div>
       </div>
     </div>
@@ -3530,7 +3443,9 @@ input::placeholder{color:rgba(253,246,227,0.18);}
       <span class="demo-lbl">DEMO</span>
       <div id="demoBadgeAv" style="display:none" class="demo-badge">DEMO</div>
       <div id="demoBalAv" style="display:none" class="demo-bal-txt">৳<span id="demoBalNumAv">10,000</span></div>
-      <!-- MUSIC TOGGLE REMOVED AS PER REQUEST (no background music) -->
+      <!-- ========== NEW: MUSIC CONTROL ========== -->
+      <label class="tog-sw" style="margin-left:10px;"><input type="checkbox" id="avMusicTog" onchange="toggleAvMusic()"><span class="tog-sl"></span></label>
+      <span class="demo-lbl">MUSIC</span>
     </div>
     <div class="av-canvas" id="avCanvas">
       <div class="av-grid"></div>
@@ -4674,7 +4589,6 @@ window.switchAdminTab = function(tab, el) {
   if (tab === 'announcement' && window.loadAnnouncementSettings) loadAnnouncementSettings();
   if (tab === 'ban' && window.loadAdminBanList) loadAdminBanList();
   if (tab === 'control') loadControlSettings();
-  if (tab === 'referralControl') loadReferralControlData();
   if (tab === 'cricket') {
     document.getElementById('adminTeam1').value = document.getElementById('cricketTeam1').textContent;
     document.getElementById('adminTeam2').value = document.getElementById('cricketTeam2').textContent;
@@ -4696,22 +4610,9 @@ let avPhase = 'idle', avBetPlaced = false, avBetAmt = 0, avMult = 1.00, avCrashA
 const avPts = [];
 let avCtx = null;
 let avForcedMult = null;
-
-// Crash sound effect
-let crashAudioCtx = null;
-function playCrashSound() {
-  if (!crashAudioCtx) crashAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  const osc = crashAudioCtx.createOscillator();
-  const gain = crashAudioCtx.createGain();
-  osc.type = 'sawtooth';
-  osc.frequency.value = 150;
-  gain.gain.value = 0.2;
-  gain.gain.exponentialRampToValueAtTime(0.0001, crashAudioCtx.currentTime + 0.5);
-  osc.connect(gain);
-  gain.connect(crashAudioCtx.destination);
-  osc.start();
-  osc.stop(crashAudioCtx.currentTime + 0.5);
-}
+// Aviator Music
+let avAudioCtx, avGainNode, avOsc;
+let avMusicEnabled = false;
 
 function avCrashPt() {
   if (avForcedMult) {
@@ -4862,8 +4763,6 @@ function avDoCrash() {
     }
   }
   addAviatorCrashToHistory(avCrashAt);
-  // Play professional crash sound
-  playCrashSound();
   setTimeout(() => {
     document.getElementById('avCrashFl').style.display = 'none';
     avStartRound();
@@ -5013,6 +4912,80 @@ function avBuildLB(showUser = false) {
   }).join('');
 }
 
+// Aviator Music
+window.toggleAvMusic = function() {
+  avMusicEnabled = document.getElementById('avMusicTog').checked;
+  if (avMusicEnabled) {
+    if (!avAudioCtx) {
+      avAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      avGainNode = avAudioCtx.createGain();
+      avGainNode.connect(avAudioCtx.destination);
+      avGainNode.gain.value = 0.15;
+      avOsc = avAudioCtx.createOscillator();
+      avOsc.type = 'sine';
+      avOsc.frequency.value = 220;
+      avOsc.connect(avGainNode);
+      avOsc.start();
+    }
+  } else {
+    if (avOsc) {
+      avOsc.stop();
+      avOsc.disconnect();
+      avAudioCtx = null;
+    }
+  }
+};
+
+// =================== AVIATOR HISTORY ===================
+const AV_HISTORY_KEY = 'aviatorCrashHistory';
+let avHistory = [];
+
+function loadAviatorHistory() {
+  try {
+    const stored = localStorage.getItem(AV_HISTORY_KEY);
+    if (stored) avHistory = JSON.parse(stored);
+    else avHistory = [1.25, 2.80, 1.05, 15.60, 3.20, 22.10, 1.80, 45.00, 12.30, 5.50];
+  } catch (e) { avHistory = []; }
+  renderAviatorHistory();
+}
+
+function saveAviatorHistory() {
+  try { localStorage.setItem(AV_HISTORY_KEY, JSON.stringify(avHistory.slice(0, 50))); } catch(e) {}
+}
+
+function renderAviatorHistory() {
+  const listDiv = document.getElementById('avHistoryList');
+  if (!listDiv) return;
+  const reversed = [...avHistory].reverse().slice(0, 20);
+  listDiv.innerHTML = reversed.map(m => `<div class="av-history-item"><span>✈️</span> ${m.toFixed(2)}x</div>`).join('');
+  if (reversed.length === 0) listDiv.innerHTML = '<div class="av-history-item">No history yet</div>';
+}
+
+function addAviatorCrashToHistory(mult) {
+  avHistory.push(mult);
+  if (avHistory.length > 50) avHistory.shift();
+  saveAviatorHistory();
+  renderAviatorHistory();
+}
+
+window.openAviatorHistory = function() {
+  renderAviatorHistory();
+  document.getElementById('avHistoryModal').classList.add('open');
+};
+
+window.closeAviatorHistory = function() {
+  document.getElementById('avHistoryModal').classList.remove('open');
+};
+
+window.clearAviatorHistory = function() {
+  avHistory = [];
+  saveAviatorHistory();
+  renderAviatorHistory();
+  toast('🧹 History cleared', false);
+};
+
+loadAviatorHistory();
+
 // Initialize Aviator
 setTimeout(() => {
   if (document.getElementById('aviatorPage')) avStartRound();
@@ -5051,34 +5024,34 @@ window.sendAIMessage = function() {
     if (aiMode === 'smart') {
       const lowerMsg = msg.toLowerCase();
       if (lowerMsg.includes('balance') || lowerMsg.includes('ব্যালেন্স')) {
-        response = `Your current balance: ৳${window._realBal.toLocaleString('en')} (Real) / ৳${window._demoBal.toLocaleString('en')} (Demo).`;
+        response = `আপনার বর্তমান ব্যালেন্স: ৳${window._realBal.toLocaleString('en')} (Real) / ৳${window._demoBal.toLocaleString('en')} (Demo)।`;
       } else if (lowerMsg.includes('deposit') || lowerMsg.includes('ডিপোজিট')) {
-        response = 'To deposit, click the Deposit button on the Home page. Binance ID: 894307667, then upload a screenshot.';
+        response = 'ডিপোজিট করতে Home পেজ থেকে Deposit বাটনে ক্লিক করুন। Binance ID: 894307667, তারপর screenshot আপলোড করুন।';
       } else if (lowerMsg.includes('withdraw') || lowerMsg.includes('উইথড্র')) {
-        response = 'To withdraw, go to Profile page and use the Withdraw option. Minimum ৳200, maximum ৳200,000.';
+        response = 'উইথড্রয়াল করতে Profile পেজে গিয়ে Withdraw অপশন ব্যবহার করুন। মিনিমাম ৳200, সর্বোচ্চ ৳200,000।';
       } else if (lowerMsg.includes('game') || lowerMsg.includes('গেম')) {
-        response = 'Our games: Aviator, Trading, Dice, Mines, Coin Flip, Spin Wheel, Chicken Run, and Live Cricket! Enjoy them all.';
+        response = 'আমাদের গেমগুলো: Aviator, Trading, Dice, Mines, Coin Flip, Spin Wheel, Chicken Run, এবং Live Cricket! সবগুলোতেই মজা নিন।';
       } else if (lowerMsg.includes('aviator') || lowerMsg.includes('এভিয়েটর')) {
-        response = 'In Aviator, the plane flies and the multiplier increases. Cash out at the right time to win! Up to 100x.';
+        response = 'Aviator গেমে বিমান উড়ে এবং মাল্টিপ্লায়ার বাড়ে। সঠিক সময় cashout করে জিতুন! সর্বোচ্চ 100x পর্যন্ত।';
       } else if (lowerMsg.includes('cricket') || lowerMsg.includes('ক্রিকেট')) {
-        response = 'Bet on the live Bangladesh vs India match in the Live Cricket section! See live updates.';
+        response = 'Live Cricket section-এ বাংলাদেশ ও ভারতের ম্যাচে বেট করুন! লাইভ আপডেট দেখুন।';
       } else if (lowerMsg.includes('help') || lowerMsg.includes('সাহায্য')) {
-        response = 'I am Royal Bet AI! Ask me anything: balance, deposit, withdrawal, game rules, etc.';
+        response = 'আমি Royal Bet AI! যেকোনো প্রশ্ন করুন: ব্যালেন্স, ডিপোজিট, উইথড্রয়াল, গেমের নিয়ম ইত্যাদি।';
       } else if (lowerMsg.includes('bonus') || lowerMsg.includes('বোনাস')) {
-        response = 'Claim your Daily Reward! Get ৳500 to ৳3000 every day.';
+        response = 'Daily Reward claim করুন! প্রতিদিন ৳500 থেকে ৳3000 পর্যন্ত বোনাস পান।';
       } else if (lowerMsg.includes('history') || lowerMsg.includes('হিস্ট্রি')) {
-        response = 'View your bet history and transaction history in the Profile or Home page Transaction History section.';
+        response = 'আপনার বেট হিস্ট্রি এবং ট্রানজেকশন হিস্ট্রি দেখতে Profile অথবা Home পেজের Transaction History সেকশন দেখুন।';
       } else if (lowerMsg.includes('refer') || lowerMsg.includes('রেফার')) {
-        response = 'Invite friends with the Friend Referral button on the Home page and earn ৳6000 bonus!';
+        response = 'Friend Referral দিয়ে বন্ধু আনুন এবং ৳6000 বোনাস পান! Home পেজে Referral বাটন দেখুন।';
       } else if (lowerMsg.includes('spin') || lowerMsg.includes('স্পিন')) {
-        response = 'Spin the Lucky Wheel to win 2x,3x,5x,10x,20x,50x,10x or get a Loss/Refund. Minimum bet ৳200, maximum ৳50,000.';
+        response = 'Spin Wheel গেমে Lucky Wheel ঘুরিয়ে 2x,3x,5x,10x,20x,50x,10x জিতুন অথবা Loss/Refund পেতে পারেন। মিনিমাম বেট ৳200, সর্বোচ্চ ৳50,000।';
       } else if (lowerMsg.includes('chicken') || lowerMsg.includes('চিকেন')) {
-        response = 'In Chicken Run, the chicken runs and the multiplier increases by 2x each step. Cash out before it crashes!';
+        response = 'Chicken Run গেমে মুরগি দৌড়ায়, প্রতিটি ধাপে multiplier 2x করে বাড়ে। Crash হওয়ার আগে cashout করে জিতুন!';
       } else {
-        response = `"${msg}" — Welcome to Royal Bet! For more details, please contact our Support.`;
+        response = `"${msg}" — আপনার প্রশ্নের উত্তর দিচ্ছি: Royal Bet-এ স্বাগতম! আরও জানতে আমাদের Support-এ যোগাযোগ করুন।`;
       }
     } else {
-      response = `You said: "${msg}" — I am Royal Bet AI, here to assist you.`;
+      response = `আপনি বলেছেন: "${msg}" — আমি Royal Bet AI, আপনাকে সাহায্য করতে এখানে আছি।`;
     }
     
     messages.innerHTML += `<div class="ai-msg bot">${response}<div style="font-size:8px;color:rgba(255,255,255,0.3);margin-top:2px;">${aiName} · ${new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'})}</div></div>`;
@@ -5166,27 +5139,27 @@ window.selectCricketBet = function(team) {
 
 window.placeCricketBet = function() {
   if (!window._curUser) {
-    toast('⚠️ Please login first!', true);
+    toast('⚠️ আগে login করুন!', true);
     return;
   }
   
   if (!cricketSelectedTeam) {
-    toast('⚠️ Select a team!', true);
+    toast('⚠️ একটি দল নির্বাচন করুন!', true);
     return;
   }
   
   const amount = parseInt(document.getElementById('cricketBetAmount').value);
   if (isNaN(amount) || amount < 200) {
-    toast('⚠️ Minimum bet ৳200', true);
+    toast('⚠️ ন্যূনতম বেট ৳200', true);
     return;
   }
   if (amount > 200000) {
-    toast('⚠️ Maximum bet ৳200,000', true);
+    toast('⚠️ সর্বোচ্চ বেট ৳200,000', true);
     return;
   }
   
   if (window._realBal < amount) {
-    toast('❌ Insufficient balance!', true);
+    toast('❌ ব্যালেন্স অপ্রতুল!', true);
     setTimeout(() => openDepositSSModal(), 800);
     return;
   }
@@ -5258,7 +5231,7 @@ window.updateCricketMatch = function() {
 window.forceCricketResult = function() {
   const winner = document.getElementById('adminForceWinner').value;
   if (winner === 'none') {
-    toast('⚠️ Select a winning team!', true);
+    toast('⚠️ একটি বিজয়ী দল নির্বাচন করুন!', true);
     return;
   }
   
@@ -5331,23 +5304,18 @@ window.previewScreenshot = function(input) {
   reader.readAsDataURL(file);
 };
 
-// Order ID generation
-function generateOrderId(prefix) {
-  return prefix + '_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8).toUpperCase();
-}
-
 window.submitDepositWithSS = async function() {
   const amt = parseFloat(document.getElementById('depSSAmt').value);
   const fileInput = document.getElementById('ssFileInput');
   const file = fileInput.files[0];
   
   if (!amt || amt < 50) {
-    toast('⚠️ Amount must be at least 50 USDT', true);
+    toast('⚠️ Amount কমপক্ষে 50 USDT দিন', true);
     return;
   }
   
   if (!file) {
-    toast('⚠️ Please upload a screenshot', true);
+    toast('⚠️ Screenshot upload করুন', true);
     return;
   }
   
@@ -5357,9 +5325,8 @@ window.submitDepositWithSS = async function() {
   reader.onload = async (e) => {
     const screenshotData = e.target.result;
     
-    const depId = generateOrderId('DEP');
+    const depId = 'dep_ss_' + Date.now();
     const depData = {
-      orderId: depId,
       userId: window._curUser.uid,
       userName: window._userProfile?.name || window._curUser.displayName || 'User',
       method: 'Binance',
@@ -5371,10 +5338,14 @@ window.submitDepositWithSS = async function() {
     
     try {
       await window._set(window._ref(window._db, 'depositRequests/' + depId), depData);
-      toast('✅ Your screenshot is being verified, balance will be added within 2–5 minutes.', false);
+      toast('✅ আপনার স্ক্রিনশট যাচাই করা হচ্ছে, ২–৫ মিনিটের মধ্যে ব্যালেন্স যোগ হবে।', false);
       closeDepositSSModal();
       
       setTimeout(() => loadTransactionHistory(), 500);
+      
+      setTimeout(() => {
+        toast('⏳ আপনার স্ক্রিনশট আসল নাকি নকল যাচাই করা হচ্ছে। ২–৫ মিনিটের মধ্যে আপনার ব্যালেন্স যোগ করা হবে।', false);
+      }, 1000);
     } catch (e) {
       console.error("Error submitting deposit:", e);
       toast('❌ Error submitting deposit', true);
@@ -5387,9 +5358,9 @@ window.submitDepositWithSS = async function() {
 window.viewDepositSS = function(depId, userId, userName, amount, screenshot) {
   document.getElementById('adminSSImg').src = screenshot;
   document.getElementById('adminSSInfo').innerHTML = `
-    <div class="row"><span class="label">Order ID:</span><span class="value">${depId}</span></div>
     <div class="row"><span class="label">User:</span><span class="value">${userName}</span></div>
     <div class="row"><span class="label">Amount:</span><span class="value">$${amount} USDT</span></div>
+    <div class="row"><span class="label">User ID:</span><span class="value">${userId.substring(0,8)}...</span></div>
   `;
   window._currentSSDepId = depId;
   window._currentSSUserId = userId;
@@ -5406,7 +5377,7 @@ window.approveDepositSS = async function() {
   const userId = window._currentSSUserId;
   const amount = window._currentSSAmount;
   
-  if (!confirm(`Approve this deposit? $${amount} USDT (~৳${amount*120})`)) return;
+  if (!confirm(`এই ডিপোজিট অনুমোদন করবেন? $${amount} USDT (~৳${amount*120})`)) return;
   
   const bdtAmount = amount * 120;
   
@@ -5419,7 +5390,7 @@ window.approveDepositSS = async function() {
     
     await window._update(window._ref(window._db, 'depositRequests/' + depId), { status: 'completed' });
     
-    toast(`✅ Deposit approved! ৳${bdtAmount.toLocaleString('en')} added.`, false);
+    toast(`✅ ডিপোজিট অনুমোদিত! ৳${bdtAmount.toLocaleString('en')} যোগ করা হয়েছে।`, false);
     closeAdminSSView();
     loadDepositRequests();
     loadHomeLb();
@@ -5440,11 +5411,11 @@ window.approveDepositSS = async function() {
 
 window.rejectDepositSS = async function() {
   const depId = window._currentSSDepId;
-  if (!confirm('Reject this deposit?')) return;
+  if (!confirm('এই ডিপোজিট বাতিল করবেন?')) return;
   
   try {
     await window._update(window._ref(window._db, 'depositRequests/' + depId), { status: 'rejected' });
-    toast('❌ Deposit rejected.', true);
+    toast('❌ ডিপোজিট বাতিল করা হয়েছে।', true);
     closeAdminSSView();
     loadDepositRequests();
     
@@ -5483,7 +5454,7 @@ window.loadDepositRequests = async function() {
           <span class="dep-user" style="font-family:Cinzel;color:#fff;">👤 ${d.userName}</span>
           <span class="dep-amount" style="font-family:Cinzel;color:#2ecc71;">$${d.amount} USDT</span>
         </div>
-        <div class="dep-method" style="font-size:11px;color:rgba(255,255,255,0.5);">Binance · Order: ${d.orderId || id}</div>
+        <div class="dep-method" style="font-size:11px;color:rgba(255,255,255,0.5);">Binance · Screenshot attached</div>
         <div class="dep-time" style="font-size:9px;color:rgba(255,255,255,0.3);">${new Date(d.time).toLocaleString('en')}</div>
         <div style="margin-top:8px;color:#ffa500;font-size:10px;">📸 Click to view screenshot</div>
       </div>
@@ -5517,18 +5488,17 @@ window.submitWithdraw = async function(method) {
   }
   
   if (!account || !amount || amount < 200) {
-    toast('⚠️ Please provide valid information (minimum ৳200)', true);
+    toast('⚠️ সঠিক তথ্য দিন (মিনিমাম ৳200)', true);
     return;
   }
   
   if (window._realBal < amount) {
-    toast('❌ Insufficient balance!', true);
+    toast('❌ আপনার ব্যালেন্স অপ্রতুল!', true);
     return;
   }
   
-  const wdId = generateOrderId('WD');
+  const wdId = 'wd_' + Date.now();
   const wdData = {
-    orderId: wdId,
     userId: window._curUser.uid,
     userName: window._userProfile?.name || window._curUser.displayName || 'User',
     method: method,
@@ -5543,7 +5513,7 @@ window.submitWithdraw = async function(method) {
     await window._set(window._ref(window._db, 'withdrawalRequests/' + wdId), wdData);
     await window._set(window._ref(window._db, 'withdrawals/' + window._curUser.uid + '/' + wdId), wdData);
     
-    toast('✅ Your withdrawal request has been submitted! Admin will verify.', false);
+    toast('✅ আপনার উইথড্রয়াল অনুরোধ পাঠানো হয়েছে! অ্যাডমিন যাচাই করবে।', false);
     closeModal('withdraw');
     
     setTimeout(() => loadTransactionHistory(), 500);
@@ -5578,7 +5548,7 @@ window.loadWithdrawalRequests = async function() {
           <span style="font-family:Cinzel;color:#fff;">👤 ${r.userName}</span>
           <span style="font-family:Cinzel;color:var(--gl);">৳${r.amount.toLocaleString('en')}</span>
         </div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;">${r.method} · Order: ${r.orderId || id}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;">${r.method} · ${r.account}</div>
         <div style="font-size:9px;color:rgba(255,255,255,0.3);margin-bottom:8px;">${new Date(r.time).toLocaleString('en')}</div>
         <div style="display:flex;gap:8px;">
           <button onclick="acceptWithdrawal('${id}','${r.userId}',${r.amount})" style="flex:1;padding:6px;background:rgba(39,174,96,0.2);border:1px solid rgba(39,174,96,0.4);border-radius:6px;color:#2ecc71;cursor:pointer;">✅ Accept</button>
@@ -5592,20 +5562,20 @@ window.loadWithdrawalRequests = async function() {
 };
 
 window.acceptWithdrawal = async function(wdId, userId, amount) {
-  if (!confirm(`Approve this withdrawal? ৳${amount.toLocaleString('en')}`)) return;
+  if (!confirm(`এই উইথড্রয়াল অনুমোদন করবেন? ৳${amount.toLocaleString('en')}`)) return;
   
   try {
     const userSnap = await window._get(window._ref(window._db, 'users/' + userId));
     if (userSnap.exists()) {
       const userBal = userSnap.val().balance || 0;
       if (userBal < amount) {
-        toast('❌ User has insufficient balance!', true);
+        toast('❌ ইউজারের ব্যালেন্স অপ্রতুল!', true);
         return;
       }
       await window._update(window._ref(window._db, 'users/' + userId), { balance: userBal - amount });
       await window._update(window._ref(window._db, 'withdrawalRequests/' + wdId), { status: 'completed', cancelReason: '' });
       await window._update(window._ref(window._db, 'withdrawals/' + userId + '/' + wdId), { status: 'completed' });
-      toast('✅ Withdrawal approved! Balance deducted.', false);
+      toast('✅ উইথড্রয়াল অনুমোদিত! ব্যালেন্স কেটে নেওয়া হয়েছে।', false);
       loadWithdrawalRequests();
       loadHomeLb();
       if (userId === window._curUser?.uid) {
@@ -5619,13 +5589,13 @@ window.acceptWithdrawal = async function(wdId, userId, amount) {
 };
 
 window.rejectWithdrawal = async function(wdId, userId) {
-  const reason = prompt('Reason for cancellation:', 'Insufficient funds / Account mismatch');
+  const reason = prompt('বাতিলের কারণ লিখুন:', 'Insufficient funds / Account mismatch');
   if (reason === null) return;
   
   try {
     await window._update(window._ref(window._db, 'withdrawalRequests/' + wdId), { status: 'rejected', cancelReason: reason });
     await window._update(window._ref(window._db, 'withdrawals/' + userId + '/' + wdId), { status: 'rejected', cancelReason: reason });
-    toast('❌ Withdrawal rejected.', true);
+    toast('❌ উইথড্রয়াল বাতিল করা হয়েছে।', true);
     loadWithdrawalRequests();
     if (userId === window._curUser?.uid) {
       loadTransactionHistory();
@@ -5741,7 +5711,7 @@ window.setAblAmt = function(v) {
 window.confirmAddBal = async function() {
   const amt = parseFloat(document.getElementById('ablAmount').value);
   if (!amt || amt <= 0) {
-    toast('⚠️ Please enter a valid amount', true);
+    toast('⚠️ Valid amount দিন', true);
     return;
   }
   if (!_ablUid || !window._db) return;
@@ -5865,7 +5835,6 @@ window.loadTransactionHistory = async function() {
           // Add sensitive part if needed
           return {
             id,
-            orderId: d.orderId || id,
             type: 'deposit',
             method: 'Binance',
             amount: d.amount * 120,
@@ -5886,7 +5855,6 @@ window.loadTransactionHistory = async function() {
           let masked = txPrivacyHidden ? maskSensitiveString(account) : account;
           return {
             id,
-            orderId: w.orderId || id,
             type: 'withdraw',
             method: w.method || 'Unknown',
             amount: w.amount || 0,
@@ -5931,7 +5899,6 @@ function renderTransactionHistory(txs) {
         <div class="tx-detail">
           <span>${new Date(t.time).toLocaleDateString('en')}</span>
           <span class="privacy-part">${detailDisplay}</span>
-          <span style="color:rgba(255,255,255,0.2); font-size:8px;">ID: ${t.orderId}</span>
         </div>
       </div>
       <div style="text-align:right">
@@ -5984,7 +5951,7 @@ window.sendSupportMsg = async function() {
   }
   
   setTimeout(() => {
-    msgs.innerHTML += `<div class="sc-msg support">We received your message! ⚡ We will reply shortly.<div class="sc-msg-time">Support · ${new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'})}</div></div>`;
+    msgs.innerHTML += `<div class="sc-msg support">আপনার message পেয়েছি! ⚡ শীঘ্রই reply করব।<div class="sc-msg-time">Support · ${new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'})}</div></div>`;
     msgs.scrollTop = msgs.scrollHeight;
     loadSupportMessages();
   }, 1500);
@@ -6055,7 +6022,7 @@ window.closeSupportReplyModal = function() {
 window.sendSupportReply = async function() {
   const reply = document.getElementById('supportReplyInput').value.trim();
   if (!reply) {
-    toast('⚠️ Please enter a reply', true);
+    toast('⚠️ Reply দিন', true);
     return;
   }
   
@@ -6126,7 +6093,7 @@ window.saveAnnouncementSettings = async function() {
   const status = document.getElementById('adminAnnouncementStatus').value;
   
   if (!text) {
-    toast('⚠️ Please enter announcement text', true);
+    toast('⚠️ Announcement text দিন', true);
     return;
   }
   
@@ -6238,13 +6205,13 @@ window.claimReward = async function() {
   const today = new Date().toDateString();
   
   if (prof.lastClaimDate === today) {
-    toast('⚠️ Today\'s reward has already been claimed!', true);
+    toast('⚠️ আজকের reward নেওয়া হয়েছে!', true);
     document.getElementById('rewardModal').classList.remove('open');
     return;
   }
   
   if (window._realBal <= 0) {
-    toast('❌ You must have a deposit to claim!', true);
+    toast('❌ Deposit থাকতে হবে!', true);
     document.getElementById('rewardModal').classList.remove('open');
     setTimeout(() => openDepositSSModal(), 600);
     return;
@@ -6263,7 +6230,7 @@ window.claimReward = async function() {
     });
     
     document.getElementById('rewardModal').classList.remove('open');
-    toast(`🎁 Day ${dayNum} Reward: ৳${amt.toLocaleString('en')} claimed! 🎉`, false);
+    toast(`🎁 Day ${dayNum} Reward: ৳${amt.toLocaleString('en')} পেলেন! 🎉`, false);
     renderRewardDays();
     loadHomeLb();
   } catch (e) {
@@ -6411,7 +6378,7 @@ window.saveLbEntry = async function(id) {
   const amount = parseFloat(document.getElementById('alba-' + id)?.value) || 0;
   
   if (!name) {
-    toast('⚠️ Please enter a name', true);
+    toast('⚠️ Name দিন', true);
     return;
   }
   
@@ -6458,7 +6425,7 @@ window.addLbEntry = async function() {
 window.setAvForcedMult = function() {
   const mult = parseFloat(document.getElementById('adminAvMult').value);
   if (isNaN(mult) || mult < 10 || mult > 100) {
-    toast('⚠️ Please enter a value between 10x and 100x', true);
+    toast('⚠️ 10x to 100x এর মধ্যে দিন', true);
     return;
   }
   avForcedMult = mult;
@@ -6682,11 +6649,11 @@ function trDrawChart() {
 
 window.trPredict = function(dir) {
   if (trPhase !== 'betting') {
-    toast('⏳ Predict during the countdown!', true);
+    toast('⏳ Countdown এ predict করুন!', true);
     return;
   }
   if (trBetPlaced) {
-    toast('✅ Bet already placed!', false);
+    toast('✅ ইতোমধ্যে bet!', false);
     return;
   }
   
@@ -6700,7 +6667,7 @@ window.trPredict = function(dir) {
     return;
   }
   if (getBalForGame('tr') < v) {
-    toast('❌ Insufficient balance!', true);
+    toast('❌ Balance কম!', true);
     if (!window._trDemoActive) setTimeout(() => openDepositSSModal(), 800);
     return;
   }
@@ -6730,7 +6697,7 @@ function trUpdateUI() {
     dnBtn.disabled = false;
     inp.disabled = false;
     qbs.forEach(b => b.disabled = false);
-    info.textContent = 'Place your bet and predict the next candle direction';
+    info.textContent = 'Bet দিন ও next candle direction predict করুন';
   } else if (trPhase === 'betting' && trBetPlaced) {
     upBtn.disabled = true;
     dnBtn.disabled = true;
@@ -6829,7 +6796,7 @@ window.rollDice = async function() {
     return;
   }
   if (getBalForGame('dice') < v) {
-    toast('❌ Insufficient balance!', true);
+    toast('❌ Balance কম!', true);
     if (!window._diceDemoActive) setTimeout(() => openDepositSSModal(), 800);
     return;
   }
@@ -6961,7 +6928,7 @@ window.startMines = function() {
     return;
   }
   if (getBalForGame('mines') < v) {
-    toast('❌ Insufficient balance!', true);
+    toast('❌ Balance কম!', true);
     if (!window._minesDemoActive) setTimeout(() => openDepositSSModal(), 800);
     return;
   }
@@ -7018,7 +6985,7 @@ window.clickMineCell = function(idx) {
     document.getElementById('minesCount').disabled = false;
     document.getElementById('minesBetInp').disabled = false;
     
-    toast(`💥 Mine hit! ৳${mineBetAmt.toLocaleString('en')} lost`, true);
+    toast(`💥 Mine hit! ৳${mineBetAmt.toLocaleString('en')} হারালেন`, true);
     if (!window._minesDemoActive && window._saveBetHistory) {
       window._saveBetHistory({
         game: 'Mines',
@@ -7100,7 +7067,7 @@ window.flipCoin = async function() {
     return;
   }
   if (getBalForGame('coin') < v) {
-    toast('❌ Insufficient balance!', true);
+    toast('❌ Balance কম!', true);
     if (!window._coinDemoActive) setTimeout(() => openDepositSSModal(), 800);
     return;
   }
@@ -7197,7 +7164,7 @@ window.spinWheel = function() {
     return;
   }
   if (getBalForGame('spin') < bet) {
-    toast('❌ Insufficient balance!', true);
+    toast('❌ Balance কম!', true);
     if (!window._spinDemoActive) setTimeout(() => openDepositSSModal(), 800);
     return;
   }
@@ -7283,7 +7250,7 @@ window.startChickenGame = function() {
     return;
   }
   if (getBalForGame('chicken') < bet) {
-    toast('❌ Insufficient balance!', true);
+    toast('❌ Balance কম!', true);
     if (!window._chickenDemoActive) setTimeout(() => openDepositSSModal(), 800);
     return;
   }
@@ -7449,127 +7416,6 @@ window.cashoutChicken = function() {
   loadHomeLb();
 };
 
-// =================== AVIATOR HISTORY ===================
-const AV_HISTORY_KEY = 'aviatorCrashHistory';
-let avHistory = [];
-
-function loadAviatorHistory() {
-  try {
-    const stored = localStorage.getItem(AV_HISTORY_KEY);
-    if (stored) avHistory = JSON.parse(stored);
-    else avHistory = [1.25, 2.80, 1.05, 15.60, 3.20, 22.10, 1.80, 45.00, 12.30, 5.50];
-  } catch (e) { avHistory = []; }
-  renderAviatorHistory();
-}
-
-function saveAviatorHistory() {
-  try { localStorage.setItem(AV_HISTORY_KEY, JSON.stringify(avHistory.slice(0, 50))); } catch(e) {}
-}
-
-function renderAviatorHistory() {
-  const listDiv = document.getElementById('avHistoryList');
-  if (!listDiv) return;
-  const reversed = [...avHistory].reverse().slice(0, 20);
-  listDiv.innerHTML = reversed.map(m => `<div class="av-history-item"><span>✈️</span> ${m.toFixed(2)}x</div>`).join('');
-  if (reversed.length === 0) listDiv.innerHTML = '<div class="av-history-item">No history yet</div>';
-}
-
-function addAviatorCrashToHistory(mult) {
-  avHistory.push(mult);
-  if (avHistory.length > 50) avHistory.shift();
-  saveAviatorHistory();
-  renderAviatorHistory();
-}
-
-window.openAviatorHistory = function() {
-  renderAviatorHistory();
-  document.getElementById('avHistoryModal').classList.add('open');
-};
-
-window.closeAviatorHistory = function() {
-  document.getElementById('avHistoryModal').classList.remove('open');
-};
-
-window.clearAviatorHistory = function() {
-  avHistory = [];
-  saveAviatorHistory();
-  renderAviatorHistory();
-  toast('🧹 History cleared', false);
-};
-
-loadAviatorHistory();
-
-// =================== WEEKLY TOURNAMENT ===================
-function renderWeeklyTournament() {
-  const lb = document.getElementById('weeklyTournamentLB');
-  const users = [
-    { name: 'Rahim_Bet', amount: 485000 },
-    { name: 'Sumon_Royal', amount: 362000 },
-    { name: 'NightHawk99', amount: 298000 },
-    { name: 'GoldRush_X', amount: 241000 },
-    { name: 'TigerBet88', amount: 187000 }
-  ];
-  let html = '';
-  users.forEach((u, i) => {
-    html += `<div class="tournament-lb-row"><span class="tournament-rank">${i+1}</span><span class="tournament-name">${u.name}</span><span class="tournament-amount">৳${u.amount.toLocaleString()}</span></div>`;
-  });
-  lb.innerHTML = html;
-  const prize = localStorage.getItem('tournamentPrize') || '500000';
-  document.getElementById('tournamentPrizeDisplay').textContent = `Prize Pool: ৳${parseFloat(prize).toLocaleString()}`;
-}
-renderWeeklyTournament();
-
-// =================== ADMIN EXTENDED: REFERRAL CONTROL ===================
-window.loadReferralControlData = function() {
-  // just UI preparation
-  toast('Enter user UID and set values', false);
-};
-
-window.setReferralData = async function() {
-  const uid = document.getElementById('refUserUID').value.trim();
-  const count = parseInt(document.getElementById('refCount').value);
-  const earned = parseFloat(document.getElementById('refEarned').value);
-  if (!uid || isNaN(count) || isNaN(earned)) {
-    toast('⚠️ Please enter valid UID, count and earned amount', true);
-    return;
-  }
-  try {
-    await window._update(window._ref(window._db, 'users/' + uid), { referralCount: count, referralEarned: earned });
-    toast(`✅ Referral data updated for ${uid}`, false);
-  } catch (e) {
-    console.error(e);
-    toast('❌ Error updating referral data', true);
-  }
-};
-
-// =================== ORDER ID SEARCH ===================
-window.searchOrderById = async function() {
-  const orderId = document.getElementById('searchOrderId').value.trim();
-  if (!orderId) { toast('⚠️ Enter Order ID', true); return; }
-  let found = null;
-  try {
-    const depSnap = await window._get(window._ref(window._db, 'depositRequests'));
-    if (depSnap.exists()) {
-      const deps = depSnap.val();
-      for (let [id, d] of Object.entries(deps)) {
-        if (d.orderId === orderId || id === orderId) { found = { type: 'Deposit', data: d, id }; break; }
-      }
-    }
-    if (!found) {
-      const wdSnap = await window._get(window._ref(window._db, 'withdrawalRequests'));
-      if (wdSnap.exists()) {
-        const wds = wdSnap.val();
-        for (let [id, w] of Object.entries(wds)) {
-          if (w.orderId === orderId || id === orderId) { found = { type: 'Withdrawal', data: w, id }; break; }
-        }
-      }
-    }
-    const resDiv = document.getElementById('orderSearchResult');
-    if (!found) { resDiv.innerHTML = '❌ Order ID not found.'; return; }
-    resDiv.innerHTML = `<b>${found.type}</b><br>Order ID: ${found.data.orderId || found.id}<br>User: ${found.data.userName}<br>Amount: ${found.type==='Deposit'?'$'+found.data.amount+' USDT':'৳'+found.data.amount}<br>Status: ${found.data.status}<br>Time: ${new Date(found.data.time).toLocaleString()}`;
-  } catch (e) { console.error(e); toast('❌ Search error', true); }
-};
-
 // =================== NEW ADMIN FEATURES ===================
 
 // Ban System
@@ -7625,7 +7471,6 @@ window.saveControlSettings = function() {
   // update UI
   document.getElementById('totalUsersCount').textContent = parseFloat(users).toFixed(1) + 'M';
   document.getElementById('npPrizePool').textContent = '৳' + parseFloat(prize).toLocaleString();
-  renderWeeklyTournament();
 };
 
 // =================== INITIALIZATION ===================
@@ -7652,7 +7497,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load control settings
     loadControlSettings();
     document.getElementById('totalUsersCount').textContent = (localStorage.getItem('totalUsersControl') || '21.3') + 'M';
-    renderWeeklyTournament();
   }, 1000);
 });
 
