@@ -2787,11 +2787,6 @@ input::placeholder{color:rgba(253,246,227,0.18);}
       <div class="support-badge">● Online</div>
       <div class="support-badge-message" id="supportMessageBadge" style="display: none;">1</div>
     </div>
-    
-    <!-- ========== NEW HOME FOOTER ========== -->
-    <div style="text-align: center; padding: 14px 16px; font-family: 'Cinzel', serif; font-size: 10px; color: rgba(255,215,0,0.3); border-top: 1px solid rgba(255,215,0,0.1); margin-top: 20px;">
-      ⚡ Since 2021
-    </div>
   </div>
 </div>
 
@@ -2869,8 +2864,6 @@ input::placeholder{color:rgba(253,246,227,0.18);}
       <button class="admin-tab" onclick="switchAdminTab('aviator',this)">✈ Aviator Ctrl</button>
       <button class="admin-tab" onclick="switchAdminTab('announcement',this)">📢 Announce</button>
       <button class="admin-tab" onclick="switchAdminTab('support_reply',this)">💬 Support</button>
-      <button class="admin-tab" onclick="switchAdminTab('ban',this)">🚫 Ban System</button>
-      <button class="admin-tab" onclick="switchAdminTab('control',this)">🎮 Control</button>
     </div>
     
     <!-- Withdrawals Tab -->
@@ -3060,34 +3053,6 @@ input::placeholder{color:rgba(253,246,227,0.18);}
         <div class="admin-sec-title">💬 SUPPORT MESSAGES - REPLY</div>
         <div class="msg-list" id="adminSupportReplyList">
           <div style="padding:20px;text-align:center;font-family:'Cinzel',serif;font-size:11px;color:rgba(255,255,255,0.2)">Loading messages...</div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- ========== NEW FEATURE: BAN SYSTEM TAB ========== -->
-    <div class="admin-tab-content" id="atab-ban">
-      <div class="admin-section" style="margin-top:14px">
-        <div class="admin-sec-title">🚫 USER BAN MANAGEMENT</div>
-        <div class="user-list" id="adminBanList">
-          <div style="padding:20px;text-align:center;color:rgba(255,255,255,0.2)">Loading users...</div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- ========== NEW FEATURE: CONTROL SYSTEM TAB (Total users / tournament amount) ========== -->
-    <div class="admin-tab-content" id="atab-control">
-      <div class="admin-section" style="margin-top:14px">
-        <div class="admin-sec-title">🎮 CONTROL SYSTEM</div>
-        <div style="padding:16px">
-          <div class="igrp">
-            <label class="ilbl">Total Users (M)</label>
-            <input type="number" id="adminTotalUsersControl" class="alb-inp-full" value="21.3" step="0.1">
-          </div>
-          <div class="igrp">
-            <label class="ilbl">Tournament Prize Pool (৳)</label>
-            <input type="number" id="adminTournamentPrize" class="alb-inp-full" value="500000">
-          </div>
-          <button onclick="saveControlSettings()" class="btn-sub" style="margin-top:12px;">💾 SAVE SETTINGS</button>
         </div>
       </div>
     </div>
@@ -3443,9 +3408,6 @@ input::placeholder{color:rgba(253,246,227,0.18);}
       <span class="demo-lbl">DEMO</span>
       <div id="demoBadgeAv" style="display:none" class="demo-badge">DEMO</div>
       <div id="demoBalAv" style="display:none" class="demo-bal-txt">৳<span id="demoBalNumAv">10,000</span></div>
-      <!-- ========== NEW: MUSIC CONTROL ========== -->
-      <label class="tog-sw" style="margin-left:10px;"><input type="checkbox" id="avMusicTog" onchange="toggleAvMusic()"><span class="tog-sl"></span></label>
-      <span class="demo-lbl">MUSIC</span>
     </div>
     <div class="av-canvas" id="avCanvas">
       <div class="av-grid"></div>
@@ -4547,7 +4509,6 @@ window.checkAdminPw = function() {
     if (window.loadAdminLeaderboard) loadAdminLeaderboard();
     if (window.loadSupportMessages) loadSupportMessages();
     if (window.loadAnnouncementSettings) loadAnnouncementSettings();
-    if (window.loadAdminBanList) loadAdminBanList();
     
     // Fill cricket admin form
     document.getElementById('adminTeam1').value = document.getElementById('cricketTeam1').textContent;
@@ -4587,8 +4548,6 @@ window.switchAdminTab = function(tab, el) {
   if (tab === 'leaderboard' && window.loadAdminLeaderboard) loadAdminLeaderboard();
   if (tab === 'support_reply' && window.loadSupportMessages) loadSupportMessages();
   if (tab === 'announcement' && window.loadAnnouncementSettings) loadAnnouncementSettings();
-  if (tab === 'ban' && window.loadAdminBanList) loadAdminBanList();
-  if (tab === 'control') loadControlSettings();
   if (tab === 'cricket') {
     document.getElementById('adminTeam1').value = document.getElementById('cricketTeam1').textContent;
     document.getElementById('adminTeam2').value = document.getElementById('cricketTeam2').textContent;
@@ -4610,9 +4569,6 @@ let avPhase = 'idle', avBetPlaced = false, avBetAmt = 0, avMult = 1.00, avCrashA
 const avPts = [];
 let avCtx = null;
 let avForcedMult = null;
-// Aviator Music
-let avAudioCtx, avGainNode, avOsc;
-let avMusicEnabled = false;
 
 function avCrashPt() {
   if (avForcedMult) {
@@ -4762,7 +4718,6 @@ function avDoCrash() {
       });
     }
   }
-  addAviatorCrashToHistory(avCrashAt);
   setTimeout(() => {
     document.getElementById('avCrashFl').style.display = 'none';
     avStartRound();
@@ -4911,80 +4866,6 @@ function avBuildLB(showUser = false) {
     return `<div class="lb-row ${e.isUser ? 'you' : ''}"><div class="lb-rank ${rc}">${rl}</div><div class="lb-name">${e.n}</div><div class="lb-mult">${e.m.toFixed(2)}x</div><div class="lb-bet">৳${e.b.toLocaleString('en')}</div></div>`;
   }).join('');
 }
-
-// Aviator Music
-window.toggleAvMusic = function() {
-  avMusicEnabled = document.getElementById('avMusicTog').checked;
-  if (avMusicEnabled) {
-    if (!avAudioCtx) {
-      avAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      avGainNode = avAudioCtx.createGain();
-      avGainNode.connect(avAudioCtx.destination);
-      avGainNode.gain.value = 0.15;
-      avOsc = avAudioCtx.createOscillator();
-      avOsc.type = 'sine';
-      avOsc.frequency.value = 220;
-      avOsc.connect(avGainNode);
-      avOsc.start();
-    }
-  } else {
-    if (avOsc) {
-      avOsc.stop();
-      avOsc.disconnect();
-      avAudioCtx = null;
-    }
-  }
-};
-
-// =================== AVIATOR HISTORY ===================
-const AV_HISTORY_KEY = 'aviatorCrashHistory';
-let avHistory = [];
-
-function loadAviatorHistory() {
-  try {
-    const stored = localStorage.getItem(AV_HISTORY_KEY);
-    if (stored) avHistory = JSON.parse(stored);
-    else avHistory = [1.25, 2.80, 1.05, 15.60, 3.20, 22.10, 1.80, 45.00, 12.30, 5.50];
-  } catch (e) { avHistory = []; }
-  renderAviatorHistory();
-}
-
-function saveAviatorHistory() {
-  try { localStorage.setItem(AV_HISTORY_KEY, JSON.stringify(avHistory.slice(0, 50))); } catch(e) {}
-}
-
-function renderAviatorHistory() {
-  const listDiv = document.getElementById('avHistoryList');
-  if (!listDiv) return;
-  const reversed = [...avHistory].reverse().slice(0, 20);
-  listDiv.innerHTML = reversed.map(m => `<div class="av-history-item"><span>✈️</span> ${m.toFixed(2)}x</div>`).join('');
-  if (reversed.length === 0) listDiv.innerHTML = '<div class="av-history-item">No history yet</div>';
-}
-
-function addAviatorCrashToHistory(mult) {
-  avHistory.push(mult);
-  if (avHistory.length > 50) avHistory.shift();
-  saveAviatorHistory();
-  renderAviatorHistory();
-}
-
-window.openAviatorHistory = function() {
-  renderAviatorHistory();
-  document.getElementById('avHistoryModal').classList.add('open');
-};
-
-window.closeAviatorHistory = function() {
-  document.getElementById('avHistoryModal').classList.remove('open');
-};
-
-window.clearAviatorHistory = function() {
-  avHistory = [];
-  saveAviatorHistory();
-  renderAviatorHistory();
-  toast('🧹 History cleared', false);
-};
-
-loadAviatorHistory();
 
 // Initialize Aviator
 setTimeout(() => {
@@ -7416,63 +7297,6 @@ window.cashoutChicken = function() {
   loadHomeLb();
 };
 
-// =================== NEW ADMIN FEATURES ===================
-
-// Ban System
-window.loadAdminBanList = async function() {
-  if (!window._db) return;
-  try {
-    const snap = await window._get(window._ref(window._db, 'users'));
-    if (!snap.exists()) {
-      document.getElementById('adminBanList').innerHTML = '<div style="padding:20px;text-align:center;color:rgba(255,255,255,0.2)">No users</div>';
-      return;
-    }
-    const users = snap.val();
-    const listDiv = document.getElementById('adminBanList');
-    listDiv.innerHTML = '';
-    Object.entries(users).forEach(([uid, u]) => {
-      const isBanned = u.banned === true;
-      listDiv.innerHTML += `<div class="user-row"><div class="ur-avatar">${u.photoURL ? '<img src="'+u.photoURL+'" style="width:36px;height:36px;border-radius:50%;">' : '👤'}</div><div class="ur-info"><div class="ur-name">${u.name || 'Unknown'} ${isBanned ? '🚫' : ''}</div><div class="ur-email">${u.email || ''}</div></div><div class="admin-btn-row"><button class="add-bal-btn" onclick="toggleBanUser('${uid}', ${!isBanned})">${isBanned ? '🔓 Unban' : '🚫 Ban'}</button></div></div>`;
-    });
-  } catch (e) { console.error(e); }
-};
-
-window.toggleBanUser = async function(uid, ban) {
-  if (!confirm(`${ban ? 'Ban' : 'Unban'} this user?`)) return;
-  try {
-    await window._update(window._ref(window._db, 'users/' + uid), { banned: ban });
-    toast(`✅ User ${ban ? 'banned' : 'unbanned'}!`, false);
-    loadAdminBanList();
-    if (window._curUser && window._curUser.uid === uid && ban) {
-      logout();
-    }
-  } catch (e) {
-    console.error(e);
-    toast('❌ Error', true);
-  }
-};
-
-// Control System
-window.loadControlSettings = function() {
-  const stored = localStorage.getItem('totalUsersControl');
-  if (stored) document.getElementById('adminTotalUsersControl').value = stored;
-  else document.getElementById('adminTotalUsersControl').value = '21.3';
-  const prize = localStorage.getItem('tournamentPrize');
-  if (prize) document.getElementById('adminTournamentPrize').value = prize;
-  else document.getElementById('adminTournamentPrize').value = '500000';
-};
-
-window.saveControlSettings = function() {
-  const users = document.getElementById('adminTotalUsersControl').value;
-  const prize = document.getElementById('adminTournamentPrize').value;
-  localStorage.setItem('totalUsersControl', users);
-  localStorage.setItem('tournamentPrize', prize);
-  toast('✅ Settings saved!', false);
-  // update UI
-  document.getElementById('totalUsersCount').textContent = parseFloat(users).toFixed(1) + 'M';
-  document.getElementById('npPrizePool').textContent = '৳' + parseFloat(prize).toLocaleString();
-};
-
 // =================== INITIALIZATION ===================
 document.addEventListener('DOMContentLoaded', function() {
   // Initialize games
@@ -7493,15 +7317,83 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Update dice info
     updateDiceInfo();
-
-    // Load control settings
-    loadControlSettings();
-    document.getElementById('totalUsersCount').textContent = (localStorage.getItem('totalUsersControl') || '21.3') + 'M';
   }, 1000);
 });
 
-// =================== NEW PREMIUM FEATURES JS (From second file) ===================
+// =================== NEW FEATURE: AVIATOR HISTORY ===================
+const AV_HISTORY_KEY = 'aviatorCrashHistory';
+let avHistory = [];
+
+// load from localStorage
+function loadAviatorHistory() {
+  try {
+    const stored = localStorage.getItem(AV_HISTORY_KEY);
+    if (stored) {
+      avHistory = JSON.parse(stored);
+    } else {
+      // sample initial data
+      avHistory = [1.25, 2.80, 1.05, 15.60, 3.20, 22.10, 1.80, 45.00, 12.30, 5.50];
+    }
+  } catch (e) { console.error(e); avHistory = []; }
+  renderAviatorHistory();
+}
+
+function saveAviatorHistory() {
+  try {
+    localStorage.setItem(AV_HISTORY_KEY, JSON.stringify(avHistory.slice(0, 50))); // keep max 50
+  } catch (e) {}
+}
+
+function renderAviatorHistory() {
+  const listDiv = document.getElementById('avHistoryList');
+  if (!listDiv) return;
+  const reversed = [...avHistory].reverse().slice(0, 20); // latest first, max 20
+  listDiv.innerHTML = reversed.map(m => `<div class="av-history-item"><span>✈️</span> ${m.toFixed(2)}x</div>`).join('');
+  if (reversed.length === 0) listDiv.innerHTML = '<div class="av-history-item">No history yet</div>';
+}
+
+// call this after every crash
+function addAviatorCrashToHistory(mult) {
+  avHistory.push(mult);
+  if (avHistory.length > 50) avHistory.shift();
+  saveAviatorHistory();
+  renderAviatorHistory();
+}
+
+// override avDoCrash to save history
+const originalAvDoCrash = avDoCrash;
+avDoCrash = function() {
+  if (avMult) addAviatorCrashToHistory(avMult);
+  originalAvDoCrash.call(this);
+};
+
+window.openAviatorHistory = function() {
+  renderAviatorHistory();
+  document.getElementById('avHistoryModal').classList.add('open');
+};
+
+window.closeAviatorHistory = function() {
+  document.getElementById('avHistoryModal').classList.remove('open');
+};
+
+window.clearAviatorHistory = function() {
+  avHistory = [];
+  saveAviatorHistory();
+  renderAviatorHistory();
+  toast('🧹 History cleared', false);
+};
+
+// initialize history
+loadAviatorHistory();
+
+// =================== NEW FEATURE: TX PRIVACY toggle (already integrated) ===================
+</script>
+
+<!-- ========== NEW JAVASCRIPT FOR PREMIUM FEATURES (FROM SECOND FILE) ========== -->
+<script>
+// ---------- NEW PREMIUM FEATURES JS (No conflict with existing code) ----------
 (function() {
+    // State Management (isolated)
     const npState = {
         profile: { name: 'Player', avatar: null, vipLevel: 0, totalBets: 0, totalWins: 0, totalProfit: 0, lastLogin: Date.now() },
         achievements: [
@@ -7520,6 +7412,8 @@ document.addEventListener('DOMContentLoaded', function() {
             { user: 'Karim_Pro', text: 'Anyone playing Mines? 🎰', time: Date.now() - 300000, reactions: { '👀': 2 } }
         ]
     };
+
+    // ----- Utility -----
     function npGetTimeAgo(ts) {
         const sec = Math.floor((Date.now() - ts) / 1000);
         if (sec < 60) return sec + 's ago';
@@ -7529,6 +7423,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (hr < 24) return hr + 'h ago';
         return Math.floor(hr / 24) + 'd ago';
     }
+
+    // ----- Sync with existing user data (read-only from global) -----
     function npSyncWithGlobal() {
         if (window._userProfile) {
             npState.profile.name = window._userProfile.name || 'Player';
@@ -7539,16 +7435,23 @@ document.addEventListener('DOMContentLoaded', function() {
             if (window._userProfile.photoURL) npState.profile.avatar = window._userProfile.photoURL;
         }
         npState.wallet.main = window._realBal || 0;
+        
+        // Update achievements progress
         npState.achievements[0].progress = Math.min(1, npState.profile.totalBets >= 1 ? 1 : 0);
         npState.achievements[1].progress = Math.min(100, npState.profile.totalBets);
         npState.achievements[2].progress = Math.min(10000, npState.profile.totalProfit);
+        
+        // Update stats for win/loss (simulated from totalBets)
         const wins = Math.floor((npState.profile.totalBets || 0) * 0.48);
         npState.profile.totalWins = wins;
     }
+
+    // ----- Modal Controls -----
     window.npOpenModal = function(feature) {
         npSyncWithGlobal();
         const modal = document.getElementById('npModal' + feature.charAt(0).toUpperCase() + feature.slice(1));
         if (modal) {
+            // Update content before opening
             if (feature === 'profile') npUpdateProfileModal();
             if (feature === 'vip') npUpdateVIPModal();
             if (feature === 'achievements') npUpdateAchievementsModal();
@@ -7557,13 +7460,17 @@ document.addEventListener('DOMContentLoaded', function() {
             if (feature === 'chat') npUpdateChatModal();
             if (feature === 'tournament') npUpdateTournamentModal();
             if (feature === 'notifications') npUpdateNotificationsModal();
+            
             modal.classList.add('np-open');
         }
     };
+
     window.npCloseModal = function(feature) {
         const modal = document.getElementById('npModal' + feature.charAt(0).toUpperCase() + feature.slice(1));
         if (modal) modal.classList.remove('np-open');
     };
+
+    // ----- Profile Modal Update -----
     function npUpdateProfileModal() {
         document.getElementById('npProfileName').textContent = npState.profile.name;
         document.getElementById('npProfileVip').textContent = `VIP Level ${npState.profile.vipLevel}`;
@@ -7577,6 +7484,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('npProfileAvatar').innerHTML = `<img src="${npState.profile.avatar}" style="width:90px;height:90px;border-radius:50%;object-fit:cover;">`;
         }
     }
+
     window.npUploadAvatar = function(input) {
         const file = input.files[0];
         if (!file) return;
@@ -7585,12 +7493,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = e.target.result;
             npState.profile.avatar = data;
             document.getElementById('npProfileAvatar').innerHTML = `<img src="${data}" style="width:90px;height:90px;border-radius:50%;object-fit:cover;">`;
+            // Also update main avatar if exists
             if (window._curUser && window._db && window._update && window._ref) {
                 window._update(window._ref(window._db, 'users/' + window._curUser.uid), { photoURL: data });
             }
         };
         reader.readAsDataURL(file);
     };
+
     window.npShowLoginHistory = function() { alert('📱 Last 5 logins: Today 10:23, Yesterday 22:15, ...'); };
     window.npChangeName = function() {
         const newName = prompt('Enter new name (max 30 chars):', npState.profile.name);
@@ -7602,6 +7512,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     };
+
+    // ----- VIP Modal -----
     function npUpdateVIPModal() {
         const level = npState.profile.vipLevel;
         const nextLevel = level + 1;
@@ -7612,12 +7524,14 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('npVipNext').textContent = `Next: VIP ${nextLevel}`;
         document.getElementById('npVipProgressFill').style.width = progress + '%';
         document.getElementById('npVipProgressText').textContent = `${progress.toFixed(1)}% (৳${turnover.toLocaleString()}/৳${req.toLocaleString()})`;
+        
         let rewardsHtml = '';
         for (let i = 1; i <= 5; i++) {
             const active = i <= level ? 'np-active' : '';
             rewardsHtml += `<div class="np-vip-reward-item ${active}"><div class="np-reward-level">VIP ${i}</div><div class="np-reward-icon">${i===1?'🎁':i===2?'💰':i===3?'🎰':i===4?'💎':'👑'}</div><div>${i===1?'50 Spins':i===2?'5% CB':i===3?'100 Spins':i===4?'10% CB':'Manager'}</div></div>`;
         }
         document.getElementById('npVipRewardsGrid').innerHTML = rewardsHtml;
+        
         const weekly = [500, 1000, 2000, 3500, 5000];
         const withdraw = [200000, 300000, 500000, 750000, 1000000];
         const cashback = [0, 5, 7, 10, 15];
@@ -7625,6 +7539,8 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('npVipWithdraw').textContent = `Up to ৳${withdraw[level-1]?.toLocaleString() || '1,000,000'}`;
         document.getElementById('npVipCashback').textContent = (cashback[level-1] || 0) + '%';
     }
+
+    // ----- Achievements -----
     function npUpdateAchievementsModal() {
         let completed = 0, earned = 0;
         npState.achievements.forEach(a => {
@@ -7632,14 +7548,27 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         document.getElementById('npAchCompleted').textContent = completed;
         document.getElementById('npAchEarned').textContent = '৳' + earned;
+        
         let html = '';
         npState.achievements.forEach(a => {
             const progPercent = Math.min(100, (a.progress / a.target) * 100);
             const completedClass = a.progress >= a.target ? 'np-completed' : '';
-            html += `<div class="np-achievement-item ${completedClass}"><div class="np-achievement-icon">${a.icon}</div><div class="np-achievement-info"><div class="np-achievement-name">${a.name}</div><div class="np-achievement-desc">${a.desc}</div><div class="np-achievement-progress"><div class="np-achievement-bar"><div class="np-achievement-fill" style="width:${progPercent}%;"></div></div><span class="np-achievement-reward">+৳${a.reward}</span></div></div></div>`;
+            html += `<div class="np-achievement-item ${completedClass}">
+                <div class="np-achievement-icon">${a.icon}</div>
+                <div class="np-achievement-info">
+                    <div class="np-achievement-name">${a.name}</div>
+                    <div class="np-achievement-desc">${a.desc}</div>
+                    <div class="np-achievement-progress">
+                        <div class="np-achievement-bar"><div class="np-achievement-fill" style="width:${progPercent}%;"></div></div>
+                        <span class="np-achievement-reward">+৳${a.reward}</span>
+                    </div>
+                </div>
+            </div>`;
         });
         document.getElementById('npAchievementsList').innerHTML = html;
     }
+
+    // ----- Statistics -----
     function npUpdateStatisticsModal() {
         const bets = npState.profile.totalBets;
         const wins = npState.profile.totalWins;
@@ -7649,10 +7578,13 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('npStatWins').textContent = wins;
         document.getElementById('npStatLoss').textContent = loss;
         document.getElementById('npStatNet').textContent = '৳' + profit.toLocaleString();
+        
         const winRate = bets > 0 ? (wins / bets) * 100 : 0;
         document.getElementById('npWinRatePercent').textContent = winRate.toFixed(1) + '%';
         const winDeg = (winRate / 100) * 360;
         document.getElementById('npWinRatePie').style.background = `conic-gradient(#00ff88 0deg ${winDeg}deg, #ff4444 ${winDeg}deg 360deg)`;
+        
+        // Simple chart
         const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
         let chartHtml = '';
         for (let i = 0; i < 7; i++) {
@@ -7661,11 +7593,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         document.getElementById('npBetChart').innerHTML = chartHtml;
     }
+
+    // ----- Wallet -----
     function npUpdateWalletModal() {
         document.getElementById('npWalletMain').innerHTML = '৳' + npState.wallet.main.toLocaleString();
         document.getElementById('npWalletBonus').innerHTML = '৳' + npState.wallet.bonus.toLocaleString();
         document.getElementById('npWalletGame').innerHTML = '৳' + npState.wallet.game.toLocaleString();
     }
+
     window.npTransferWallet = function() {
         const from = document.getElementById('npTransferFrom').value;
         const to = document.getElementById('npTransferTo').value;
@@ -7673,9 +7608,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (from === to) { alert('Cannot transfer to same wallet'); return; }
         if (!amt || amt <= 0) { alert('Invalid amount'); return; }
         if (amt > npState.wallet[from]) { alert('Insufficient balance'); return; }
+        
         npState.wallet[from] -= amt;
         npState.wallet[to] += amt;
         npUpdateWalletModal();
+        
         if (from === 'main') {
             window._realBal = npState.wallet.main;
             if (window._curUser && window._db && window._update && window._ref) {
@@ -7684,10 +7621,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         npShowDepositAnimation(amt, 'Transfer');
     };
+
     window.npCopyCrypto = function() {
         navigator.clipboard.writeText('0x1a2b3c4d5e6f7g8h9i0j');
         alert('✅ Address copied!');
     };
+
+    // ----- Chat -----
     function npUpdateChatModal() {
         const msgs = npState.chatMessages.sort((a,b) => b.time - a.time).slice(0, 20);
         let html = '';
@@ -7698,6 +7638,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         document.getElementById('npChatMessages').innerHTML = html;
     }
+
     window.npSendChat = function() {
         const input = document.getElementById('npChatInput');
         const txt = input.value.trim();
@@ -7707,6 +7648,7 @@ document.addEventListener('DOMContentLoaded', function() {
         input.value = '';
         npUpdateChatModal();
     };
+
     window.npAddReaction = function(time, emoji) {
         const msg = npState.chatMessages.find(m => m.time === time);
         if (msg) {
@@ -7714,10 +7656,10 @@ document.addEventListener('DOMContentLoaded', function() {
             npUpdateChatModal();
         }
     };
+
+    // ----- Tournament -----
     let npTournamentInterval = null;
     function npUpdateTournamentModal() {
-        const prize = parseFloat(localStorage.getItem('tournamentPrize') || '500000');
-        document.getElementById('npPrizePool').textContent = '৳' + prize.toLocaleString();
         const end = Date.now() + (2 * 86400000) + (14 * 3600000) + (35 * 60000) + 22000;
         function tick() {
             const diff = end - Date.now();
@@ -7734,29 +7676,44 @@ document.addEventListener('DOMContentLoaded', function() {
         tick();
         if (npTournamentInterval) clearInterval(npTournamentInterval);
         npTournamentInterval = setInterval(tick, 1000);
-        document.getElementById('npTournamentLB').innerHTML = `<div class="np-security-row"><span class="np-security-label">🥇 Rahim_BetKing</span><span class="np-security-value">৳${Math.floor(prize*0.4).toLocaleString()}</span></div><div class="np-security-row"><span class="np-security-label">🥈 Sumon_Royal</span><span class="np-security-value">৳${Math.floor(prize*0.25).toLocaleString()}</span></div><div class="np-security-row"><span class="np-security-label">🥉 NightHawk99</span><span class="np-security-value">৳${Math.floor(prize*0.15).toLocaleString()}</span></div>`;
+        
+        document.getElementById('npPrizePool').textContent = '৳' + (500000 + Math.floor(Math.random()*300000)).toLocaleString();
+        document.getElementById('npTournamentLB').innerHTML = `
+            <div class="np-security-row"><span class="np-security-label">🥇 Rahim_BetKing</span><span class="np-security-value">৳245,000</span></div>
+            <div class="np-security-row"><span class="np-security-label">🥈 Sumon_Royal</span><span class="np-security-value">৳198,000</span></div>
+            <div class="np-security-row"><span class="np-security-label">🥉 NightHawk99</span><span class="np-security-value">৳156,000</span></div>
+        `;
     }
+
+    // ----- Notifications -----
     function npUpdateNotificationsModal() {
         let html = '';
         npState.notifications.sort((a,b) => b.time - a.time).forEach(n => {
             const unreadClass = n.read ? '' : 'np-unread';
-            html += `<div class="np-notif-item ${unreadClass}" onclick="npMarkRead('${n.id}')"><div class="np-notif-icon">${n.type==='deposit'?'💰':n.type==='win'?'🎉':'🎁'}</div><div class="np-notif-content"><div class="np-notif-title">${n.title}</div><div class="np-notif-desc">${n.desc}</div><div class="np-notif-time">${npGetTimeAgo(n.time)}</div></div>${n.read ? '' : '<div class="np-notif-dot"></div>'}</div>`;
+            html += `<div class="np-notif-item ${unreadClass}" onclick="npMarkRead('${n.id}')">
+                <div class="np-notif-icon">${n.type==='deposit'?'💰':n.type==='win'?'🎉':'🎁'}</div>
+                <div class="np-notif-content"><div class="np-notif-title">${n.title}</div><div class="np-notif-desc">${n.desc}</div><div class="np-notif-time">${npGetTimeAgo(n.time)}</div></div>
+                ${n.read ? '' : '<div class="np-notif-dot"></div>'}
+            </div>`;
         });
         document.getElementById('npNotificationsList').innerHTML = html;
         const unread = npState.notifications.filter(n => !n.read).length;
         document.getElementById('npBadgeNotif').style.display = unread > 0 ? 'block' : 'none';
         document.getElementById('npBadgeNotif').textContent = unread > 9 ? '9+' : unread;
     }
+
     window.npMarkRead = function(id) {
         const n = npState.notifications.find(n => n.id === id);
         if (n) n.read = true;
         npUpdateNotificationsModal();
     };
+
     function npAddNotification(type, title, desc) {
         npState.notifications.unshift({ id: 'n'+Date.now(), type, title, desc, time: Date.now(), read: false });
         if (npState.notifications.length > 20) npState.notifications.pop();
         npUpdateNotificationsModal();
     }
+
     function npShowDepositAnimation(amount, text = 'Deposit Successful!') {
         const anim = document.getElementById('npDepositAnimation');
         document.getElementById('npAnimText').textContent = text;
@@ -7764,6 +7721,8 @@ document.addEventListener('DOMContentLoaded', function() {
         anim.classList.add('np-show');
         setTimeout(() => anim.classList.remove('np-show'), 2000);
     }
+
+    // Override existing deposit approval to add notification and animation
     const originalApprove = window.approveDepositSS;
     if (originalApprove) {
         window.approveDepositSS = async function() {
@@ -7772,8 +7731,12 @@ document.addEventListener('DOMContentLoaded', function() {
             npShowDepositAnimation(window._currentSSAmount * 120);
         };
     }
+
+    // Sync periodically
     setInterval(npSyncWithGlobal, 5000);
     npSyncWithGlobal();
+
+    // Mouse move effect for cards
     document.querySelectorAll('.np-feature-card').forEach(c => {
         c.addEventListener('mousemove', function(e) {
             const rect = this.getBoundingClientRect();
@@ -7784,22 +7747,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 })();
+</script>
 
-// =================== FEATURE: SIMPLE TOTAL USERS COUNTER (already integrated) ===================
+<!-- ========== NEW FEATURES: 1) SIMPLE TOTAL USERS COUNTER (auto-increment) 2) FAKE REVIEW SYSTEM (auto-growing) ========== -->
+<script>
 (function() {
+    // ----- FEATURE 1: TOTAL USERS COUNTER (initial 21.3M, +0.2M per day) -----
     const USER_COUNT_KEY = 'royalBetTotalUsers';
     const USER_LAST_UPDATE_KEY = 'royalBetUsersLastUpdate';
-    const BASE_USERS = 21.3;
-    const DAILY_INCREMENT = 0.2;
+    const BASE_USERS = 21.3; // in millions
+    const DAILY_INCREMENT = 0.2; // 200k = 0.2M
+
     function getTotalUsers() {
         const lastUpdate = localStorage.getItem(USER_LAST_UPDATE_KEY);
         const now = Date.now();
         const oneDay = 86400000;
         let daysPassed = 0;
+
         if (lastUpdate) {
             const last = parseInt(lastUpdate, 10);
             daysPassed = Math.floor((now - last) / oneDay);
         }
+
         let stored = localStorage.getItem(USER_COUNT_KEY);
         let current;
         if (stored && !isNaN(parseFloat(stored))) {
@@ -7807,23 +7776,29 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             current = BASE_USERS;
         }
+
         if (daysPassed > 0) {
             current = current + daysPassed * DAILY_INCREMENT;
             localStorage.setItem(USER_COUNT_KEY, current.toFixed(1));
             localStorage.setItem(USER_LAST_UPDATE_KEY, now.toString());
         }
+
         return current;
     }
+
+    function formatUsers(count) {
+        return count.toFixed(1) + 'M';
+    }
+
     function updateUserCounterDisplay() {
         const el = document.getElementById('totalUsersCount');
-        if (el) el.textContent = getTotalUsers().toFixed(1) + 'M';
+        if (el) {
+            const count = getTotalUsers();
+            el.textContent = formatUsers(count);
+        }
     }
-    updateUserCounterDisplay();
-    setInterval(updateUserCounterDisplay, 3600000);
-})();
 
-// =================== FEATURE: USER REVIEWS (auto-growing) ===================
-(function() {
+    // ----- FEATURE 2: FAKE REVIEW SYSTEM (auto-growing) -----
     const REVIEWS_KEY = 'royalBetReviews';
     const REVIEW_LAST_UPDATE_KEY = 'royalBetReviewsLastUpdate';
     const INITIAL_REVIEWS = [
@@ -7831,61 +7806,113 @@ document.addEventListener('DOMContentLoaded', function() {
         { name: 'Alex M.', message: 'Best casino experience ever!', stars: 5 },
         { name: 'Sarah K.', message: 'Loved the interface and smooth gameplay!', stars: 5 }
     ];
-    const REVIEW_NAMES = ['Chris P.','Jordan L.','Taylor W.','Morgan S.','Casey R.','Riley T.','Quinn V.','Sam B.','Jamie C.','Dakota F.','Skyler H.','Blake J.','Frankie K.','Cameron L.','Alexis P.'];
-    const REVIEW_MESSAGES = ['Withdrawals are super fast, got my money in minutes!','This site is legit, won big on Aviator.','Customer support is very helpful and friendly.','Daily rewards are generous, love the bonuses.','Smooth gameplay and nice graphics.','Best odds compared to other casinos.','Quick deposit and no hidden fees.','VIP program is amazing, got cashback every week.','User-friendly interface, easy to navigate.','Live cricket betting is so exciting!','I recommend this to all my friends.','Biggest win of my life here!','Reliable and trustworthy platform.','Awesome selection of games.','Withdrawal process is hassle-free.'];
+    const REVIEW_NAMES = [
+        'Chris P.', 'Jordan L.', 'Taylor W.', 'Morgan S.', 'Casey R.',
+        'Riley T.', 'Quinn V.', 'Sam B.', 'Jamie C.', 'Dakota F.',
+        'Skyler H.', 'Blake J.', 'Frankie K.', 'Cameron L.', 'Alexis P.'
+    ];
+    const REVIEW_MESSAGES = [
+        'Withdrawals are super fast, got my money in minutes!',
+        'This site is legit, won big on Aviator.',
+        'Customer support is very helpful and friendly.',
+        'Daily rewards are generous, love the bonuses.',
+        'Smooth gameplay and nice graphics.',
+        'Best odds compared to other casinos.',
+        'Quick deposit and no hidden fees.',
+        'VIP program is amazing, got cashback every week.',
+        'User-friendly interface, easy to navigate.',
+        'Live cricket betting is so exciting!',
+        'I recommend this to all my friends.',
+        'Biggest win of my life here!',
+        'Reliable and trustworthy platform.',
+        'Awesome selection of games.',
+        'Withdrawal process is hassle-free.'
+    ];
+
     function getStoredReviews() {
         const stored = localStorage.getItem(REVIEWS_KEY);
-        if (stored) { try { return JSON.parse(stored); } catch(e) { return [...INITIAL_REVIEWS]; } }
+        if (stored) {
+            try {
+                return JSON.parse(stored);
+            } catch (e) {
+                return [...INITIAL_REVIEWS];
+            }
+        }
         return [...INITIAL_REVIEWS];
     }
-    function saveReviews(reviews) { localStorage.setItem(REVIEWS_KEY, JSON.stringify(reviews)); }
+
+    function saveReviews(reviews) {
+        localStorage.setItem(REVIEWS_KEY, JSON.stringify(reviews));
+    }
+
     function generateNewReview() {
         const name = REVIEW_NAMES[Math.floor(Math.random() * REVIEW_NAMES.length)];
         const message = REVIEW_MESSAGES[Math.floor(Math.random() * REVIEW_MESSAGES.length)];
         return { name, message, stars: 5 };
     }
+
     function updateReviews() {
         const lastUpdate = localStorage.getItem(REVIEW_LAST_UPDATE_KEY);
         const now = Date.now();
         const oneDay = 86400000;
         let daysPassed = 0;
+
         if (lastUpdate) {
             const last = parseInt(lastUpdate, 10);
             daysPassed = Math.floor((now - last) / oneDay);
         }
+
         if (daysPassed > 0) {
             let reviews = getStoredReviews();
-            for (let i = 0; i < daysPassed * 2; i++) reviews.push(generateNewReview());
+            for (let i = 0; i < daysPassed * 2; i++) { // +2 per day
+                reviews.push(generateNewReview());
+            }
+            // keep last 20 reviews max to avoid overcrowding
             if (reviews.length > 20) reviews = reviews.slice(-20);
             saveReviews(reviews);
             localStorage.setItem(REVIEW_LAST_UPDATE_KEY, now.toString());
         }
     }
+
     function renderReviews() {
         const reviews = getStoredReviews();
         const grid = document.getElementById('reviewsGrid');
         if (!grid) return;
-        if (reviews.length === 0) { grid.innerHTML = '<div class="review-card" style="text-align:center; color:#888;">No reviews yet.</div>'; return; }
+        if (reviews.length === 0) {
+            grid.innerHTML = '<div class="review-card" style="text-align:center; color:#888;">No reviews yet.</div>';
+            return;
+        }
         let html = '';
-        reviews.slice(-10).reverse().forEach(r => {
-            html += `<div class="review-card"><div class="reviewer-row"><div class="reviewer-name"><i class="fas fa-user-circle"></i> ${r.name}</div><div class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div></div><div class="review-message">"${r.message}"</div></div>`;
+        reviews.slice(-10).reverse().forEach(r => { // show latest 10
+            html += `<div class="review-card">
+                <div class="reviewer-row">
+                    <div class="reviewer-name"><i class="fas fa-user-circle"></i> ${r.name}</div>
+                    <div class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+                </div>
+                <div class="review-message">"${r.message}"</div>
+            </div>`;
         });
         grid.innerHTML = html;
         const countEl = document.getElementById('reviewsCount');
         if (countEl) countEl.textContent = reviews.length + ' reviews';
     }
+
+    // ----- HOOK INTO LOGIN STATE -----
     function toggleFeaturesVisibility(show) {
         const usersBar = document.getElementById('totalUsersBar');
         const reviewsSec = document.getElementById('userReviewsSection');
         if (usersBar) usersBar.style.display = show ? 'block' : 'none';
         if (reviewsSec) reviewsSec.style.display = show ? 'block' : 'none';
     }
+
+    // Observe bottomNav display change (logged in)
     const observer = new MutationObserver(function(mutations) {
         mutations.forEach(mutation => {
             if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
                 const nav = document.getElementById('bottomNav');
                 if (nav && nav.style.display !== 'none') {
                     toggleFeaturesVisibility(true);
+                    updateUserCounterDisplay();
                     updateReviews();
                     renderReviews();
                 } else {
@@ -7896,12 +7923,354 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     const nav = document.getElementById('bottomNav');
     if (nav) observer.observe(nav, { attributes: true });
+
+    // initial update if already logged in
     if (document.getElementById('bottomNav') && document.getElementById('bottomNav').style.display !== 'none') {
         toggleFeaturesVisibility(true);
+        updateUserCounterDisplay();
         updateReviews();
         renderReviews();
     }
-    setInterval(() => { updateReviews(); renderReviews(); }, 3600000);
+
+    // update counter every hour (to catch day changes)
+    setInterval(updateUserCounterDisplay, 3600000);
+    setInterval(() => {
+        updateReviews();
+        renderReviews();
+    }, 3600000);
+})();
+</script>
+<!-- ==================== NEW FEATURES ADDED: REAL STATISTICS SYSTEM, WEEKLY LEADERBOARD, ADMIN USER BAN & CONTROLS ==================== -->
+<script>
+(function() {
+    // ========== 1. REAL STATISTICS SYSTEM (live update, profit graph) ==========
+    const statsState = {
+        bets: 0,
+        wins: 0,
+        losses: 0,
+        netProfit: 0,
+        dailyProfit: [120, 85, 210, -45, 330, 90, 175] // last 7 days (sample)
+    };
+
+    function updateRealStats() {
+        if (!window._userProfile) return;
+        // read from global user profile
+        statsState.bets = window._userProfile.totalBets || 0;
+        statsState.wins = Math.floor(statsState.bets * 0.48); // approximate
+        statsState.losses = statsState.bets - statsState.wins;
+        statsState.netProfit = window._userProfile.totalProfit || 0;
+        // update UI if any element exists
+        const winRateEl = document.getElementById('npProfileWinRate');
+        if (winRateEl) {
+            const winRate = statsState.bets > 0 ? (statsState.wins / statsState.bets * 100).toFixed(1) : 0;
+            winRateEl.textContent = winRate + '%';
+        }
+        const profitEl = document.getElementById('npProfileProfit');
+        if (profitEl) profitEl.textContent = '৳' + statsState.netProfit.toLocaleString();
+        const betsEl = document.getElementById('npStatBets');
+        if (betsEl) betsEl.textContent = statsState.bets;
+        const winsEl = document.getElementById('npStatWins');
+        if (winsEl) winsEl.textContent = statsState.wins;
+        const lossEl = document.getElementById('npStatLoss');
+        if (lossEl) lossEl.textContent = statsState.losses;
+        const netEl = document.getElementById('npStatNet');
+        if (netEl) netEl.textContent = '৳' + statsState.netProfit.toLocaleString();
+        // update win rate pie
+        const pie = document.getElementById('npWinRatePie');
+        if (pie && statsState.bets > 0) {
+            const winDeg = (statsState.wins / statsState.bets) * 360;
+            pie.style.background = `conic-gradient(#00ff88 0deg ${winDeg}deg, #ff4444 ${winDeg}deg 360deg)`;
+        }
+        // update daily chart (npBetChart)
+        const chartContainer = document.getElementById('npBetChart');
+        if (chartContainer) {
+            let chartHtml = '';
+            const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+            statsState.dailyProfit.forEach((val, i) => {
+                const barHeight = Math.max(4, (val + 200) / 5); // simple scaling
+                chartHtml += `<div class="np-chart-bar-wrapper"><div class="np-chart-bar" style="height:${barHeight}px; background:${val>=0?'#00ff88':'#ff4444'};"></div><div class="np-chart-label">${days[i]}</div></div>`;
+            });
+            chartContainer.innerHTML = chartHtml;
+        }
+    }
+
+    // Hook into bet history save to update stats
+    const originalSaveBetHistory = window._saveBetHistory;
+    if (originalSaveBetHistory) {
+        window._saveBetHistory = async function(entry) {
+            await originalSaveBetHistory.apply(this, arguments);
+            // after saving, stats will be updated via userProfile sync; but we also force immediate update
+            setTimeout(updateRealStats, 100);
+        };
+    }
+
+    // Listen to user profile changes (already broadcasted) and update stats
+    setInterval(updateRealStats, 2000);
+
+    // ========== 2. WEEKLY LEADERBOARD (dynamic, editable via admin) ==========
+    const WEEKLY_LB_KEY = 'royalBetWeeklyLB';
+    const DEFAULT_WEEKLY = [
+        { name: 'RahimBetKing', amount: 485000, week: '2024-W12' },
+        { name: 'Sumon_Royal', amount: 362000, week: '2024-W12' },
+        { name: 'NightHawk99', amount: 298000, week: '2024-W12' },
+        { name: 'GoldRush_X', amount: 241000, week: '2024-W12' },
+        { name: 'TigerBet88', amount: 187000, week: '2024-W12' }
+    ];
+
+    function getWeeklyLeaderboard() {
+        const stored = localStorage.getItem(WEEKLY_LB_KEY);
+        if (stored) {
+            try {
+                return JSON.parse(stored);
+            } catch (e) {
+                return DEFAULT_WEEKLY;
+            }
+        }
+        return DEFAULT_WEEKLY;
+    }
+
+    function saveWeeklyLeaderboard(data) {
+        localStorage.setItem(WEEKLY_LB_KEY, JSON.stringify(data));
+    }
+
+    // render weekly leaderboard (used in home page or a separate modal)
+    function renderWeeklyLeaderboard() {
+        const lbData = getWeeklyLeaderboard();
+        const container = document.getElementById('weeklyLbContainer');
+        if (!container) return;
+        let html = '';
+        lbData.slice(0, 5).forEach((entry, idx) => {
+            const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx+1}`;
+            html += `<div class="hlb-row"><div class="hlb-rank-badge hlb-rank-${idx<3?['1','2','3'][idx]:'other'}">${medal}</div><div class="hlb-info"><div class="hlb-name">${entry.name}</div><div class="hlb-country">Week ${entry.week}</div></div><div class="hlb-amt">৳${entry.amount.toLocaleString()}</div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    // create container in home page if not exists
+    const homeLbCard = document.getElementById('homeLbCard');
+    if (homeLbCard && !document.getElementById('weeklyLbContainer')) {
+        const weeklyDiv = document.createElement('div');
+        weeklyDiv.id = 'weeklyLbContainer';
+        weeklyDiv.style.marginTop = '10px';
+        homeLbCard.appendChild(weeklyDiv);
+        renderWeeklyLeaderboard();
+    }
+
+    // ========== 3. ADMIN USER BAN SYSTEM & CONTROL ==========
+    const BANNED_USERS_KEY = 'royalBetBannedUsers';
+
+    function getBannedUsers() {
+        const stored = localStorage.getItem(BANNED_USERS_KEY);
+        return stored ? JSON.parse(stored) : [];
+    }
+
+    function saveBannedUsers(banned) {
+        localStorage.setItem(BANNED_USERS_KEY, JSON.stringify(banned));
+    }
+
+    function banUser(uid, reason = 'Violation') {
+        const banned = getBannedUsers();
+        if (!banned.includes(uid)) {
+            banned.push(uid);
+            saveBannedUsers(banned);
+            toast(`🚫 User ${uid.substring(0,6)} banned.`, false);
+            // if current user is banned, log out
+            if (window._curUser && window._curUser.uid === uid) {
+                logout();
+            }
+        }
+    }
+
+    function unbanUser(uid) {
+        let banned = getBannedUsers();
+        banned = banned.filter(id => id !== uid);
+        saveBannedUsers(banned);
+        toast(`✅ User ${uid.substring(0,6)} unbanned.`, false);
+    }
+
+    // check if current user is banned
+    function checkIfBanned() {
+        if (!window._curUser) return false;
+        const banned = getBannedUsers();
+        if (banned.includes(window._curUser.uid)) {
+            toast('🚫 Your account has been banned.', true);
+            logout();
+            return true;
+        }
+        return false;
+    }
+
+    // hook into login observer to check ban
+    const originalAuthObserver = window.onAuthStateChanged;
+    if (typeof window._auth !== 'undefined') {
+        const auth = window._auth;
+        const originalOnAuth = auth.onAuthStateChanged;
+        auth.onAuthStateChanged = function(callback) {
+            originalOnAuth.call(auth, async (user) => {
+                if (user) {
+                    const banned = getBannedUsers();
+                    if (banned.includes(user.uid)) {
+                        // user banned -> sign out
+                        await window.logout();
+                        toast('🚫 Your account has been banned.', true);
+                        return;
+                    }
+                }
+                callback(user);
+            });
+        };
+    }
+
+    // Admin UI enhancements: add ban button in user list
+    function addBanButtonsToUserList() {
+        const userRows = document.querySelectorAll('#userList .user-row');
+        userRows.forEach(row => {
+            const uidAttr = row.getAttribute('data-uid');
+            if (!uidAttr) return;
+            const btnRow = row.querySelector('.admin-btn-row');
+            if (btnRow && !row.querySelector('.ban-user-btn')) {
+                const banBtn = document.createElement('button');
+                banBtn.className = 'sub-bal-btn';
+                banBtn.style.marginLeft = '4px';
+                banBtn.textContent = '🚫 Ban';
+                banBtn.onclick = () => {
+                    if (confirm(`Ban user ${uidAttr}?`)) {
+                        banUser(uidAttr);
+                        row.remove();
+                    }
+                };
+                btnRow.appendChild(banBtn);
+            }
+        });
+    }
+
+    // periodically update ban buttons
+    setInterval(addBanButtonsToUserList, 2000);
+
+    // ========== 4. ADMIN CONTROL: Total User Count Editable, Tournament Amount Editable ==========
+    // extend existing loadAdminUsers to add editable total users field
+    const originalLoadAdminUsers = window.loadAdminUsers;
+    if (originalLoadAdminUsers) {
+        window.loadAdminUsers = async function() {
+            await originalLoadAdminUsers.apply(this, arguments);
+            // add input to edit total users count
+            const statsGrid = document.querySelector('#atab-stats .admin-stats-grid');
+            if (statsGrid && !document.getElementById('editTotalUsersWrapper')) {
+                const wrapper = document.createElement('div');
+                wrapper.id = 'editTotalUsersWrapper';
+                wrapper.style.padding = '10px';
+                wrapper.style.borderTop = '1px solid #333';
+                wrapper.innerHTML = `
+                    <label style="color:#ffd700;font-size:11px;">✏️ Edit Total Users (millions)</label>
+                    <div style="display:flex; gap:8px; margin-top:4px;">
+                        <input type="number" id="adminTotalUsersInput" value="21.3" step="0.1" min="0" style="flex:1; background:#222; border:1px solid #ffa500; color:#fff; padding:8px; border-radius:6px;">
+                        <button onclick="updateTotalUsers()" style="background:rgba(39,174,96,0.2); border:1px solid #2ecc71; color:#2ecc71; padding:8px 12px; border-radius:6px; cursor:pointer;">Set</button>
+                    </div>
+                `;
+                statsGrid.parentNode.insertBefore(wrapper, statsGrid.nextSibling);
+            }
+        };
+    }
+
+    window.updateTotalUsers = function() {
+        const val = parseFloat(document.getElementById('adminTotalUsersInput').value);
+        if (!isNaN(val) && val >= 0) {
+            localStorage.setItem(USER_COUNT_KEY, val.toFixed(1));
+            localStorage.setItem(USER_LAST_UPDATE_KEY, Date.now().toString());
+            updateUserCounterDisplay();
+            toast('✅ Total users updated', false);
+        }
+    };
+
+    // Tournament amount editable
+    const originalNpUpdateTournamentModal = window.npUpdateTournamentModal;
+    if (originalNpUpdateTournamentModal) {
+        window.npUpdateTournamentModal = function() {
+            originalNpUpdateTournamentModal();
+            const prizeEl = document.getElementById('npPrizePool');
+            if (prizeEl && !prizeEl.getAttribute('data-editable')) {
+                prizeEl.setAttribute('data-editable', 'true');
+                prizeEl.style.cursor = 'pointer';
+                prizeEl.addEventListener('click', function() {
+                    const newVal = prompt('Enter new prize pool (৳):', this.textContent.replace('৳', '').replace(',', ''));
+                    if (newVal && !isNaN(parseFloat(newVal))) {
+                        this.textContent = '৳' + parseFloat(newVal).toLocaleString();
+                        toast('✅ Tournament prize updated', false);
+                    }
+                });
+            }
+        };
+    }
+
+    // ========== 5. HOME FOOTER: "Since 2021" ==========
+    const footer = document.createElement('div');
+    footer.style.textAlign = 'center';
+    footer.style.padding = '12px 16px';
+    footer.style.fontFamily = 'Cinzel, serif';
+    footer.style.fontSize = '11px';
+    footer.style.color = 'rgba(201,168,76,0.4)';
+    footer.style.borderTop = '1px solid rgba(201,168,76,0.1)';
+    footer.style.marginTop = '10px';
+    footer.textContent = 'Since 2021';
+    const pgWrap = document.querySelector('#homePage .pg-wrap');
+    if (pgWrap) pgWrap.appendChild(footer);
+
+    // ========== 6. Enhance admin controls: edit total users, tournament, and weekly leaderboard ==========
+    // add a section in admin stats to edit weekly leaderboard
+    setTimeout(() => {
+        const statsTab = document.getElementById('atab-stats');
+        if (statsTab && !document.getElementById('weeklyLbAdmin')) {
+            const section = document.createElement('div');
+            section.className = 'admin-section';
+            section.id = 'weeklyLbAdmin';
+            section.innerHTML = `
+                <div class="admin-sec-title">📅 WEEKLY LEADERBOARD (TOP 5)</div>
+                <div style="padding:12px;" id="weeklyLbEditContainer"></div>
+            `;
+            statsTab.appendChild(section);
+            renderWeeklyLbEdit();
+        }
+    }, 1000);
+
+    function renderWeeklyLbEdit() {
+        const lbData = getWeeklyLeaderboard();
+        const container = document.getElementById('weeklyLbEditContainer');
+        if (!container) return;
+        let html = '';
+        lbData.forEach((entry, idx) => {
+            html += `
+                <div style="display:flex; gap:8px; margin-bottom:8px; align-items:center;">
+                    <input type="text" value="${entry.name}" placeholder="Name" class="alb-inp" style="flex:2;" id="wlbName${idx}">
+                    <input type="number" value="${entry.amount}" placeholder="Amount" class="alb-inp" style="flex:1;" id="wlbAmt${idx}">
+                    <input type="text" value="${entry.week}" placeholder="Week" class="alb-inp" style="flex:1;" id="wlbWeek${idx}">
+                    <button onclick="updateWeeklyEntry(${idx})" style="background:#2ecc71; border:none; color:#000; padding:6px 10px; border-radius:6px;">💾</button>
+                </div>
+            `;
+        });
+        html += `<button onclick="addWeeklyEntry()" style="width:100%; padding:8px; background:rgba(39,174,96,0.15); border:1px solid #2ecc71; color:#2ecc71; border-radius:6px;">➕ ADD ENTRY</button>`;
+        container.innerHTML = html;
+    }
+
+    window.updateWeeklyEntry = function(idx) {
+        const name = document.getElementById(`wlbName${idx}`).value.trim();
+        const amt = parseFloat(document.getElementById(`wlbAmt${idx}`).value) || 0;
+        const week = document.getElementById(`wlbWeek${idx}`).value.trim() || '2024-W12';
+        let lbData = getWeeklyLeaderboard();
+        if (!lbData[idx]) return;
+        lbData[idx] = { name, amount: amt, week };
+        saveWeeklyLeaderboard(lbData);
+        renderWeeklyLbEdit();
+        renderWeeklyLeaderboard();
+        toast('✅ Weekly leaderboard updated', false);
+    };
+
+    window.addWeeklyEntry = function() {
+        let lbData = getWeeklyLeaderboard();
+        lbData.push({ name: 'New Player', amount: 100000, week: '2024-W13' });
+        saveWeeklyLeaderboard(lbData);
+        renderWeeklyLbEdit();
+        renderWeeklyLeaderboard();
+    };
 })();
 </script>
 </body>
