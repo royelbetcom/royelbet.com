@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>Royal Bet ✈ | Premium Casino</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@300;400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
-<!-- Font Awesome 6 (free) for history icon & modern look -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
 /* ----- (styles unchanged – keeping full integrity) ----- */
@@ -2578,8 +2577,8 @@ input::placeholder{color:rgba(253,246,227,0.18);}
       <button class="announcement-close" onclick="closeAnnouncement()">✕</button>
     </div>
     
-    <!-- ========== NEW FEATURE 1: SIMPLE TOTAL USERS COUNTER ========== -->
-    <div class="total-users-bar" id="totalUsersBar" style="display:none;">
+    <!-- ========== NEW FEATURE 1: SIMPLE TOTAL USERS COUNTER (controlled by admin) ========== -->
+    <div class="total-users-bar">
       👥 Total Users: <span id="totalUsersCount">21.3M</span>
     </div>
     
@@ -2753,7 +2752,7 @@ input::placeholder{color:rgba(253,246,227,0.18);}
     </div>
     
     <!-- ========== NEW FEATURE 2: USER REVIEWS SECTION ========== -->
-    <div class="user-reviews-section" id="userReviewsSection" style="display:none;">
+    <div class="user-reviews-section" id="userReviewsSection">
       <div class="user-reviews-header">
         <div class="user-reviews-title"><i class="fas fa-star" style="color:#ffd700;"></i> User Reviews</div>
         <div class="user-reviews-count" id="reviewsCount">3 reviews</div>
@@ -2864,6 +2863,8 @@ input::placeholder{color:rgba(253,246,227,0.18);}
       <button class="admin-tab" onclick="switchAdminTab('aviator',this)">✈ Aviator Ctrl</button>
       <button class="admin-tab" onclick="switchAdminTab('announcement',this)">📢 Announce</button>
       <button class="admin-tab" onclick="switchAdminTab('support_reply',this)">💬 Support</button>
+      <button class="admin-tab" onclick="switchAdminTab('users_counter',this)">📊 User Counter</button>
+      <button class="admin-tab" onclick="switchAdminTab('ban_users',this)">🚫 Ban Users</button>
     </div>
     
     <!-- Withdrawals Tab -->
@@ -3053,6 +3054,53 @@ input::placeholder{color:rgba(253,246,227,0.18);}
         <div class="admin-sec-title">💬 SUPPORT MESSAGES - REPLY</div>
         <div class="msg-list" id="adminSupportReplyList">
           <div style="padding:20px;text-align:center;font-family:'Cinzel',serif;font-size:11px;color:rgba(255,255,255,0.2)">Loading messages...</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ========== NEW TAB: USER COUNTER CONTROL (ADMIN SETS TOTAL USERS) ========== -->
+    <div class="admin-tab-content" id="atab-users_counter">
+      <div class="admin-section" style="margin-top:14px">
+        <div class="admin-sec-title">📊 TOTAL USERS COUNTER CONTROL</div>
+        <div style="padding:16px">
+          <div class="igrp">
+            <label class="ilbl">Current Total Users (millions)</label>
+            <input type="number" id="adminTotalUsersInput" class="alb-inp-full" value="21.3" step="0.1" min="0" style="font-size:18px;font-weight:bold;">
+            <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;">Value in millions (e.g., 21.3 = 21.3M)</div>
+          </div>
+          <button onclick="updateTotalUsersCount()" class="btn-sub" style="margin-top:12px;background:linear-gradient(135deg,#8a6a1f,#c9a84c);">💾 UPDATE TOTAL USERS</button>
+          <div class="notice" style="margin-top:12px;">This number will be displayed on the home page in the "Total Users" bar.</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ========== NEW TAB: BAN USERS SYSTEM ========== -->
+    <div class="admin-tab-content" id="atab-ban_users">
+      <div class="admin-section" style="margin-top:14px">
+        <div class="admin-sec-title">🚫 BAN / UNBAN USERS</div>
+        <div style="padding:16px">
+          <div class="igrp">
+            <label class="ilbl">User ID to Ban</label>
+            <input type="text" id="banUserIdInput" class="alb-inp-full" placeholder="Enter Firebase User ID...">
+          </div>
+          <div class="igrp">
+            <label class="ilbl">Ban Reason (Optional)</label>
+            <input type="text" id="banReasonInput" class="alb-inp-full" placeholder="e.g., Violation of terms">
+          </div>
+          <button onclick="banUserById()" class="btn-sub" style="margin-top:12px;background:linear-gradient(135deg,#5c0a0a,#c0392b);">🚫 BAN USER</button>
+          
+          <div class="sep" style="margin:20px 0;"></div>
+          
+          <div class="igrp">
+            <label class="ilbl">User ID to Unban</label>
+            <input type="text" id="unbanUserIdInput" class="alb-inp-full" placeholder="Enter Firebase User ID...">
+          </div>
+          <button onclick="unbanUserById()" class="btn-sub" style="margin-top:12px;background:linear-gradient(135deg,#0e5c2b,#27ae60);">✅ UNBAN USER</button>
+          
+          <div class="notice" style="margin-top:16px;">
+            <strong>Currently Banned Users:</strong>
+            <div id="bannedUsersList" style="margin-top:8px;font-family:'Share Tech Mono';font-size:11px;background:rgba(0,0,0,0.3);padding:8px;border-radius:6px;">Loading...</div>
+          </div>
         </div>
       </div>
     </div>
@@ -3399,7 +3447,6 @@ input::placeholder{color:rgba(253,246,227,0.18);}
       <button class="av-back" onclick="showPage('homePage')">← Back</button>
       <div class="av-tb-title">✈ AVIATOR</div>
       <div class="av-bal-pill">৳<span id="avBalNum">0.00</span></div>
-      <!-- ========== NEW: AVIATOR HISTORY ICON ========== -->
       <button class="av-history-icon" onclick="openAviatorHistory()"><i class="fas fa-history"></i></button>
     </div>
     <div class="demo-bar">
@@ -4060,6 +4107,17 @@ input::placeholder{color:rgba(253,246,227,0.18);}
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       
+      // Check if user is banned
+      const banned = getBannedUsersFromLocal();
+      if (banned.includes(user.uid)) {
+        await signOut(auth);
+        st.textContent = '❌ Your account has been banned. Contact support.';
+        st.style.display = 'block';
+        btn.disabled = false;
+        btn.innerHTML = `<svg viewBox="0 0 24 24" width="20" height="20"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> Sign In with Google`;
+        return;
+      }
+      
       // Save user to database
       await saveUserToDatabase(user);
       
@@ -4091,6 +4149,14 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   // Auth state observer
   onAuthStateChanged(auth, async (user) => {
     if (user) {
+      // Check if user is banned
+      const banned = getBannedUsersFromLocal();
+      if (banned.includes(user.uid)) {
+        await signOut(auth);
+        toast('🚫 Your account has been banned.', true);
+        return;
+      }
+      
       window._curUser = user;
       
       // Save or update user data
@@ -4168,6 +4234,9 @@ input::placeholder{color:rgba(253,246,227,0.18);}
     loadAnnouncementSettings();
     loadSupportMessages();
     
+    // Load total users count
+    loadTotalUsersCount();
+    
     // Check for referral in URL
     const urlParams = new URLSearchParams(window.location.search);
     const refCode = urlParams.get('ref');
@@ -4214,6 +4283,7 @@ window.showPage = function(id) {
   if (id === 'homePage') {
     loadAnnouncementSettings();
     loadSupportMessages();
+    loadTotalUsersCount();
   }
 };
 
@@ -4227,6 +4297,7 @@ window.navTo = function(tab) {
     loadTransactionHistory();
     loadAnnouncementSettings();
     loadSupportMessages();
+    loadTotalUsersCount();
   } else if (tab === 'profile') {
     showPage('profilePage');
   } else if (tab === 'history') {
@@ -4529,6 +4600,9 @@ window.checkAdminPw = function() {
     document.getElementById('adminAvMult').value = 15;
     document.getElementById('avAdminStatus').innerHTML = 'Current: Random (10x-100x)';
     window._avForcedMult = null;
+    
+    // Load banned users list
+    updateBannedUsersList();
   } else {
     document.getElementById('apwError').style.display = 'block';
     document.getElementById('apwInput').value = '';
@@ -4558,11 +4632,133 @@ window.switchAdminTab = function(tab, el) {
     document.getElementById('adminOdds1').value = document.getElementById('cricketOdds1Value').textContent;
     document.getElementById('adminOdds2').value = document.getElementById('cricketOdds2Value').textContent;
   }
+  if (tab === 'users_counter') {
+    loadTotalUsersCountIntoAdmin();
+  }
+  if (tab === 'ban_users') {
+    updateBannedUsersList();
+  }
 };
 
 window.openSupport = function() {
   document.getElementById('supportModal').classList.add('open');
 };
+
+// =================== TOTAL USERS COUNTER FUNCTIONS (ADMIN CONTROLLED) ===================
+const TOTAL_USERS_KEY = 'royalBetTotalUsersAdmin';
+const TOTAL_USERS_LAST_UPDATE_KEY = 'royalBetTotalUsersAdminLastUpdate';
+
+function getTotalUsersFromStorage() {
+  const stored = localStorage.getItem(TOTAL_USERS_KEY);
+  if (stored && !isNaN(parseFloat(stored))) {
+    return parseFloat(stored);
+  }
+  return 21.3; // Default 21.3M
+}
+
+function saveTotalUsersToStorage(value) {
+  localStorage.setItem(TOTAL_USERS_KEY, value.toFixed(1));
+  localStorage.setItem(TOTAL_USERS_LAST_UPDATE_KEY, Date.now().toString());
+}
+
+function loadTotalUsersCount() {
+  const total = getTotalUsersFromStorage();
+  const el = document.getElementById('totalUsersCount');
+  if (el) {
+    el.textContent = total.toFixed(1) + 'M';
+  }
+}
+
+function loadTotalUsersCountIntoAdmin() {
+  const total = getTotalUsersFromStorage();
+  const input = document.getElementById('adminTotalUsersInput');
+  if (input) {
+    input.value = total.toFixed(1);
+  }
+}
+
+window.updateTotalUsersCount = function() {
+  const input = document.getElementById('adminTotalUsersInput');
+  if (!input) return;
+  const val = parseFloat(input.value);
+  if (isNaN(val) || val < 0) {
+    toast('⚠️ Valid number required (millions)', true);
+    return;
+  }
+  saveTotalUsersToStorage(val);
+  loadTotalUsersCount();
+  toast(`✅ Total users updated to ${val.toFixed(1)}M`, false);
+};
+
+// =================== BAN USER SYSTEM ===================
+const BANNED_USERS_KEY = 'royalBetBannedUsers';
+
+function getBannedUsersFromLocal() {
+  const stored = localStorage.getItem(BANNED_USERS_KEY);
+  return stored ? JSON.parse(stored) : [];
+}
+
+function saveBannedUsersToLocal(banned) {
+  localStorage.setItem(BANNED_USERS_KEY, JSON.stringify(banned));
+}
+
+function updateBannedUsersList() {
+  const banned = getBannedUsersFromLocal();
+  const listDiv = document.getElementById('bannedUsersList');
+  if (listDiv) {
+    if (banned.length === 0) {
+      listDiv.innerHTML = '<span style="color:rgba(255,255,255,0.5);">No banned users</span>';
+    } else {
+      listDiv.innerHTML = banned.map(uid => `<div style="padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.05);">🔒 ${uid.substring(0,12)}...</div>`).join('');
+    }
+  }
+}
+
+window.banUserById = function() {
+  const userId = document.getElementById('banUserIdInput').value.trim();
+  const reason = document.getElementById('banReasonInput').value.trim() || 'No reason provided';
+  if (!userId) {
+    toast('⚠️ Enter User ID', true);
+    return;
+  }
+  let banned = getBannedUsersFromLocal();
+  if (!banned.includes(userId)) {
+    banned.push(userId);
+    saveBannedUsersToLocal(banned);
+    toast(`🚫 User ${userId.substring(0,8)}... banned. Reason: ${reason}`, false);
+    document.getElementById('banUserIdInput').value = '';
+    document.getElementById('banReasonInput').value = '';
+    updateBannedUsersList();
+    // If current user is banned, log them out
+    if (window._curUser && window._curUser.uid === userId) {
+      logout();
+      toast('You have been banned. You will be logged out.', true);
+    }
+  } else {
+    toast('⚠️ User is already banned', true);
+  }
+};
+
+window.unbanUserById = function() {
+  const userId = document.getElementById('unbanUserIdInput').value.trim();
+  if (!userId) {
+    toast('⚠️ Enter User ID', true);
+    return;
+  }
+  let banned = getBannedUsersFromLocal();
+  if (banned.includes(userId)) {
+    banned = banned.filter(id => id !== userId);
+    saveBannedUsersToLocal(banned);
+    toast(`✅ User ${userId.substring(0,8)}... unbanned`, false);
+    document.getElementById('unbanUserIdInput').value = '';
+    updateBannedUsersList();
+  } else {
+    toast('⚠️ User is not banned', true);
+  }
+};
+
+// Export banned functions globally
+window.getBannedUsersFromLocal = getBannedUsersFromLocal;
 
 // =================== AVIATOR GAME ===================
 let avPhase = 'idle', avBetPlaced = false, avBetAmt = 0, avMult = 1.00, avCrashAt = 1.00, avRaf = null, avRoundStart = 0, avCdTimer = null;
@@ -5504,6 +5700,7 @@ window.loadAdminUsers = async function() {
     
     const users = snap.val();
     const uids = Object.keys(users);
+    const bannedUsers = getBannedUsersFromLocal();
     
     document.getElementById('adTotalUsers').textContent = uids.length;
     
@@ -5517,18 +5714,47 @@ window.loadAdminUsers = async function() {
     
     document.getElementById('userList').innerHTML = uids.map(uid => {
       const u = users[uid];
-      return `<div class="user-row">
+      const isBanned = bannedUsers.includes(uid);
+      return `<div class="user-row" data-uid="${uid}">
         <div class="ur-avatar">${u.photoURL && !u.photoURL.startsWith('data') ? `<img src="${u.photoURL}" style="width:36px;height:36px;border-radius:50%;object-fit:cover" onerror="this.parentElement.textContent='👤'"/>` : u.photoURL && u.photoURL.startsWith('data') ? `<img src="${u.photoURL}" style="width:36px;height:36px;border-radius:50%;object-fit:cover"/>` : '👤'}</div>
-        <div class="ur-info"><div class="ur-name">${u.name || 'Unknown'}</div><div class="ur-email">${u.email || uid.substring(0,12)}</div></div>
+        <div class="ur-info"><div class="ur-name">${u.name || 'Unknown'} ${isBanned ? '<span style="color:#ff4444;">[BANNED]</span>' : ''}</div><div class="ur-email">${u.email || uid.substring(0,12)}</div></div>
         <div style="text-align:right;margin-right:8px"><div class="ur-bal">৳${(u.balance || 0).toLocaleString('en')}</div></div>
         <div class="admin-btn-row">
           <button class="add-bal-btn" onclick="openAddBal('${uid}','${(u.name || 'User').replace(/'/g, "\\'")}',${u.balance || 0},true)">+ Add</button>
           <button class="sub-bal-btn" onclick="openAddBal('${uid}','${(u.name || 'User').replace(/'/g, "\\'")}',${u.balance || 0},false)">− Sub</button>
+          ${!isBanned ? `<button class="sub-bal-btn" style="background:rgba(231,76,60,0.15);" onclick="banUserByIdFromList('${uid}')">🚫 Ban</button>` : `<button class="add-bal-btn" style="background:rgba(39,174,96,0.15);" onclick="unbanUserByIdFromList('${uid}')">✅ Unban</button>`}
         </div>
       </div>`;
     }).join('');
   } catch (e) {
     console.error("Error loading admin users:", e);
+  }
+};
+
+window.banUserByIdFromList = function(uid) {
+  const reason = prompt('Ban reason:', 'Violation of terms');
+  if (reason === null) return;
+  let banned = getBannedUsersFromLocal();
+  if (!banned.includes(uid)) {
+    banned.push(uid);
+    saveBannedUsersToLocal(banned);
+    toast(`🚫 User banned. Reason: ${reason}`, false);
+    loadAdminUsers();
+    updateBannedUsersList();
+    if (window._curUser && window._curUser.uid === uid) {
+      logout();
+    }
+  }
+};
+
+window.unbanUserByIdFromList = function(uid) {
+  let banned = getBannedUsersFromLocal();
+  if (banned.includes(uid)) {
+    banned = banned.filter(id => id !== uid);
+    saveBannedUsersToLocal(banned);
+    toast(`✅ User unbanned`, false);
+    loadAdminUsers();
+    updateBannedUsersList();
   }
 };
 
@@ -5689,11 +5915,11 @@ window.toggleTxPrivacy = function() {
 
 function maskSensitiveString(str) {
   if (!str) return str;
-  if (str.includes('@')) return str; // emails are already hidden in profile
-  if (str.match(/^\+?[0-9]{10,14}$/)) { // phone number
+  if (str.includes('@')) return str;
+  if (str.match(/^\+?[0-9]{10,14}$/)) {
     return str.substring(0,3) + '******' + str.substring(str.length-2);
   }
-  if (str.match(/^[0-9a-fA-F]{20,}$/)) { // uid like
+  if (str.match(/^[0-9a-fA-F]{20,}$/)) {
     return '****' + str.substring(str.length-4);
   }
   return str;
@@ -5713,7 +5939,6 @@ window.loadTransactionHistory = async function() {
         .filter(([_, d]) => d.userId === window._curUser.uid)
         .map(([id, d]) => {
           let detail = `${d.amount} USDT ~ ৳${(d.amount * 120).toLocaleString('en')}`;
-          // Add sensitive part if needed
           return {
             id,
             type: 'deposit',
@@ -7308,6 +7533,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadTransactionHistory();
     loadAnnouncementSettings();
     loadSupportMessages();
+    loadTotalUsersCount();
     
     // Set default coin selection
     selectCoin('heads');
@@ -7749,55 +7975,13 @@ loadAviatorHistory();
 })();
 </script>
 
-<!-- ========== NEW FEATURES: 1) SIMPLE TOTAL USERS COUNTER (auto-increment) 2) FAKE REVIEW SYSTEM (auto-growing) ========== -->
+<!-- ========== NEW FEATURES: 1) SIMPLE TOTAL USERS COUNTER (ADMIN CONTROLLED) 2) FAKE REVIEW SYSTEM (auto-growing) ========== -->
 <script>
 (function() {
-    // ----- FEATURE 1: TOTAL USERS COUNTER (initial 21.3M, +0.2M per day) -----
-    const USER_COUNT_KEY = 'royalBetTotalUsers';
-    const USER_LAST_UPDATE_KEY = 'royalBetUsersLastUpdate';
-    const BASE_USERS = 21.3; // in millions
-    const DAILY_INCREMENT = 0.2; // 200k = 0.2M
-
-    function getTotalUsers() {
-        const lastUpdate = localStorage.getItem(USER_LAST_UPDATE_KEY);
-        const now = Date.now();
-        const oneDay = 86400000;
-        let daysPassed = 0;
-
-        if (lastUpdate) {
-            const last = parseInt(lastUpdate, 10);
-            daysPassed = Math.floor((now - last) / oneDay);
-        }
-
-        let stored = localStorage.getItem(USER_COUNT_KEY);
-        let current;
-        if (stored && !isNaN(parseFloat(stored))) {
-            current = parseFloat(stored);
-        } else {
-            current = BASE_USERS;
-        }
-
-        if (daysPassed > 0) {
-            current = current + daysPassed * DAILY_INCREMENT;
-            localStorage.setItem(USER_COUNT_KEY, current.toFixed(1));
-            localStorage.setItem(USER_LAST_UPDATE_KEY, now.toString());
-        }
-
-        return current;
-    }
-
-    function formatUsers(count) {
-        return count.toFixed(1) + 'M';
-    }
-
-    function updateUserCounterDisplay() {
-        const el = document.getElementById('totalUsersCount');
-        if (el) {
-            const count = getTotalUsers();
-            el.textContent = formatUsers(count);
-        }
-    }
-
+    // ----- FEATURE 1: TOTAL USERS COUNTER (ADMIN CONTROLLED - now moved to admin panel) -----
+    // The counter is now fully controlled by admin via the 'users_counter' tab
+    // The getTotalUsersFromStorage and updateTotalUsersCount are defined in main JS
+    
     // ----- FEATURE 2: FAKE REVIEW SYSTEM (auto-growing) -----
     const REVIEWS_KEY = 'royalBetReviews';
     const REVIEW_LAST_UPDATE_KEY = 'royalBetReviewsLastUpdate';
@@ -7864,10 +8048,9 @@ loadAviatorHistory();
 
         if (daysPassed > 0) {
             let reviews = getStoredReviews();
-            for (let i = 0; i < daysPassed * 2; i++) { // +2 per day
+            for (let i = 0; i < daysPassed * 2; i++) {
                 reviews.push(generateNewReview());
             }
-            // keep last 20 reviews max to avoid overcrowding
             if (reviews.length > 20) reviews = reviews.slice(-20);
             saveReviews(reviews);
             localStorage.setItem(REVIEW_LAST_UPDATE_KEY, now.toString());
@@ -7883,7 +8066,7 @@ loadAviatorHistory();
             return;
         }
         let html = '';
-        reviews.slice(-10).reverse().forEach(r => { // show latest 10
+        reviews.slice(-10).reverse().forEach(r => {
             html += `<div class="review-card">
                 <div class="reviewer-row">
                     <div class="reviewer-name"><i class="fas fa-user-circle"></i> ${r.name}</div>
@@ -7897,385 +8080,17 @@ loadAviatorHistory();
         if (countEl) countEl.textContent = reviews.length + ' reviews';
     }
 
-    // ----- HOOK INTO LOGIN STATE -----
-    function toggleFeaturesVisibility(show) {
-        const usersBar = document.getElementById('totalUsersBar');
-        const reviewsSec = document.getElementById('userReviewsSection');
-        if (usersBar) usersBar.style.display = show ? 'block' : 'none';
-        if (reviewsSec) reviewsSec.style.display = show ? 'block' : 'none';
-    }
-
-    // Observe bottomNav display change (logged in)
-    const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(mutation => {
-            if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-                const nav = document.getElementById('bottomNav');
-                if (nav && nav.style.display !== 'none') {
-                    toggleFeaturesVisibility(true);
-                    updateUserCounterDisplay();
-                    updateReviews();
-                    renderReviews();
-                } else {
-                    toggleFeaturesVisibility(false);
-                }
-            }
-        });
-    });
-    const nav = document.getElementById('bottomNav');
-    if (nav) observer.observe(nav, { attributes: true });
-
-    // initial update if already logged in
-    if (document.getElementById('bottomNav') && document.getElementById('bottomNav').style.display !== 'none') {
-        toggleFeaturesVisibility(true);
-        updateUserCounterDisplay();
-        updateReviews();
-        renderReviews();
-    }
-
     // update counter every hour (to catch day changes)
-    setInterval(updateUserCounterDisplay, 3600000);
+    setInterval(updateReviews, 3600000);
     setInterval(() => {
         updateReviews();
         renderReviews();
     }, 3600000);
-})();
-</script>
-<!-- ==================== NEW FEATURES ADDED: REAL STATISTICS SYSTEM, WEEKLY LEADERBOARD, ADMIN USER BAN & CONTROLS ==================== -->
-<script>
-(function() {
-    // ========== 1. REAL STATISTICS SYSTEM (live update, profit graph) ==========
-    const statsState = {
-        bets: 0,
-        wins: 0,
-        losses: 0,
-        netProfit: 0,
-        dailyProfit: [120, 85, 210, -45, 330, 90, 175] // last 7 days (sample)
-    };
-
-    function updateRealStats() {
-        if (!window._userProfile) return;
-        // read from global user profile
-        statsState.bets = window._userProfile.totalBets || 0;
-        statsState.wins = Math.floor(statsState.bets * 0.48); // approximate
-        statsState.losses = statsState.bets - statsState.wins;
-        statsState.netProfit = window._userProfile.totalProfit || 0;
-        // update UI if any element exists
-        const winRateEl = document.getElementById('npProfileWinRate');
-        if (winRateEl) {
-            const winRate = statsState.bets > 0 ? (statsState.wins / statsState.bets * 100).toFixed(1) : 0;
-            winRateEl.textContent = winRate + '%';
-        }
-        const profitEl = document.getElementById('npProfileProfit');
-        if (profitEl) profitEl.textContent = '৳' + statsState.netProfit.toLocaleString();
-        const betsEl = document.getElementById('npStatBets');
-        if (betsEl) betsEl.textContent = statsState.bets;
-        const winsEl = document.getElementById('npStatWins');
-        if (winsEl) winsEl.textContent = statsState.wins;
-        const lossEl = document.getElementById('npStatLoss');
-        if (lossEl) lossEl.textContent = statsState.losses;
-        const netEl = document.getElementById('npStatNet');
-        if (netEl) netEl.textContent = '৳' + statsState.netProfit.toLocaleString();
-        // update win rate pie
-        const pie = document.getElementById('npWinRatePie');
-        if (pie && statsState.bets > 0) {
-            const winDeg = (statsState.wins / statsState.bets) * 360;
-            pie.style.background = `conic-gradient(#00ff88 0deg ${winDeg}deg, #ff4444 ${winDeg}deg 360deg)`;
-        }
-        // update daily chart (npBetChart)
-        const chartContainer = document.getElementById('npBetChart');
-        if (chartContainer) {
-            let chartHtml = '';
-            const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-            statsState.dailyProfit.forEach((val, i) => {
-                const barHeight = Math.max(4, (val + 200) / 5); // simple scaling
-                chartHtml += `<div class="np-chart-bar-wrapper"><div class="np-chart-bar" style="height:${barHeight}px; background:${val>=0?'#00ff88':'#ff4444'};"></div><div class="np-chart-label">${days[i]}</div></div>`;
-            });
-            chartContainer.innerHTML = chartHtml;
-        }
-    }
-
-    // Hook into bet history save to update stats
-    const originalSaveBetHistory = window._saveBetHistory;
-    if (originalSaveBetHistory) {
-        window._saveBetHistory = async function(entry) {
-            await originalSaveBetHistory.apply(this, arguments);
-            // after saving, stats will be updated via userProfile sync; but we also force immediate update
-            setTimeout(updateRealStats, 100);
-        };
-    }
-
-    // Listen to user profile changes (already broadcasted) and update stats
-    setInterval(updateRealStats, 2000);
-
-    // ========== 2. WEEKLY LEADERBOARD (dynamic, editable via admin) ==========
-    const WEEKLY_LB_KEY = 'royalBetWeeklyLB';
-    const DEFAULT_WEEKLY = [
-        { name: 'RahimBetKing', amount: 485000, week: '2024-W12' },
-        { name: 'Sumon_Royal', amount: 362000, week: '2024-W12' },
-        { name: 'NightHawk99', amount: 298000, week: '2024-W12' },
-        { name: 'GoldRush_X', amount: 241000, week: '2024-W12' },
-        { name: 'TigerBet88', amount: 187000, week: '2024-W12' }
-    ];
-
-    function getWeeklyLeaderboard() {
-        const stored = localStorage.getItem(WEEKLY_LB_KEY);
-        if (stored) {
-            try {
-                return JSON.parse(stored);
-            } catch (e) {
-                return DEFAULT_WEEKLY;
-            }
-        }
-        return DEFAULT_WEEKLY;
-    }
-
-    function saveWeeklyLeaderboard(data) {
-        localStorage.setItem(WEEKLY_LB_KEY, JSON.stringify(data));
-    }
-
-    // render weekly leaderboard (used in home page or a separate modal)
-    function renderWeeklyLeaderboard() {
-        const lbData = getWeeklyLeaderboard();
-        const container = document.getElementById('weeklyLbContainer');
-        if (!container) return;
-        let html = '';
-        lbData.slice(0, 5).forEach((entry, idx) => {
-            const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx+1}`;
-            html += `<div class="hlb-row"><div class="hlb-rank-badge hlb-rank-${idx<3?['1','2','3'][idx]:'other'}">${medal}</div><div class="hlb-info"><div class="hlb-name">${entry.name}</div><div class="hlb-country">Week ${entry.week}</div></div><div class="hlb-amt">৳${entry.amount.toLocaleString()}</div></div>`;
-        });
-        container.innerHTML = html;
-    }
-
-    // create container in home page if not exists
-    const homeLbCard = document.getElementById('homeLbCard');
-    if (homeLbCard && !document.getElementById('weeklyLbContainer')) {
-        const weeklyDiv = document.createElement('div');
-        weeklyDiv.id = 'weeklyLbContainer';
-        weeklyDiv.style.marginTop = '10px';
-        homeLbCard.appendChild(weeklyDiv);
-        renderWeeklyLeaderboard();
-    }
-
-    // ========== 3. ADMIN USER BAN SYSTEM & CONTROL ==========
-    const BANNED_USERS_KEY = 'royalBetBannedUsers';
-
-    function getBannedUsers() {
-        const stored = localStorage.getItem(BANNED_USERS_KEY);
-        return stored ? JSON.parse(stored) : [];
-    }
-
-    function saveBannedUsers(banned) {
-        localStorage.setItem(BANNED_USERS_KEY, JSON.stringify(banned));
-    }
-
-    function banUser(uid, reason = 'Violation') {
-        const banned = getBannedUsers();
-        if (!banned.includes(uid)) {
-            banned.push(uid);
-            saveBannedUsers(banned);
-            toast(`🚫 User ${uid.substring(0,6)} banned.`, false);
-            // if current user is banned, log out
-            if (window._curUser && window._curUser.uid === uid) {
-                logout();
-            }
-        }
-    }
-
-    function unbanUser(uid) {
-        let banned = getBannedUsers();
-        banned = banned.filter(id => id !== uid);
-        saveBannedUsers(banned);
-        toast(`✅ User ${uid.substring(0,6)} unbanned.`, false);
-    }
-
-    // check if current user is banned
-    function checkIfBanned() {
-        if (!window._curUser) return false;
-        const banned = getBannedUsers();
-        if (banned.includes(window._curUser.uid)) {
-            toast('🚫 Your account has been banned.', true);
-            logout();
-            return true;
-        }
-        return false;
-    }
-
-    // hook into login observer to check ban
-    const originalAuthObserver = window.onAuthStateChanged;
-    if (typeof window._auth !== 'undefined') {
-        const auth = window._auth;
-        const originalOnAuth = auth.onAuthStateChanged;
-        auth.onAuthStateChanged = function(callback) {
-            originalOnAuth.call(auth, async (user) => {
-                if (user) {
-                    const banned = getBannedUsers();
-                    if (banned.includes(user.uid)) {
-                        // user banned -> sign out
-                        await window.logout();
-                        toast('🚫 Your account has been banned.', true);
-                        return;
-                    }
-                }
-                callback(user);
-            });
-        };
-    }
-
-    // Admin UI enhancements: add ban button in user list
-    function addBanButtonsToUserList() {
-        const userRows = document.querySelectorAll('#userList .user-row');
-        userRows.forEach(row => {
-            const uidAttr = row.getAttribute('data-uid');
-            if (!uidAttr) return;
-            const btnRow = row.querySelector('.admin-btn-row');
-            if (btnRow && !row.querySelector('.ban-user-btn')) {
-                const banBtn = document.createElement('button');
-                banBtn.className = 'sub-bal-btn';
-                banBtn.style.marginLeft = '4px';
-                banBtn.textContent = '🚫 Ban';
-                banBtn.onclick = () => {
-                    if (confirm(`Ban user ${uidAttr}?`)) {
-                        banUser(uidAttr);
-                        row.remove();
-                    }
-                };
-                btnRow.appendChild(banBtn);
-            }
-        });
-    }
-
-    // periodically update ban buttons
-    setInterval(addBanButtonsToUserList, 2000);
-
-    // ========== 4. ADMIN CONTROL: Total User Count Editable, Tournament Amount Editable ==========
-    // extend existing loadAdminUsers to add editable total users field
-    const originalLoadAdminUsers = window.loadAdminUsers;
-    if (originalLoadAdminUsers) {
-        window.loadAdminUsers = async function() {
-            await originalLoadAdminUsers.apply(this, arguments);
-            // add input to edit total users count
-            const statsGrid = document.querySelector('#atab-stats .admin-stats-grid');
-            if (statsGrid && !document.getElementById('editTotalUsersWrapper')) {
-                const wrapper = document.createElement('div');
-                wrapper.id = 'editTotalUsersWrapper';
-                wrapper.style.padding = '10px';
-                wrapper.style.borderTop = '1px solid #333';
-                wrapper.innerHTML = `
-                    <label style="color:#ffd700;font-size:11px;">✏️ Edit Total Users (millions)</label>
-                    <div style="display:flex; gap:8px; margin-top:4px;">
-                        <input type="number" id="adminTotalUsersInput" value="21.3" step="0.1" min="0" style="flex:1; background:#222; border:1px solid #ffa500; color:#fff; padding:8px; border-radius:6px;">
-                        <button onclick="updateTotalUsers()" style="background:rgba(39,174,96,0.2); border:1px solid #2ecc71; color:#2ecc71; padding:8px 12px; border-radius:6px; cursor:pointer;">Set</button>
-                    </div>
-                `;
-                statsGrid.parentNode.insertBefore(wrapper, statsGrid.nextSibling);
-            }
-        };
-    }
-
-    window.updateTotalUsers = function() {
-        const val = parseFloat(document.getElementById('adminTotalUsersInput').value);
-        if (!isNaN(val) && val >= 0) {
-            localStorage.setItem(USER_COUNT_KEY, val.toFixed(1));
-            localStorage.setItem(USER_LAST_UPDATE_KEY, Date.now().toString());
-            updateUserCounterDisplay();
-            toast('✅ Total users updated', false);
-        }
-    };
-
-    // Tournament amount editable
-    const originalNpUpdateTournamentModal = window.npUpdateTournamentModal;
-    if (originalNpUpdateTournamentModal) {
-        window.npUpdateTournamentModal = function() {
-            originalNpUpdateTournamentModal();
-            const prizeEl = document.getElementById('npPrizePool');
-            if (prizeEl && !prizeEl.getAttribute('data-editable')) {
-                prizeEl.setAttribute('data-editable', 'true');
-                prizeEl.style.cursor = 'pointer';
-                prizeEl.addEventListener('click', function() {
-                    const newVal = prompt('Enter new prize pool (৳):', this.textContent.replace('৳', '').replace(',', ''));
-                    if (newVal && !isNaN(parseFloat(newVal))) {
-                        this.textContent = '৳' + parseFloat(newVal).toLocaleString();
-                        toast('✅ Tournament prize updated', false);
-                    }
-                });
-            }
-        };
-    }
-
-    // ========== 5. HOME FOOTER: "Since 2021" ==========
-    const footer = document.createElement('div');
-    footer.style.textAlign = 'center';
-    footer.style.padding = '12px 16px';
-    footer.style.fontFamily = 'Cinzel, serif';
-    footer.style.fontSize = '11px';
-    footer.style.color = 'rgba(201,168,76,0.4)';
-    footer.style.borderTop = '1px solid rgba(201,168,76,0.1)';
-    footer.style.marginTop = '10px';
-    footer.textContent = 'Since 2021';
-    const pgWrap = document.querySelector('#homePage .pg-wrap');
-    if (pgWrap) pgWrap.appendChild(footer);
-
-    // ========== 6. Enhance admin controls: edit total users, tournament, and weekly leaderboard ==========
-    // add a section in admin stats to edit weekly leaderboard
-    setTimeout(() => {
-        const statsTab = document.getElementById('atab-stats');
-        if (statsTab && !document.getElementById('weeklyLbAdmin')) {
-            const section = document.createElement('div');
-            section.className = 'admin-section';
-            section.id = 'weeklyLbAdmin';
-            section.innerHTML = `
-                <div class="admin-sec-title">📅 WEEKLY LEADERBOARD (TOP 5)</div>
-                <div style="padding:12px;" id="weeklyLbEditContainer"></div>
-            `;
-            statsTab.appendChild(section);
-            renderWeeklyLbEdit();
-        }
-    }, 1000);
-
-    function renderWeeklyLbEdit() {
-        const lbData = getWeeklyLeaderboard();
-        const container = document.getElementById('weeklyLbEditContainer');
-        if (!container) return;
-        let html = '';
-        lbData.forEach((entry, idx) => {
-            html += `
-                <div style="display:flex; gap:8px; margin-bottom:8px; align-items:center;">
-                    <input type="text" value="${entry.name}" placeholder="Name" class="alb-inp" style="flex:2;" id="wlbName${idx}">
-                    <input type="number" value="${entry.amount}" placeholder="Amount" class="alb-inp" style="flex:1;" id="wlbAmt${idx}">
-                    <input type="text" value="${entry.week}" placeholder="Week" class="alb-inp" style="flex:1;" id="wlbWeek${idx}">
-                    <button onclick="updateWeeklyEntry(${idx})" style="background:#2ecc71; border:none; color:#000; padding:6px 10px; border-radius:6px;">💾</button>
-                </div>
-            `;
-        });
-        html += `<button onclick="addWeeklyEntry()" style="width:100%; padding:8px; background:rgba(39,174,96,0.15); border:1px solid #2ecc71; color:#2ecc71; border-radius:6px;">➕ ADD ENTRY</button>`;
-        container.innerHTML = html;
-    }
-
-    window.updateWeeklyEntry = function(idx) {
-        const name = document.getElementById(`wlbName${idx}`).value.trim();
-        const amt = parseFloat(document.getElementById(`wlbAmt${idx}`).value) || 0;
-        const week = document.getElementById(`wlbWeek${idx}`).value.trim() || '2024-W12';
-        let lbData = getWeeklyLeaderboard();
-        if (!lbData[idx]) return;
-        lbData[idx] = { name, amount: amt, week };
-        saveWeeklyLeaderboard(lbData);
-        renderWeeklyLbEdit();
-        renderWeeklyLeaderboard();
-        toast('✅ Weekly leaderboard updated', false);
-    };
-
-    window.addWeeklyEntry = function() {
-        let lbData = getWeeklyLeaderboard();
-        lbData.push({ name: 'New Player', amount: 100000, week: '2024-W13' });
-        saveWeeklyLeaderboard(lbData);
-        renderWeeklyLbEdit();
-        renderWeeklyLeaderboard();
-    };
+    
+    // initial render
+    updateReviews();
+    renderReviews();
 })();
 </script>
 </body>
 </html>
-
-
-
-
