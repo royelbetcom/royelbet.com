@@ -863,33 +863,6 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   opacity: 0.5;
   user-select: none;
 }
-/* NEW SYNC DISPLAY STYLES */
-.game-info-sync {
-  background: rgba(0,0,0,0.5);
-  padding: 8px 16px;
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(255,165,0,0.2);
-  font-family: 'Cinzel', serif;
-}
-.sync-item {
-  text-align: center;
-}
-.sync-label {
-  font-size: 9px;
-  letter-spacing: 2px;
-  color: rgba(255,255,255,0.4);
-  text-transform: uppercase;
-}
-.sync-value {
-  font-size: 18px;
-  font-weight: 900;
-  color: #ffa500;
-  text-shadow: 0 0 8px rgba(255,165,0,0.5);
-}
-.sync-value small {
-  font-size: 11px;
-}
 </style>
 </head>
 <body>
@@ -946,7 +919,7 @@ input::placeholder{color:rgba(253,246,227,0.18);}
     </div>
     
     <div class="total-users-bar">
-      👥 Total Users: <span id="totalUsersCount">24,178,963</span>
+      👥 Total Users: <span id="totalUsersCount">21.3M</span>
     </div>
     
     <div class="action-row">
@@ -1074,18 +1047,13 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   </div>
 </div>
 
-<!-- AVIATOR PAGE (Modified: added sync info panel) -->
+<!-- AVIATOR PAGE -->
 <div class="page" id="aviatorPage">
   <div class="av-wrap">
     <div class="av-topbar">
       <button class="av-back" onclick="showPage('homePage')">← Back</button>
       <div class="av-tb-title">✈ AVIATOR</div>
       <div class="av-bal-pill">৳<span id="avBalNum">0.00</span></div>
-    </div>
-    <!-- NEW SYNC DISPLAY -->
-    <div class="game-info-sync">
-      <div class="sync-item"><div class="sync-label">Current Multiplier</div><div class="sync-value" id="syncCurrentMult">1.00<small>x</small></div></div>
-      <div class="sync-item"><div class="sync-label">Next Crash</div><div class="sync-value" id="syncNextCrash">--<small>x</small></div></div>
     </div>
     <div class="demo-bar">
       <span class="demo-lbl">REAL</span>
@@ -1497,7 +1465,7 @@ input::placeholder{color:rgba(253,246,227,0.18);}
       <div class="admin-section" style="margin-top:14px"><div class="admin-sec-title">🤖 AI ASSISTANT CONTROL</div><div style="padding:16px"><div class="igrp"><label class="ilbl">AI Name</label><input type="text" id="aiName" class="alb-inp-full" value="Royal AI"></div><div class="igrp"><label class="ilbl">Welcome Message</label><input type="text" id="aiWelcome" class="alb-inp-full" value="আমি Royal Bet AI! প্রশ্ন করুন।"></div><div class="igrp"><label class="ilbl">Auto-Response Mode</label><select id="aiMode" class="alb-inp-full"><option value="smart">Smart AI (Bangla+English)</option><option value="simple">Simple Replies</option></select></div><button onclick="updateAISettings()" class="btn-sub" style="margin-top:12px;">💾 SAVE AI SETTINGS</button></div></div>
     </div>
     <div class="admin-tab-content" id="atab-aviator">
-      <div class="admin-section" style="margin-top:14px"><div class="admin-sec-title">✈ AVIATOR CONTROL (Set Next Crash Multiplier)</div><div style="padding:16px"><div class="igrp"><label class="ilbl">Next Round Crash Multiplier (X) [Min 3x]</label><input type="number" id="adminAvMult" class="alb-inp-full" value="5" min="3" max="100" step="0.1"><div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;">Min 3x | Max 100x</div></div><div style="display:flex;gap:10px;margin-top:16px;"><button onclick="setAvForcedMult()" class="btn-sub" style="background:linear-gradient(135deg,#8a6a1f,#c9a84c);">🎯 SET NEXT CRASH</button><button onclick="clearAvForcedMult()" class="btn-sub" style="background:linear-gradient(135deg,#5c0a0a,#c0392b);">🔄 RANDOM MODE</button></div><div class="notice" style="margin-top:12px;" id="avAdminStatus">Current: Random (3x-100x)</div></div></div>
+      <div class="admin-section" style="margin-top:14px"><div class="admin-sec-title">✈ AVIATOR CONTROL (Set Next Crash Multiplier)</div><div style="padding:16px"><div class="igrp"><label class="ilbl">Next Round Crash Multiplier (X)</label><input type="number" id="adminAvMult" class="alb-inp-full" value="15" min="10" max="100" step="0.1"><div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;">Min 10x | Max 100x</div></div><div style="display:flex;gap:10px;margin-top:16px;"><button onclick="setAvForcedMult()" class="btn-sub" style="background:linear-gradient(135deg,#8a6a1f,#c9a84c);">🎯 SET NEXT CRASH</button><button onclick="clearAvForcedMult()" class="btn-sub" style="background:linear-gradient(135deg,#5c0a0a,#c0392b);">🔄 RANDOM MODE</button></div><div class="notice" style="margin-top:12px;" id="avAdminStatus">Current: Random (10x-100x)</div></div></div>
     </div>
     <div class="admin-tab-content" id="atab-announcement">
       <div class="admin-section" style="margin-top:14px"><div class="admin-sec-title">📢 ANNOUNCEMENT CONTROL</div><div style="padding:16px"><div class="igrp"><label class="ilbl">Announcement Text</label><input type="text" id="adminAnnouncementText" class="alb-inp-full" value="📢 Welcome to ROYEL AVAITOR! New features added." placeholder="Enter announcement..."></div><div class="igrp"><label class="ilbl">Status</label><select id="adminAnnouncementStatus" class="alb-inp-full"><option value="show">Show Announcement</option><option value="hide">Hide Announcement</option></select></div><button onclick="saveAnnouncementSettings()" class="btn-sub" style="margin-top:12px;">💾 SAVE ANNOUNCEMENT</button><div class="notice" style="margin-top:12px;">When "Show" is selected, all users will see the announcement on home page. Users can close it individually.</div></div></div>
@@ -1506,7 +1474,7 @@ input::placeholder{color:rgba(253,246,227,0.18);}
       <div class="admin-section" style="margin-top:14px"><div class="admin-sec-title">💬 SUPPORT MESSAGES - REPLY</div><div class="msg-list" id="adminSupportReplyList"><div style="padding:20px;text-align:center;font-family:'Cinzel',serif;font-size:11px;color:rgba(255,255,255,0.2)">Loading messages...</div></div></div>
     </div>
     <div class="admin-tab-content" id="atab-users_counter">
-      <div class="admin-section" style="margin-top:14px"><div class="admin-sec-title">📊 TOTAL USERS COUNTER CONTROL</div><div style="padding:16px"><div class="igrp"><label class="ilbl">Current Total Users (millions)</label><input type="number" id="adminTotalUsersInput" class="alb-inp-full" value="24.178963" step="0.000001" min="0" style="font-size:18px;font-weight:bold;"><div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;">Value in millions (e.g., 24.178963 = 24,178,963)</div></div><button onclick="updateTotalUsersCount()" class="btn-sub" style="margin-top:12px;background:linear-gradient(135deg,#8a6a1f,#c9a84c);">💾 UPDATE TOTAL USERS</button><div class="notice" style="margin-top:12px;">This number will be displayed on the home page in the "Total Users" bar.</div></div></div>
+      <div class="admin-section" style="margin-top:14px"><div class="admin-sec-title">📊 TOTAL USERS COUNTER CONTROL</div><div style="padding:16px"><div class="igrp"><label class="ilbl">Current Total Users (millions)</label><input type="number" id="adminTotalUsersInput" class="alb-inp-full" value="21.3" step="0.1" min="0" style="font-size:18px;font-weight:bold;"><div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;">Value in millions (e.g., 21.3 = 21.3M)</div></div><button onclick="updateTotalUsersCount()" class="btn-sub" style="margin-top:12px;background:linear-gradient(135deg,#8a6a1f,#c9a84c);">💾 UPDATE TOTAL USERS</button><div class="notice" style="margin-top:12px;">This number will be displayed on the home page in the "Total Users" bar.</div></div></div>
     </div>
     <div class="admin-tab-content" id="atab-ban_users">
       <div class="admin-section" style="margin-top:14px"><div class="admin-sec-title">🚫 BAN / UNBAN USERS</div><div style="padding:16px"><div class="igrp"><label class="ilbl">User ID to Ban</label><input type="text" id="banUserIdInput" class="alb-inp-full" placeholder="Enter Firebase User ID..."></div><div class="igrp"><label class="ilbl">Ban Reason (Optional)</label><input type="text" id="banReasonInput" class="alb-inp-full" placeholder="e.g., Violation of terms"></div><button onclick="banUserById()" class="btn-sub" style="margin-top:12px;background:linear-gradient(135deg,#5c0a0a,#c0392b);">🚫 BAN USER</button><div class="sep" style="margin:20px 0;"></div><div class="igrp"><label class="ilbl">User ID to Unban</label><input type="text" id="unbanUserIdInput" class="alb-inp-full" placeholder="Enter Firebase User ID..."></div><button onclick="unbanUserById()" class="btn-sub" style="margin-top:12px;background:linear-gradient(135deg,#0e5c2b,#27ae60);">✅ UNBAN USER</button><div class="notice" style="margin-top:16px;"><strong>Currently Banned Users:</strong><div id="bannedUsersList" style="margin-top:8px;font-family:'Share Tech Mono';font-size:11px;background:rgba(0,0,0,0.3);padding:8px;border-radius:6px;">Loading...</div></div></div></div>
@@ -1549,7 +1517,7 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   </div>
 </div>
 
-<!-- Firebase and Game Scripts (Original) -->
+<!-- Firebase and Game Scripts -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -1669,11 +1637,11 @@ window.switchAdminTab = function(tab, el) { document.querySelectorAll('.admin-ta
 window.openSupport = function() { document.getElementById('supportModal').classList.add('open'); };
 
 const TOTAL_USERS_KEY = 'royalBetTotalUsersAdmin';
-function getTotalUsersFromStorage() { const stored = localStorage.getItem(TOTAL_USERS_KEY); if (stored && !isNaN(parseFloat(stored))) return parseFloat(stored); return 24.178963; }
-function saveTotalUsersToStorage(value) { localStorage.setItem(TOTAL_USERS_KEY, value.toFixed(6)); localStorage.setItem(TOTAL_USERS_KEY + 'LastUpdate', Date.now().toString()); }
-function loadTotalUsersCount() { const total = getTotalUsersFromStorage(); const el = document.getElementById('totalUsersCount'); if (el) el.textContent = Math.floor(total * 1000000).toLocaleString('en'); }
-function loadTotalUsersCountIntoAdmin() { const total = getTotalUsersFromStorage(); const input = document.getElementById('adminTotalUsersInput'); if (input) input.value = total.toFixed(6); }
-window.updateTotalUsersCount = function() { const input = document.getElementById('adminTotalUsersInput'); if (!input) return; const val = parseFloat(input.value); if (isNaN(val) || val < 0) { toast('⚠️ Valid number required (millions)', true); return; } saveTotalUsersToStorage(val); loadTotalUsersCount(); toast(`✅ Total users updated to ${Math.floor(val*1000000).toLocaleString('en')}`, false); };
+function getTotalUsersFromStorage() { const stored = localStorage.getItem(TOTAL_USERS_KEY); if (stored && !isNaN(parseFloat(stored))) return parseFloat(stored); return 21.3; }
+function saveTotalUsersToStorage(value) { localStorage.setItem(TOTAL_USERS_KEY, value.toFixed(1)); localStorage.setItem(TOTAL_USERS_KEY + 'LastUpdate', Date.now().toString()); }
+function loadTotalUsersCount() { const total = getTotalUsersFromStorage(); const el = document.getElementById('totalUsersCount'); if (el) el.textContent = total.toFixed(1) + 'M'; }
+function loadTotalUsersCountIntoAdmin() { const total = getTotalUsersFromStorage(); const input = document.getElementById('adminTotalUsersInput'); if (input) input.value = total.toFixed(1); }
+window.updateTotalUsersCount = function() { const input = document.getElementById('adminTotalUsersInput'); if (!input) return; const val = parseFloat(input.value); if (isNaN(val) || val < 0) { toast('⚠️ Valid number required (millions)', true); return; } saveTotalUsersToStorage(val); loadTotalUsersCount(); toast(`✅ Total users updated to ${val.toFixed(1)}M`, false); };
 const BANNED_USERS_KEY = 'royalBetBannedUsers';
 function getBannedUsersFromLocal() { const stored = localStorage.getItem(BANNED_USERS_KEY); return stored ? JSON.parse(stored) : []; }
 function saveBannedUsersToLocal(banned) { localStorage.setItem(BANNED_USERS_KEY, JSON.stringify(banned)); }
@@ -1682,208 +1650,97 @@ window.banUserById = function() { const userId = document.getElementById('banUse
 window.unbanUserById = function() { const userId = document.getElementById('unbanUserIdInput').value.trim(); if (!userId) { toast('⚠️ Enter User ID', true); return; } let banned = getBannedUsersFromLocal(); if (banned.includes(userId)) { banned = banned.filter(id => id !== userId); saveBannedUsersToLocal(banned); toast(`✅ User ${userId.substring(0,8)}... unbanned`, false); document.getElementById('unbanUserIdInput').value = ''; updateBannedUsersList(); } else toast('⚠️ User is not banned', true); };
 window.getBannedUsersFromLocal = getBannedUsersFromLocal;
 
-// ---------- AVIATOR SYNC OVERRIDE ----------
-let avSyncUnsub = null;
-let forcedCrashGlobal = null;
-window.setAvForcedMult = function() {
-  const mult = parseFloat(document.getElementById('adminAvMult').value);
-  if (isNaN(mult) || mult < 3 || mult > 100) { toast('⚠️ Min 3x, Max 100x', true); return; }
-  forcedCrashGlobal = mult;
-  document.getElementById('avAdminStatus').innerHTML = `Current: Forced next crash at ${mult.toFixed(1)}x`;
-  toast(`✅ Next Aviator crash set to ${mult}x`, false);
-  if (window._db) window._set(window._ref(window._db, 'aviatorGame/adminNextCrash'), mult);
-};
-window.clearAvForcedMult = function() {
-  forcedCrashGlobal = null;
-  document.getElementById('avAdminStatus').innerHTML = 'Current: Random (3x-100x)';
-  toast('🔄 Random mode enabled', false);
-  if (window._db) window._set(window._ref(window._db, 'aviatorGame/adminNextCrash'), null);
-};
-function generateCrashPoint() {
-  if (forcedCrashGlobal) return Math.max(3, forcedCrashGlobal);
-  // random between 3 and 100 with bias towards lower
-  let r = Math.random();
-  if (r < 0.4) return 3 + Math.random() * 10;
-  if (r < 0.7) return 13 + Math.random() * 20;
-  if (r < 0.85) return 33 + Math.random() * 30;
-  return 63 + Math.random() * 37;
-}
-let avRoundActive = false, avRoundStartTime = 0, avCrashPoint = 5, avRoundId = null;
-let avAnimationFrame = null, avCdInterval = null;
-function initAviatorSync() {
-  if (!window._db) return;
-  const gameRef = ref(window._db, 'aviatorGame/currentRound');
-  avSyncUnsub = onValue(gameRef, (snap) => {
-    const data = snap.val();
-    if (!data) return;
-    if (data.roundId !== avRoundId) {
-      avRoundId = data.roundId;
-      avCrashPoint = data.crashPoint;
-      if (data.phase === 'countdown') {
-        const now = Date.now();
-        const remaining = Math.max(0, Math.floor((data.countdownEnd - now) / 1000));
-        if (remaining > 0) startCountdown(remaining);
-        else startFlying(data.startTime);
-      } else if (data.phase === 'flying') {
-        startFlying(data.startTime);
-      } else if (data.phase === 'crashed') {
-        handleCrashSync(data.crashPoint);
-      }
-    } else {
-      if (data.phase === 'flying' && avRoundActive && data.phase !== 'crashed') {
-        // update crash point if changed (admin forced during flight? unlikely but safe)
-        avCrashPoint = data.crashPoint;
-      }
-    }
-    updateSyncUI(data);
-  });
-  // listen for admin next crash
-  const adminRef = ref(window._db, 'aviatorGame/adminNextCrash');
-  onValue(adminRef, (snap) => {
-    const val = snap.val();
-    if (val && !isNaN(val)) forcedCrashGlobal = parseFloat(val);
-    else forcedCrashGlobal = null;
-    document.getElementById('avAdminStatus').innerHTML = forcedCrashGlobal ? `Current: Forced next crash at ${forcedCrashGlobal.toFixed(1)}x` : 'Current: Random (3x-100x)';
-    const nextEl = document.getElementById('syncNextCrash');
-    if (nextEl) nextEl.innerHTML = forcedCrashGlobal ? forcedCrashGlobal.toFixed(2)+'<small>x</small>' : 'RANDOM';
-  });
-}
-function startCountdown(seconds) {
-  if (avCdInterval) clearInterval(avCdInterval);
-  document.getElementById('avCdOv').style.display = 'flex';
-  document.getElementById('avMW').style.display = 'none';
-  document.getElementById('avPlane').style.display = 'none';
-  document.getElementById('avCrashFl').style.display = 'none';
-  let s = seconds;
-  const cdNum = document.getElementById('avCdNum');
-  const updateCd = () => {
-    cdNum.textContent = s;
-    cdNum.classList.remove('pop'); void cdNum.offsetWidth; cdNum.classList.add('pop');
-    if (s <= 0) {
-      clearInterval(avCdInterval);
-      document.getElementById('avCdOv').style.display = 'none';
-    }
-    s--;
-  };
-  updateCd();
-  avCdInterval = setInterval(() => { if (s >= 0) updateCd(); else clearInterval(avCdInterval); }, 1000);
-}
-function startFlying(startTime) {
-  if (avCdInterval) clearInterval(avCdInterval);
-  document.getElementById('avCdOv').style.display = 'none';
-  document.getElementById('avMW').style.display = 'block';
-  document.getElementById('avPlane').style.display = 'block';
-  document.getElementById('avCrashFl').style.display = 'none';
-  avRoundActive = true;
-  avRoundStartTime = startTime;
-  if (avAnimationFrame) cancelAnimationFrame(avAnimationFrame);
-  function update() {
-    if (!avRoundActive) return;
-    const now = Date.now();
-    let elapsed = (now - avRoundStartTime) / 1000;
-    let mult = Math.min(avCrashPoint, Math.max(1, 1 + 0.39 * elapsed + 0.0017 * elapsed * elapsed));
-    mult = parseFloat(mult.toFixed(2));
-    document.getElementById('avMN').innerHTML = mult.toFixed(2) + '<span class="av-mn-x">x</span>';
-    const prog = Math.min(elapsed / 30, 0.95);
-    const px = 4 + prog * 82;
-    const py = 7 + prog * 74 + prog * prog * 8;
-    const plane = document.getElementById('avPlane');
-    if (plane) { plane.style.left = px + '%'; plane.style.bottom = py + '%'; }
-    const cv = document.getElementById('avCv');
-    if (cv && window.avDrawCurve) {
-      const w = cv.width, h = cv.height;
-      if (window.avPts) {
-        window.avPts.push({ x: px / 100 * w, y: h - py / 100 * h });
-        if (window.avPts.length > 200) window.avPts.shift();
-        window.avDrawCurve(w, h);
-      }
-    }
-    if (mult >= avCrashPoint) {
-      handleCrashSync(avCrashPoint);
-      return;
-    }
-    avAnimationFrame = requestAnimationFrame(update);
-  }
-  update();
-}
-function handleCrashSync(crashPoint) {
-  if (!avRoundActive) return;
-  avRoundActive = false;
-  if (avAnimationFrame) cancelAnimationFrame(avAnimationFrame);
-  document.getElementById('avMN').className = 'av-mn crashed';
-  document.getElementById('avPL').textContent = '💥 CRASHED!';
-  document.getElementById('avCrashFl').style.display = 'flex';
-  document.getElementById('avPlane').style.display = 'none';
-  if (window.avBetPlaced && !window._isDemo) {
-    toast(`💥 ${crashPoint.toFixed(2)}x crash! ৳${window.avBetAmt?.toLocaleString('en')} হারালেন`, true);
-    if (window._saveBetHistory) window._saveBetHistory({ game: 'Aviator', detail: `Crash at ${crashPoint.toFixed(2)}x`, bet: window.avBetAmt, profit: -window.avBetAmt, time: Date.now() });
-  }
-  window.avBetPlaced = false;
-  setTimeout(() => { document.getElementById('avCrashFl').style.display = 'none'; }, 2800);
-}
-function updateSyncUI(data) {
-  const multEl = document.getElementById('syncCurrentMult');
-  const nextEl = document.getElementById('syncNextCrash');
-  if (multEl && data.phase === 'flying') {
-    const elapsed = (Date.now() - data.startTime)/1000;
-    let mult = Math.min(data.crashPoint, 1 + 0.39 * elapsed + 0.0017 * elapsed * elapsed);
-    multEl.innerHTML = mult.toFixed(2)+'<small>x</small>';
-  } else if (multEl) multEl.innerHTML = '1.00<small>x</small>';
-  if (nextEl) nextEl.innerHTML = forcedCrashGlobal ? forcedCrashGlobal.toFixed(2)+'<small>x</small>' : (data.crashPoint ? data.crashPoint.toFixed(2)+'<small>x</small>' : '--');
-}
-window.avStartRound = function() { /* overridden by sync, do nothing */ };
-window.avPlaceBet = function() {
-  if (!avRoundActive || avRoundStartTime === 0) { toast('⏳ Countdown এ Bet দিন!', true); return; }
-  if (window.avBetPlaced) return;
-  const v = parseInt(document.getElementById('avBetInp').value);
-  if (isNaN(v) || v < 200) { toast('⚠️ Min ৳200', true); return; }
-  if (v > 200000) { toast('⚠️ Max ৳200,000', true); return; }
-  if (getBalForGame('av') < v) { toast(window._isDemo ? '❌ Demo balance শেষ!' : '❌ Balance কম!', true); if (!window._isDemo) setTimeout(() => openDepositSSModal(), 800); return; }
-  window.avBetAmt = v;
-  setBalForGame('av', getBalForGame('av') - v);
-  window.avBetPlaced = true;
-  toast(`✅ Bet: ৳${v.toLocaleString('en')}`, false);
-  document.getElementById('avBetBtn').disabled = true;
-  document.getElementById('avBetBtn').textContent = '✅ BET PLACED';
-  document.getElementById('avCashBtn').style.display = 'flex';
-};
-window.avCashOut = function() {
-  if (!window.avBetPlaced || !avRoundActive) return;
-  const mult = parseFloat(document.getElementById('avMN').innerText);
-  const win = Math.floor(window.avBetAmt * mult);
-  const profit = win - window.avBetAmt;
-  setBalForGame('av', getBalForGame('av') + win);
-  window.avBetPlaced = false;
-  document.getElementById('avMN').className = 'av-mn cashed';
-  document.getElementById('avPL').textContent = `✅ CASHED ${mult.toFixed(2)}x`;
-  toast(`🎉 ${mult.toFixed(2)}x — +৳${profit.toLocaleString('en')}`, false);
-  if (!window._isDemo && window._saveBetHistory) window._saveBetHistory({ game: 'Aviator', detail: `Cashed out ${mult.toFixed(2)}x`, bet: window.avBetAmt, profit: profit, time: Date.now() });
-  document.getElementById('avBetBtn').disabled = false;
-  document.getElementById('avBetBtn').textContent = '🎲 BET NOW';
-  document.getElementById('avCashBtn').style.display = 'none';
-  loadHomeLb();
-};
-window.avQb = function(amt) { if (!window.avBetPlaced) document.getElementById('avBetInp').value = amt; };
-window.avDrawCurve = function(w,h) { if (!window.avCtx || !window.avPts) return; const ctx = window.avCtx; ctx.clearRect(0,0,w,h); ctx.beginPath(); ctx.moveTo(window.avPts[0].x, window.avPts[0].y); for(let i=1;i<window.avPts.length;i++) ctx.lineTo(window.avPts[i].x, window.avPts[i].y); ctx.strokeStyle = '#ff7070'; ctx.lineWidth=3; ctx.stroke(); };
-window.avPts = [];
-window.avCtx = document.getElementById('avCv')?.getContext('2d');
-setTimeout(() => { if(window._db) initAviatorSync(); }, 1500);
-// User counter auto increment on new user
-if(window._db) {
-  const usersRef = ref(window._db, 'users');
-  onValue(usersRef, (snap) => {
-    if(snap.exists()) {
-      const count = Object.keys(snap.val()).length;
-      let stored = getTotalUsersFromStorage();
-      let base = Math.floor(stored * 1000000);
-      if(count > base) {
-        let newTotal = Math.max(stored, count/1000000);
-        saveTotalUsersToStorage(newTotal);
-        loadTotalUsersCount();
-      }
-    }
-  });
-}
+let avPhase = 'idle', avBetPlaced = false, avBetAmt = 0, avMult = 1.00, avCrashAt = 1.00, avRaf = null, avRoundStart = 0, avCdTimer = null; const avPts = []; let avCtx = null; let avForcedMult = null;
+function avCrashPt() { if (avForcedMult) { const m = avForcedMult; avForcedMult = null; return m; } const r = Math.random(); if (r < 0.25) return 10 + Math.random() * 10; if (r < 0.5) return 20 + Math.random() * 20; if (r < 0.7) return 40 + Math.random() * 30; if (r < 0.9) return 70 + Math.random() * 20; return 90 + Math.random() * 10; }
+function avInitCanvas() { const cv = document.getElementById('avCv'); const c = document.getElementById('avCanvas'); cv.width = c.offsetWidth || 420; cv.height = c.offsetHeight || 200; avCtx = cv.getContext('2d'); avCtx.clearRect(0, 0, cv.width, cv.height); }
+function avStartRound() { cancelAnimationFrame(avRaf); clearInterval(avCdTimer); avPhase = 'countdown'; avMult = 1.00; avCrashAt = avCrashPt(); if (avCrashAt < 3) avCrashAt = 3; avBetPlaced = false; avPts.length = 0; document.getElementById('avCdOv').style.display = 'flex'; document.getElementById('avMW').style.display = 'none'; document.getElementById('avPlane').style.display = 'none'; document.getElementById('avCrashFl').style.display = 'none'; document.getElementById('avMW').querySelector('.av-mn').className = 'av-mn'; avInitCanvas(); avSetBadge('bet'); avUpdateUI(); avBuildLB(); let n = 10; avSetCd(n); avCdTimer = setInterval(() => { n--; if (n > 0) avSetCd(n); else { clearInterval(avCdTimer); avCdTimer = null; avBeginFly(); } }, 1000); }
+function avSetCd(n) { const el = document.getElementById('avCdNum'); el.textContent = n; el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
+function avBeginFly() { avPhase = 'flying'; avRoundStart = performance.now(); document.getElementById('avCdOv').style.display = 'none'; document.getElementById('avMW').style.display = 'block'; document.getElementById('avMN').innerHTML = '1.00<span class="av-mn-x">x</span>'; document.getElementById('avPL').textContent = 'FLYING...'; document.getElementById('avPlane').style.display = 'block'; avSetBadge('fly'); avUpdateUI(); avTick(); }
+function avTick() { if (avPhase !== 'flying') return; const t = (performance.now() - avRoundStart) / 1000; avMult = parseFloat((1 + 0.39 * t + 0.0017 * t * t).toFixed(2)); document.getElementById('avMN').innerHTML = avMult.toFixed(2) + '<span class="av-mn-x">x</span>'; if (avBetPlaced) { const pot = Math.floor(avBetAmt * avMult); document.getElementById('avCashBtn').textContent = '💰 STOP — ৳' + pot.toLocaleString('en'); } updateBals(); const cv = document.getElementById('avCv'); const prog = Math.min(t / 46, 1); const px = 4 + prog * 82; const py = 7 + prog * 74 + prog * prog * 8; document.getElementById('avPlane').style.left = px + '%'; document.getElementById('avPlane').style.bottom = py + '%'; avPts.push({ x: px / 100 * cv.width, y: cv.height - py / 100 * cv.height }); avDrawCurve(cv.width, cv.height); if (avMult >= avCrashAt) { avDoCrash(); return; } avRaf = requestAnimationFrame(avTick); }
+function avDrawCurve(w, h) { if (!avCtx || avPts.length < 2) return; avCtx.clearRect(0, 0, w, h); const gr = avCtx.createLinearGradient(0, h, w * 0.9, 0); gr.addColorStop(0, 'rgba(255,80,80,0.1)'); gr.addColorStop(0.5, 'rgba(255,100,100,0.7)'); gr.addColorStop(1, 'rgba(255,220,80,1)'); avCtx.beginPath(); avCtx.moveTo(avPts[0].x, avPts[0].y); for (let i = 1; i < avPts.length; i++) avCtx.lineTo(avPts[i].x, avPts[i].y); avCtx.strokeStyle = gr; avCtx.lineWidth = 3; avCtx.shadowColor = 'rgba(255,120,80,0.8)'; avCtx.shadowBlur = 12; avCtx.stroke(); avCtx.lineTo(avPts[avPts.length-1].x, h); avCtx.lineTo(avPts[0].x, h); avCtx.closePath(); const fg = avCtx.createLinearGradient(0, 0, 0, h); fg.addColorStop(0, 'rgba(255,100,100,0.15)'); fg.addColorStop(1, 'rgba(255,100,100,0)'); avCtx.fillStyle = fg; avCtx.shadowBlur = 0; avCtx.fill(); }
+function avDoCrash() { avPhase = 'crashed'; cancelAnimationFrame(avRaf); document.getElementById('avPlane').style.display = 'none'; document.getElementById('avMN').className = 'av-mn crashed'; document.getElementById('avPL').textContent = '💥 CRASHED!'; document.getElementById('avCrashFl').style.display = 'flex'; avSetBadge('crash'); avUpdateUI(); if (avBetPlaced) { avBetPlaced = false; avUpdateUI(); toast(`💥 ${avMult.toFixed(2)}x crash! ৳${avBetAmt.toLocaleString('en')} হারালেন`, true); if (!window._isDemo && window._saveBetHistory) { window._saveBetHistory({ game: 'Aviator', detail: `Crash at ${avMult.toFixed(2)}x`, bet: avBetAmt, profit: -avBetAmt, time: Date.now() }); } } setTimeout(() => { document.getElementById('avCrashFl').style.display = 'none'; avStartRound(); }, 2800); }
+window.avPlaceBet = function() { if (avPhase !== 'countdown') { toast('⏳ Countdown এ Bet দিন!', true); return; } if (avBetPlaced) { toast('✅ ইতোমধ্যে Bet!', false); return; } const v = parseInt(document.getElementById('avBetInp').value); if (isNaN(v) || v < 200) { toast('⚠️ Min ৳200', true); return; } if (v > 200000) { toast('⚠️ Max ৳200,000', true); return; } if (getBalForGame('av') < v) { toast(window._isDemo ? '❌ Demo balance শেষ!' : '❌ Balance কম!', true); if (!window._isDemo) setTimeout(() => openDepositSSModal(), 800); return; } avBetAmt = v; setBalForGame('av', getBalForGame('av') - v); avBetPlaced = true; avUpdateUI(); toast(`✅ Bet: ৳${v.toLocaleString('en')}`, false); avBuildLB(true); };
+window.avCashOut = function() { if (!avBetPlaced || avPhase !== 'flying') return; const m = avMult; const win = Math.floor(avBetAmt * m); const profit = win - avBetAmt; setBalForGame('av', getBalForGame('av') + win); avBetPlaced = false; avUpdateUI(); document.getElementById('avMN').className = 'av-mn cashed'; document.getElementById('avPL').textContent = `✅ CASHED ${m.toFixed(2)}x`; toast(`🎉 ${m.toFixed(2)}x — +৳${profit.toLocaleString('en')}`, false); if (!window._isDemo && window._saveBetHistory) { window._saveBetHistory({ game: 'Aviator', detail: `Cashed out ${m.toFixed(2)}x`, bet: avBetAmt, profit: profit, time: Date.now() }); } loadHomeLb(); };
+window.avQb = function(amt) { if (avPhase === 'countdown' && !avBetPlaced) document.getElementById('avBetInp').value = amt; };
+function avUpdateUI() { const bb = document.getElementById('avBetBtn'); const cb = document.getElementById('avCashBtn'); const inp = document.getElementById('avBetInp'); const qbs = document.querySelectorAll('.av-qb'); if (avPhase === 'flying') { if (avBetPlaced) { bb.style.display = 'none'; cb.style.display = 'flex'; } else { bb.style.display = 'flex'; bb.disabled = true; bb.textContent = '🔒 FLYING...'; cb.style.display = 'none'; } inp.disabled = true; qbs.forEach(b => b.disabled = true); } else if (avPhase === 'countdown') { cb.style.display = 'none'; bb.style.display = 'flex'; if (avBetPlaced) { bb.disabled = true; bb.textContent = '✅ BET PLACED'; } else { bb.disabled = false; bb.textContent = '🎲 BET NOW'; } inp.disabled = avBetPlaced; qbs.forEach(b => b.disabled = avBetPlaced); } else { bb.style.display = 'flex'; bb.disabled = true; bb.textContent = '⏳ NEXT ROUND...'; cb.style.display = 'none'; inp.disabled = true; qbs.forEach(b => b.disabled = true); } }
+function avSetBadge(p) { const b = document.getElementById('avPhBadge'); b.className = 'ph-badge ' + p; if (p === 'bet') b.textContent = '🟡 BETTING OPEN'; else if (p === 'fly') b.textContent = '🟢 FLYING'; else b.textContent = '🔴 CRASHED'; }
+const AV_NAMES = ['Rahim_X','Karim99','Sumon★','NightKing','BetKing88','GoldRush','Lucky7','SpeedBet','TigerBet','AcePlayer','RoyalFly','DiamondX','StormBet','PhoenixUp','NightHawk','PlatinumK','IronFist','CobraKing','MaxBet99','UltraFly']; let avUsedNames = new Set();
+function avBuildLB(showUser = false) { if (avUsedNames.size > AV_NAMES.length - 5) avUsedNames.clear(); const avail = AV_NAMES.filter(n => !avUsedNames.has(n)); const entries = []; const used = new Set(); while (entries.length < 15 && avail.length > entries.length) { const i = Math.floor(Math.random() * avail.length); const n = avail[i]; if (!used.has(n)) { used.add(n); avUsedNames.add(n); const m = parseFloat((10 + Math.random() * 90).toFixed(2)); const b = Math.floor(200 + Math.random() * 199801); entries.push({ n, m, b, isUser: false }); } } if (showUser && avBetPlaced && window._curUser) { const userName = (window._userProfile?.name || window._curUser.displayName || 'You').split(' ')[0]; entries.unshift({ n: '⭐ ' + userName, m: avMult || 1.00, b: avBetAmt, isUser: true }); } entries.sort((a,b) => b.m - a.m); document.getElementById('avLbBody').innerHTML = entries.map((e,i) => { let rc = '', rl = '#' + (i+1); if (i===0) { rc='g'; rl='🥇'; } else if (i===1) { rc='s'; rl='🥈'; } else if (i===2) { rc='b'; rl='🥉'; } return `<div class="lb-row ${e.isUser ? 'you' : ''}"><div class="lb-rank ${rc}">${rl}</div><div class="lb-name">${e.n}</div><div class="lb-mult">${e.m.toFixed(2)}x</div><div class="lb-bet">৳${e.b.toLocaleString('en')}</div></div>`; }).join(''); }
+setTimeout(() => { if (document.getElementById('aviatorPage')) avStartRound(); }, 1000);
+
+let aiName = 'Royal AI', aiWelcome = 'আমি Royal Bet AI! প্রশ্ন করুন।', aiMode = 'smart';
+window.toggleAIChat = function() { document.getElementById('aiChat').classList.toggle('open'); };
+window.sendAIMessage = function() { const input = document.getElementById('aiInput'); const msg = input.value.trim(); if (!msg) return; const messages = document.getElementById('aiMessages'); const time = new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'}); messages.innerHTML += `<div class="ai-msg user">${msg}<div style="font-size:8px;color:rgba(255,255,255,0.3);margin-top:2px;">${time}</div></div>`; input.value = ''; messages.scrollTop = messages.scrollHeight; messages.innerHTML += `<div class="ai-thinking"><span></span><span></span><span></span></div>`; messages.scrollTop = messages.scrollHeight; setTimeout(() => { const thinking = document.querySelector('.ai-thinking:last-child'); if (thinking) thinking.remove(); let response = ''; if (aiMode === 'smart') { const lowerMsg = msg.toLowerCase(); if (lowerMsg.includes('balance') || lowerMsg.includes('ব্যালেন্স')) response = `আপনার বর্তমান ব্যালেন্স: ৳${window._realBal.toLocaleString('en')} (Real) / ৳${window._demoBal.toLocaleString('en')} (Demo)।`; else if (lowerMsg.includes('deposit') || lowerMsg.includes('ডিপোজিট')) response = 'ডিপোজিট করতে Home পেজ থেকে Deposit বাটনে ক্লিক করুন। Binance ID: 894307667, তারপর screenshot আপলোড করুন।'; else if (lowerMsg.includes('withdraw') || lowerMsg.includes('উইথড্র')) response = 'উইথড্রয়াল করতে Profile পেজে গিয়ে Withdraw অপশন ব্যবহার করুন। মিনিমাম ৳200, সর্বোচ্চ ৳200,000।'; else if (lowerMsg.includes('aviator') || lowerMsg.includes('এভিয়েটর')) response = 'Aviator গেমে বিমান উড়ে এবং মাল্টিপ্লায়ার বাড়ে। সঠিক সময় cashout করে জিতুন! সর্বোচ্চ 100x পর্যন্ত।'; else if (lowerMsg.includes('help') || lowerMsg.includes('সাহায্য')) response = 'আমি Royal Bet AI! যেকোনো প্রশ্ন করুন: ব্যালেন্স, ডিপোজিট, উইথড্রয়াল, গেমের নিয়ম ইত্যাদি।'; else if (lowerMsg.includes('bonus') || lowerMsg.includes('বোনাস')) response = 'Daily Reward claim করুন! প্রতিদিন ৳500 থেকে ৳3000 পর্যন্ত বোনাস পান।'; else if (lowerMsg.includes('refer') || lowerMsg.includes('রেফার')) response = 'Friend Referral দিয়ে বন্ধু আনুন এবং ৳6000 বোনাস পান! Home পেজে Referral বাটন দেখুন।'; else response = `"${msg}" — আপনার প্রশ্নের উত্তর দিচ্ছি: ROYEL AVAITOR-এ স্বাগতম! আরও জানতে আমাদের Support-এ যোগাযোগ করুন।`; } else response = `আপনি বলেছেন: "${msg}" — আমি Royal Bet AI, আপনাকে সাহায্য করতে এখানে আছি।`; messages.innerHTML += `<div class="ai-msg bot">${response}<div style="font-size:8px;color:rgba(255,255,255,0.3);margin-top:2px;">${aiName} · ${new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'})}</div></div>`; messages.scrollTop = messages.scrollHeight; }, 1000); };
+window.updateAISettings = function() { aiName = document.getElementById('aiName').value || 'Royal AI'; aiWelcome = document.getElementById('aiWelcome').value || 'আমি Royal Bet AI! প্রশ্ন করুন।'; aiMode = document.getElementById('aiMode').value; document.getElementById('aiTitle').textContent = aiName; document.getElementById('aiMessages').innerHTML = `<div class="ai-msg bot">${aiWelcome}</div>`; toast('✅ AI settings updated!', false); };
+
+let cricketSelectedTeam = null, cricketForcedWinner = 'none', cricketMatchUpdateInterval = null, cricketBets = [];
+function initCricketMatch() { if (cricketMatchUpdateInterval) clearInterval(cricketMatchUpdateInterval); cricketMatchUpdateInterval = setInterval(() => { if (document.getElementById('adminForceWinner')?.value !== 'none') cricketForcedWinner = document.getElementById('adminForceWinner').value; if (cricketForcedWinner === 'none') updateCricketMatchProgression(); }, 30000); }
+function updateCricketMatchProgression() { const team1 = document.getElementById('cricketTeam1').textContent; const team2 = document.getElementById('cricketTeam2').textContent; const overs = parseFloat(document.getElementById('cricketOvers').textContent.split(' ')[1]) || 32.4; const newOvers = (overs + 0.1).toFixed(1); document.getElementById('cricketOvers').textContent = `Overs: ${newOvers}`; const team1Score = document.getElementById('cricketTeam1Score').textContent; const [runs, wickets] = team1Score.split('/').map(n => parseInt(n) || 0); if (wickets < 10) { const newRuns = runs + Math.floor(Math.random() * 8) + 1; const newWickets = wickets + (Math.random() > 0.7 ? 1 : 0); document.getElementById('cricketTeam1Score').textContent = `${newRuns}/${newWickets}`; document.getElementById('cricketScore').textContent = `${newRuns}/${newWickets}`; } const events = ['Next Over: ' + (parseInt(newOvers) + 1) + 'th over', 'Powerplay ongoing', 'Drinks break', 'Review in progress', 'New batsman in', '50 partnership!', '100 runs up!']; document.getElementById('cricketNextEvent').textContent = events[Math.floor(Math.random() * events.length)]; const odds1 = parseFloat(document.getElementById('cricketOdds1Value').textContent); const odds2 = parseFloat(document.getElementById('cricketOdds2Value').textContent); const total = odds1 + odds2; const newOdds1 = parseFloat((odds1 + (Math.random() - 0.5) * 0.1).toFixed(2)); const newOdds2 = parseFloat((total - newOdds1).toFixed(2)); document.getElementById('cricketOdds1Value').textContent = newOdds1.toFixed(2); document.getElementById('cricketOdds2Value').textContent = newOdds2.toFixed(2); const betCount = 123 + Math.floor(Math.random() * 50); document.getElementById('cricketBetsCount').textContent = betCount + ' bets'; }
+window.selectCricketBet = function(team) { cricketSelectedTeam = team; document.getElementById('cricketOdds1').classList.remove('selected'); document.getElementById('cricketOdds2').classList.remove('selected'); document.getElementById('cricketOdds' + (team === 'team1' ? '1' : '2')).classList.add('selected'); };
+window.placeCricketBet = function() { if (!window._curUser) { toast('⚠️ আগে login করুন!', true); return; } if (!cricketSelectedTeam) { toast('⚠️ একটি দল নির্বাচন করুন!', true); return; } const amount = parseInt(document.getElementById('cricketBetAmount').value); if (isNaN(amount) || amount < 200) { toast('⚠️ ন্যূনতম বেট ৳200', true); return; } if (amount > 200000) { toast('⚠️ সর্বোচ্চ বেট ৳200,000', true); return; } if (window._realBal < amount) { toast('❌ ব্যালেন্স অপ্রতুল!', true); setTimeout(() => openDepositSSModal(), 800); return; } window._realBal -= amount; updateBals(); window._writeBalance(window._realBal); const teamName = cricketSelectedTeam === 'team1' ? document.getElementById('cricketTeam1').textContent : document.getElementById('cricketTeam2').textContent; const odds = parseFloat(document.getElementById('cricketOdds' + (cricketSelectedTeam === 'team1' ? '1' : '2') + 'Value').textContent); const bet = { game: 'Cricket', detail: `${teamName} @ ${odds}x`, bet: amount, profit: 0, time: Date.now(), team: cricketSelectedTeam, odds: odds, status: 'pending', userId: window._curUser.uid }; cricketBets.push(bet); toast(`✅ Cricket bet placed! ${teamName} - ৳${amount.toLocaleString('en')}`, false); if (!window._isDemo && window._saveBetHistory) { window._saveBetHistory({ game: 'Cricket', detail: `${teamName} @ ${odds}x`, bet: amount, profit: 0, time: Date.now() }); } document.getElementById('cricketOdds1').classList.remove('selected'); document.getElementById('cricketOdds2').classList.remove('selected'); cricketSelectedTeam = null; };
+window.updateCricketMatch = function() { const team1 = document.getElementById('adminTeam1').value; const team2 = document.getElementById('adminTeam2').value; const team1Score = document.getElementById('adminTeam1Score').value; const team2Score = document.getElementById('adminTeam2Score').value; const overs = document.getElementById('adminOvers').value; const nextEvent = document.getElementById('adminNextEvent').value; const odds1 = document.getElementById('adminOdds1').value; const odds2 = document.getElementById('adminOdds2').value; document.getElementById('cricketTeam1').textContent = team1; document.getElementById('cricketTeam2').textContent = team2; document.getElementById('cricketTeam1Score').textContent = team1Score; document.getElementById('cricketTeam2Score').textContent = team2Score; document.getElementById('cricketScore').textContent = team1Score; document.getElementById('cricketOvers').textContent = `Overs: ${overs}`; document.getElementById('cricketNextEvent').textContent = nextEvent; document.getElementById('cricketOdds1Value').textContent = parseFloat(odds1).toFixed(2); document.getElementById('cricketOdds2Value').textContent = parseFloat(odds2).toFixed(2); toast('✅ Cricket match updated!', false); };
+window.forceCricketResult = function() { const winner = document.getElementById('adminForceWinner').value; if (winner === 'none') { toast('⚠️ একটি বিজয়ী দল নির্বাচন করুন!', true); return; } const winningTeam = winner === 'team1' ? document.getElementById('cricketTeam1').textContent : document.getElementById('cricketTeam2').textContent; const winningOdds = winner === 'team1' ? parseFloat(document.getElementById('cricketOdds1Value').textContent) : parseFloat(document.getElementById('cricketOdds2Value').textContent); cricketBets.forEach(async bet => { if (bet.status === 'pending') { const won = bet.team === winner; if (won) { const winAmount = Math.floor(bet.bet * bet.odds); const profit = winAmount - bet.bet; bet.profit = profit; bet.status = 'won'; if (window._curUser && bet.userId === window._curUser.uid) { window._realBal += winAmount; updateBals(); window._writeBalance(window._realBal); } } else { bet.profit = -bet.bet; bet.status = 'lost'; } } }); toast(`🏏 Match result: ${winningTeam} wins!`, false); document.getElementById('cricketLiveCard').style.animation = 'pulse 0.5s ease'; setTimeout(() => { document.getElementById('cricketLiveCard').style.animation = 'pulse 2s ease-in-out infinite'; }, 500); loadHomeLb(); };
+
+window.openDepositSSModal = function() { document.getElementById('depositSSModal').classList.add('open'); document.getElementById('ssFileInput').value = ''; document.getElementById('ssPreviewImg').style.display = 'none'; document.getElementById('ssPlaceholder').style.display = 'flex'; document.getElementById('submitSSBtn').disabled = true; document.getElementById('depSSAmt').value = '50'; };
+window.closeDepositSSModal = function() { document.getElementById('depositSSModal').classList.remove('open'); };
+window.previewScreenshot = function(input) { const file = input.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { const img = document.getElementById('ssPreviewImg'); img.src = e.target.result; img.style.display = 'block'; document.getElementById('ssPlaceholder').style.display = 'none'; document.getElementById('submitSSBtn').disabled = false; }; reader.readAsDataURL(file); };
+window.submitDepositWithSS = async function() { const amt = parseFloat(document.getElementById('depSSAmt').value); const fileInput = document.getElementById('ssFileInput'); const file = fileInput.files[0]; if (!amt || amt < 50) { toast('⚠️ Amount কমপক্ষে 50 USDT দিন', true); return; } if (!file) { toast('⚠️ Screenshot upload করুন', true); return; } if (!window._curUser || !window._db) return; const reader = new FileReader(); reader.onload = async (e) => { const screenshotData = e.target.result; const depId = 'dep_ss_' + Date.now(); const depData = { userId: window._curUser.uid, userName: window._userProfile?.name || window._curUser.displayName || 'User', method: 'Binance', amount: amt, screenshot: screenshotData, status: 'pending', time: Date.now() }; try { await window._set(window._ref(window._db, 'depositRequests/' + depId), depData); toast('✅ আপনার স্ক্রিনশট যাচাই করা হচ্ছে, ২–৫ মিনিটের মধ্যে ব্যালেন্স যোগ হবে।', false); closeDepositSSModal(); setTimeout(() => loadTransactionHistory(), 500); setTimeout(() => { toast('⏳ আপনার স্ক্রিনশট আসল নাকি নকল যাচাই করা হচ্ছে। ২–৫ মিনিটের মধ্যে আপনার ব্যালেন্স যোগ করা হবে।', false); }, 1000); } catch(e) { console.error(e); toast('❌ Error submitting deposit', true); } }; reader.readAsDataURL(file); };
+window.viewDepositSS = function(depId, userId, userName, amount, screenshot) { document.getElementById('adminSSImg').src = screenshot; document.getElementById('adminSSInfo').innerHTML = `<div class="row"><span class="label">User:</span><span class="value">${userName}</span></div><div class="row"><span class="label">Amount:</span><span class="value">$${amount} USDT</span></div><div class="row"><span class="label">User ID:</span><span class="value">${userId.substring(0,8)}...</span></div>`; window._currentSSDepId = depId; window._currentSSUserId = userId; window._currentSSAmount = amount; document.getElementById('adminSSView').classList.add('open'); };
+window.closeAdminSSView = function() { document.getElementById('adminSSView').classList.remove('open'); };
+window.approveDepositSS = async function() { const depId = window._currentSSDepId; const userId = window._currentSSUserId; const amount = window._currentSSAmount; if (!confirm(`এই ডিপোজিট অনুমোদন করবেন? $${amount} USDT (~৳${amount*120})`)) return; const bdtAmount = amount * 120; try { const userSnap = await window._get(window._ref(window._db, 'users/' + userId)); if (userSnap.exists()) { const userBal = userSnap.val().balance || 0; await window._update(window._ref(window._db, 'users/' + userId), { balance: userBal + bdtAmount }); } await window._update(window._ref(window._db, 'depositRequests/' + depId), { status: 'completed' }); toast(`✅ ডিপোজিট অনুমোদিত! ৳${bdtAmount.toLocaleString('en')} যোগ করা হয়েছে।`, false); closeAdminSSView(); loadDepositRequests(); loadHomeLb(); if (window.checkAndProcessReferralBonus) await checkAndProcessReferralBonus(userId); if (userId === window._curUser?.uid) loadTransactionHistory(); } catch(e) { console.error(e); toast('❌ Error approving deposit', true); } };
+window.rejectDepositSS = async function() { const depId = window._currentSSDepId; if (!confirm('এই ডিপোজিট বাতিল করবেন?')) return; try { await window._update(window._ref(window._db, 'depositRequests/' + depId), { status: 'rejected' }); toast('❌ ডিপোজিট বাতিল করা হয়েছে।', true); closeAdminSSView(); loadDepositRequests(); if (window._currentSSUserId === window._curUser?.uid) loadTransactionHistory(); } catch(e) { console.error(e); toast('❌ Error rejecting deposit', true); } };
+window.loadDepositRequests = async function() { if (!window._db) return; try { const snap = await window._get(window._ref(window._db, 'depositRequests')); const list = document.getElementById('adminDepositList'); if (!snap.exists()) { list.innerHTML = '<div style="padding:20px;text-align:center;color:rgba(255,255,255,0.2)">No deposit requests</div>'; return; } const requests = Object.entries(snap.val()).filter(([_,v]) => v.status === 'pending').sort((a,b) => b[1].time - a[1].time); let totalDeposits = 0; Object.values(snap.val()).forEach(v => { if (v.status === 'completed') totalDeposits += v.amount * 120; }); document.getElementById('adTotalDeposits').textContent = '৳' + totalDeposits.toLocaleString('en'); list.innerHTML = requests.map(([id, d]) => `<div class="deposit-item" style="cursor:pointer;padding:12px;border-bottom:1px solid rgba(255,255,255,0.05);" onclick="viewDepositSS('${id}','${d.userId}','${d.userName}',${d.amount},'${d.screenshot}')"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><span class="dep-user" style="font-family:Cinzel;color:#fff;">👤 ${d.userName}</span><span class="dep-amount" style="font-family:Cinzel;color:#2ecc71;">$${d.amount} USDT</span></div><div class="dep-method" style="font-size:11px;color:rgba(255,255,255,0.5);">Binance · Screenshot attached</div><div class="dep-time" style="font-size:9px;color:rgba(255,255,255,0.3);">${new Date(d.time).toLocaleString('en')}</div><div style="margin-top:8px;color:#ffa500;font-size:10px;">📸 Click to view screenshot</div></div>`).join(''); } catch(e) { console.error(e); } };
+window.submitWithdraw = async function(method) { if (!window._curUser || !window._db) return; let account, amount; if (method === 'bKash') { account = document.getElementById('wdBkashNum')?.value; amount = parseFloat(document.getElementById('wdBkashAmt')?.value); } else if (method === 'Nagad') { account = document.getElementById('wdNagadNum')?.value; amount = parseFloat(document.getElementById('wdNagadAmt')?.value); } else if (method === 'Binance') { account = document.getElementById('wdBinanceId')?.value; amount = parseFloat(document.getElementById('wdBinanceAmt')?.value); if (method === 'Binance') amount = amount * 120; } else if (method === 'Upay') { account = document.getElementById('wdUpayNum')?.value; amount = parseFloat(document.getElementById('wdUpayAmt')?.value); } else if (method === 'Rocket') { account = document.getElementById('wdRocketNum')?.value; amount = parseFloat(document.getElementById('wdRocketAmt')?.value); } if (!account || !amount || amount < 200) { toast('⚠️ সঠিক তথ্য দিন (মিনিমাম ৳200)', true); return; } if (window._realBal < amount) { toast('❌ আপনার ব্যালেন্স অপ্রতুল!', true); return; } const wdId = 'wd_' + Date.now(); const wdData = { userId: window._curUser.uid, userName: window._userProfile?.name || window._curUser.displayName || 'User', method: method, account: account, amount: amount, status: 'pending', time: Date.now(), cancelReason: '' }; try { await window._set(window._ref(window._db, 'withdrawalRequests/' + wdId), wdData); await window._set(window._ref(window._db, 'withdrawals/' + window._curUser.uid + '/' + wdId), wdData); toast('✅ আপনার উইথড্রয়াল অনুরোধ পাঠানো হয়েছে! অ্যাডমিন যাচাই করবে।', false); closeModal('withdraw'); setTimeout(() => loadTransactionHistory(), 500); } catch(e) { console.error(e); toast('❌ Error submitting withdrawal', true); } };
+window.loadWithdrawalRequests = async function() { if (!window._db) return; try { const snap = await window._get(window._ref(window._db, 'withdrawalRequests')); const list = document.getElementById('withdrawRequestsList'); if (!snap.exists()) { list.innerHTML = '<div style="padding:20px;text-align:center;color:rgba(255,255,255,0.2)">No pending withdrawals</div>'; document.getElementById('adPendingWithdrawals').textContent = '0'; return; } const requests = Object.entries(snap.val()).filter(([_,v]) => v.status === 'pending').sort((a,b) => b[1].time - a[1].time); document.getElementById('adPendingWithdrawals').textContent = requests.length; list.innerHTML = requests.map(([id, r]) => `<div class="wd-request-item" style="padding:12px;border-bottom:1px solid rgba(255,255,255,0.05);"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;"><span style="font-family:Cinzel;color:#fff;">👤 ${r.userName}</span><span style="font-family:Cinzel;color:var(--gl);">৳${r.amount.toLocaleString('en')}</span></div><div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;">${r.method} · ${r.account}</div><div style="font-size:9px;color:rgba(255,255,255,0.3);margin-bottom:8px;">${new Date(r.time).toLocaleString('en')}</div><div style="display:flex;gap:8px;"><button onclick="acceptWithdrawal('${id}','${r.userId}',${r.amount})" style="flex:1;padding:6px;background:rgba(39,174,96,0.2);border:1px solid rgba(39,174,96,0.4);border-radius:6px;color:#2ecc71;cursor:pointer;">✅ Accept</button><button onclick="rejectWithdrawal('${id}','${r.userId}')" style="flex:1;padding:6px;background:rgba(231,76,60,0.2);border:1px solid rgba(231,76,60,0.4);border-radius:6px;color:#e74c3c;cursor:pointer;">❌ Reject</button></div></div>`).join(''); } catch(e) { console.error(e); } };
+window.acceptWithdrawal = async function(wdId, userId, amount) { if (!confirm(`এই উইথড্রয়াল অনুমোদন করবেন? ৳${amount.toLocaleString('en')}`)) return; try { const userSnap = await window._get(window._ref(window._db, 'users/' + userId)); if (userSnap.exists()) { const userBal = userSnap.val().balance || 0; if (userBal < amount) { toast('❌ ইউজারের ব্যালেন্স অপ্রতুল!', true); return; } await window._update(window._ref(window._db, 'users/' + userId), { balance: userBal - amount }); await window._update(window._ref(window._db, 'withdrawalRequests/' + wdId), { status: 'completed', cancelReason: '' }); await window._update(window._ref(window._db, 'withdrawals/' + userId + '/' + wdId), { status: 'completed' }); toast('✅ উইথড্রয়াল অনুমোদিত! ব্যালেন্স কেটে নেওয়া হয়েছে।', false); loadWithdrawalRequests(); loadHomeLb(); if (userId === window._curUser?.uid) loadTransactionHistory(); } } catch(e) { console.error(e); toast('❌ Error accepting withdrawal', true); } };
+window.rejectWithdrawal = async function(wdId, userId) { const reason = prompt('বাতিলের কারণ লিখুন:', 'Insufficient funds / Account mismatch'); if (reason === null) return; try { await window._update(window._ref(window._db, 'withdrawalRequests/' + wdId), { status: 'rejected', cancelReason: reason }); await window._update(window._ref(window._db, 'withdrawals/' + userId + '/' + wdId), { status: 'rejected', cancelReason: reason }); toast('❌ উইথড্রয়াল বাতিল করা হয়েছে।', true); loadWithdrawalRequests(); if (userId === window._curUser?.uid) { loadTransactionHistory(); setTimeout(() => { document.getElementById('wdReasonText').textContent = reason; document.getElementById('wdReasonModal').classList.add('open'); }, 500); } } catch(e) { console.error(e); toast('❌ Error rejecting withdrawal', true); } };
+window.loadAdminUsers = async function() { if (!window._db) return; try { const snap = await window._get(window._ref(window._db, 'users')); if (!snap.exists()) { document.getElementById('userList').innerHTML = '<div style="padding:20px;text-align:center;color:rgba(255,255,255,0.2);font-family:Cinzel,serif;font-size:11px">No users</div>'; return; } const users = snap.val(); const uids = Object.keys(users); const bannedUsers = getBannedUsersFromLocal(); document.getElementById('adTotalUsers').textContent = uids.length; let tb = 0, totalBets = 0; uids.forEach(uid => { tb += (users[uid].balance || 0); totalBets += (users[uid].totalBets || 0); }); document.getElementById('adTotalBal').textContent = '৳' + tb.toLocaleString('en'); document.getElementById('adTotalBets').textContent = totalBets; document.getElementById('userList').innerHTML = uids.map(uid => { const u = users[uid]; const isBanned = bannedUsers.includes(uid); return `<div class="user-row" data-uid="${uid}"><div class="ur-avatar">${u.photoURL && !u.photoURL.startsWith('data') ? `<img src="${u.photoURL}" style="width:36px;height:36px;border-radius:50%;object-fit:cover" onerror="this.parentElement.textContent='👤'"/>` : u.photoURL && u.photoURL.startsWith('data') ? `<img src="${u.photoURL}" style="width:36px;height:36px;border-radius:50%;object-fit:cover"/>` : '👤'}</div><div class="ur-info"><div class="ur-name">${u.name || 'Unknown'} ${isBanned ? '<span style="color:#ff4444;">[BANNED]</span>' : ''}</div><div class="ur-email">${u.email || uid.substring(0,12)}</div></div><div style="text-align:right;margin-right:8px"><div class="ur-bal">৳${(u.balance || 0).toLocaleString('en')}</div></div><div class="admin-btn-row"><button class="add-bal-btn" onclick="openAddBal('${uid}','${(u.name || 'User').replace(/'/g, "\\'")}',${u.balance || 0},true)">+ Add</button><button class="sub-bal-btn" onclick="openAddBal('${uid}','${(u.name || 'User').replace(/'/g, "\\'")}',${u.balance || 0},false)">− Sub</button>${!isBanned ? `<button class="sub-bal-btn" style="background:rgba(231,76,60,0.15);" onclick="banUserByIdFromList('${uid}')">🚫 Ban</button>` : `<button class="add-bal-btn" style="background:rgba(39,174,96,0.15);" onclick="unbanUserByIdFromList('${uid}')">✅ Unban</button>`}</div></div>`; }).join(''); } catch(e) { console.error(e); } };
+window.banUserByIdFromList = function(uid) { const reason = prompt('Ban reason:', 'Violation of terms'); if (reason === null) return; let banned = getBannedUsersFromLocal(); if (!banned.includes(uid)) { banned.push(uid); saveBannedUsersToLocal(banned); toast(`🚫 User banned. Reason: ${reason}`, false); loadAdminUsers(); updateBannedUsersList(); if (window._curUser && window._curUser.uid === uid) logout(); } };
+window.unbanUserByIdFromList = function(uid) { let banned = getBannedUsersFromLocal(); if (banned.includes(uid)) { banned = banned.filter(id => id !== uid); saveBannedUsersToLocal(banned); toast(`✅ User unbanned`, false); loadAdminUsers(); updateBannedUsersList(); } };
+window.loadAdminMessages = async function() { if (!window._db) return; try { const snap = await window._get(window._ref(window._db, 'messages')); if (!snap.exists()) { document.getElementById('adminMsgList').innerHTML = '<div style="padding:20px;text-align:center;color:rgba(255,255,255,0.2);font-family:Cinzel,serif;font-size:11px">No messages yet</div>'; document.getElementById('adTotalMsgs').textContent = 0; return; } const msgs = snap.val(); const arr = Object.values(msgs).sort((a,b) => b.time - a.time); document.getElementById('adTotalMsgs').textContent = arr.length; document.getElementById('adminMsgList').innerHTML = arr.map(m => `<div class="msg-item"><div class="msg-header"><span class="msg-user">👤 ${m.userName || 'User'}<span class="msg-new-badge">NEW</span></span><span class="msg-time">${new Date(m.time).toLocaleString('en')}</span></div><div class="msg-text">${m.text}</div></div>`).join(''); } catch(e) { console.error(e); } };
+let _ablUid = null, _ablCurBal = 0, _ablIsAdd = true;
+window.openAddBal = function(uid, name, bal, isAdd) { _ablUid = uid; _ablCurBal = parseFloat(bal); _ablIsAdd = isAdd; const title = document.getElementById('ablTitle'); const btn = document.getElementById('ablConfirmBtn'); if (isAdd) { title.textContent = '💰 ADD BALANCE'; title.className = 'abl-title add-mode'; btn.textContent = '✅ ADD'; btn.className = 'abl-confirm add'; } else { title.textContent = '➖ SUBTRACT BALANCE'; title.className = 'abl-title sub-mode'; btn.textContent = '⛔ SUBTRACT'; btn.className = 'abl-confirm sub'; } document.getElementById('ablUserName').textContent = name + ' — Current: ৳' + parseFloat(bal).toLocaleString('en'); document.getElementById('ablAmount').value = ''; document.getElementById('addBalModal').classList.add('open'); };
+window.closeAddBal = function() { document.getElementById('addBalModal').classList.remove('open'); };
+window.setAblAmt = function(v) { document.getElementById('ablAmount').value = v; };
+window.confirmAddBal = async function() { const amt = parseFloat(document.getElementById('ablAmount').value); if (!amt || amt <= 0) { toast('⚠️ Valid amount দিন', true); return; } if (!_ablUid || !window._db) return; let newBal = _ablIsAdd ? _ablCurBal + amt : Math.max(0, _ablCurBal - amt); try { await window._update(window._ref(window._db, 'users/' + _ablUid), { balance: newBal }); toast(`✅ Balance ${_ablIsAdd ? 'added' : 'subtracted'}: ৳${amt.toLocaleString('en')}`, false); closeAddBal(); loadAdminUsers(); loadHomeLb(); } catch(e) { console.error(e); toast('❌ Error updating balance', true); } };
+window._saveBetHistory = async function(entry) { if (!window._curUser || !window._db) return; try { const uid = window._curUser.uid; await window._push(window._ref(window._db, 'users/' + uid + '/bets'), entry); const prof = window._userProfile || {}; await window._update(window._ref(window._db, 'users/' + uid), { totalBets: (prof.totalBets || 0) + 1, totalProfit: (prof.totalProfit || 0) + (entry.profit || 0) }); loadBetHistory(); loadHomeLb(); } catch(e) { console.error(e); } };
+window.loadBetHistory = async function() { if (!window._curUser || !window._db) return; try { const snap = await window._get(window._ref(window._db, 'users/' + window._curUser.uid + '/bets')); const histList = document.getElementById('histList'); if (!snap.exists()) { histList.innerHTML = '<div class="hist-empty">No bets yet — go play!</div>'; return; } const bets = Object.values(snap.val()).sort((a,b) => b.time - a.time); let totalProfit = 0, totalLoss = 0; document.getElementById('hsTotalBets').textContent = bets.length; const gameIcons = { Aviator: '✈️', Cricket: '🏏' }; histList.innerHTML = bets.map(b => { const isProfit = b.profit >= 0; if (isProfit) totalProfit += b.profit; else totalLoss += Math.abs(b.profit); return `<div class="hist-item"><div class="hi-game" style="background:rgba(0,0,0,0.4)">${gameIcons[b.game] || '🎮'}</div><div class="hi-info"><div class="hi-name">${b.game}</div><div class="hi-detail">${b.detail} · ${new Date(b.time).toLocaleString('en')}</div></div><div class="hi-result"><div class="hi-amt ${isProfit ? 'profit' : 'loss'}">${isProfit ? '+' : '-'}৳${Math.abs(b.profit).toLocaleString('en')}</div><div class="hi-status">${isProfit ? 'WIN' : 'LOSS'} · ৳${b.bet.toLocaleString('en')}</div></div></div>`; }).join(''); document.getElementById('hsTotalProfit').textContent = '৳' + totalProfit.toLocaleString('en'); document.getElementById('hsTotalLoss').textContent = '৳' + totalLoss.toLocaleString('en'); } catch(e) { console.error(e); } };
+let currentTxTab = 'all'; let txPrivacyHidden = true;
+window.toggleTxPrivacy = function() { txPrivacyHidden = !txPrivacyHidden; const toggle = document.getElementById('txPrivacyToggle'); const icon = toggle.querySelector('i'); const text = toggle.querySelector('.toggle-text'); if (txPrivacyHidden) { icon.className = 'fas fa-eye-slash'; text.textContent = 'Hide'; toggle.classList.add('hide'); } else { icon.className = 'fas fa-eye'; text.textContent = 'Show'; toggle.classList.remove('hide'); } loadTransactionHistory(); };
+function maskSensitiveString(str) { if (!str) return str; if (str.includes('@')) return str; if (str.match(/^\+?[0-9]{10,14}$/)) return str.substring(0,3) + '******' + str.substring(str.length-2); if (str.match(/^[0-9a-fA-F]{20,}$/)) return '****' + str.substring(str.length-4); return str; }
+window.loadTransactionHistory = async function() { if (!window._curUser || !window._db) return; try { const depositsSnap = await window._get(window._ref(window._db, 'depositRequests')); const withdrawalsSnap = await window._get(window._ref(window._db, 'withdrawalRequests')); let allTxs = []; if (depositsSnap.exists()) { const deposits = Object.entries(depositsSnap.val()).filter(([_, d]) => d.userId === window._curUser.uid).map(([id, d]) => { let detail = `${d.amount} USDT ~ ৳${(d.amount * 120).toLocaleString('en')}`; return { id, type: 'deposit', method: 'Binance', amount: d.amount * 120, status: d.status || 'pending', time: d.time || Date.now(), detailRaw: detail, sensitive: '' }; }); allTxs = [...allTxs, ...deposits]; } if (withdrawalsSnap.exists()) { const withdrawals = Object.entries(withdrawalsSnap.val()).filter(([_, w]) => w.userId === window._curUser.uid).map(([id, w]) => { let account = w.account || ''; let masked = txPrivacyHidden ? maskSensitiveString(account) : account; return { id, type: 'withdraw', method: w.method || 'Unknown', amount: w.amount || 0, status: w.status || 'pending', time: w.time || Date.now(), detailRaw: w.account, sensitive: account }; }); allTxs = [...allTxs, ...withdrawals]; } allTxs.sort((a,b) => b.time - a.time); renderTransactionHistory(allTxs); document.getElementById('txUpdateTime').textContent = new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'}); } catch(e) { console.error(e); } };
+function renderTransactionHistory(txs) { const list = document.getElementById('txList'); const filtered = currentTxTab === 'all' ? txs : txs.filter(t => t.type === currentTxTab); if (filtered.length === 0) { list.innerHTML = `<div class="tx-empty">No ${currentTxTab === 'all' ? '' : currentTxTab} transactions yet</div>`; return; } const statusIcons = { pending: '⏳', completed: '✅', rejected: '❌' }; const statusColors = { pending: '#ffa500', completed: '#2ecc71', rejected: '#e74c3c' }; list.innerHTML = filtered.map(t => { let detailDisplay = t.type === 'withdraw' ? (txPrivacyHidden ? maskSensitiveString(t.sensitive) : t.sensitive) : t.detailRaw; return `<div class="tx-item"><div class="tx-icon" style="background:${t.type === 'deposit' ? 'rgba(46,204,113,0.1)' : 'rgba(231,76,60,0.1)'}">${t.type === 'deposit' ? '💰' : '💸'}</div><div class="tx-info"><div class="tx-title">${t.type === 'deposit' ? 'Deposit' : 'Withdrawal'} via ${t.method}</div><div class="tx-detail"><span>${new Date(t.time).toLocaleDateString('en')}</span><span class="privacy-part">${detailDisplay}</span></div></div><div style="text-align:right"><div class="tx-amount ${t.type === 'deposit' ? 'deposit' : 'withdraw'}">${t.type === 'deposit' ? '+' : '-'}৳${t.amount.toLocaleString('en')}</div><div class="tx-status ${t.status}" style="color:${statusColors[t.status] || '#ffa500'}">${statusIcons[t.status] || '⏳'} ${t.status.toUpperCase()}</div></div></div>`; }).join(''); }
+window.switchTxTab = function(tab) { currentTxTab = tab; document.getElementById('txTabAll').classList.toggle('active', tab === 'all'); document.getElementById('txTabDeposit').classList.toggle('active', tab === 'deposit'); document.getElementById('txTabWithdraw').classList.toggle('active', tab === 'withdraw'); loadTransactionHistory(); };
+window.sendSupportMsg = async function() { const inp = document.getElementById('scInp'); const txt = inp.value.trim(); if (!txt) return; const user = window._curUser; const userName = user ? (window._userProfile?.name || user.displayName || 'User') : 'Guest'; const msgs = document.getElementById('scMessages'); const t = new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'}); msgs.innerHTML += `<div class="sc-msg user">${txt}<div class="sc-msg-time">You · ${t}</div></div>`; msgs.scrollTop = msgs.scrollHeight; inp.value = ''; if (user && window._db) { try { await window._push(window._ref(window._db, 'messages'), { text: txt, userName: userName, userId: user.uid, time: Date.now(), replied: false }); } catch(e) { console.error(e); } } setTimeout(() => { msgs.innerHTML += `<div class="sc-msg support">আপনার message পেয়েছি! ⚡ শীঘ্রই reply করব।<div class="sc-msg-time">Support · ${new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'})}</div></div>`; msgs.scrollTop = msgs.scrollHeight; loadSupportMessages(); }, 1500); };
+window.loadSupportMessages = async function() { if (!window._db) return; try { const snap = await window._get(window._ref(window._db, 'messages')); const adminList = document.getElementById('adminSupportReplyList'); if (!adminList) return; if (!snap.exists()) { adminList.innerHTML = '<div style="padding:20px;text-align:center;color:rgba(255,255,255,0.2)">No messages yet</div>'; document.getElementById('supportMessageBadge').style.display = 'none'; return; } const msgs = Object.entries(snap.val()).map(([id, m]) => ({ id, ...m })).sort((a,b) => b.time - a.time); const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000; const newMessages = msgs.filter(m => !m.replied && m.time > oneDayAgo).length; if (newMessages > 0) { document.getElementById('supportMessageBadge').style.display = 'block'; document.getElementById('supportMessageBadge').textContent = newMessages > 9 ? '9+' : newMessages; } else { document.getElementById('supportMessageBadge').style.display = 'none'; } adminList.innerHTML = msgs.map(m => `<div class="msg-item" style="position:relative;"><div class="msg-header"><span class="msg-user">👤 ${m.userName || 'User'}</span><span class="msg-time">${new Date(m.time).toLocaleString('en')}</span></div><div class="msg-text">${m.text}</div>${!m.replied ? '<div class="msg-new-badge" style="margin:8px 0 0 0;display:inline-block;">NEW</div>' : ''}<div style="margin-top:8px;display:flex;gap:8px;"><button class="add-bal-btn" onclick="openSupportReplyModal('${m.id}','${m.userId}','${m.text.replace(/'/g, "\\'")}')">💬 Reply</button>${m.replied ? '<span style="color:#2ecc71;font-size:9px;">✓ Replied</span>' : ''}</div></div>`).join(''); } catch(e) { console.error(e); } };
+let currentReplyMessageId = null, currentReplyUserId = null;
+window.openSupportReplyModal = function(msgId, userId, originalMsg) { currentReplyMessageId = msgId; currentReplyUserId = userId; document.getElementById('supportReplyOriginal').textContent = originalMsg; document.getElementById('supportReplyInput').value = ''; document.getElementById('supportReplyModal').classList.add('open'); };
+window.closeSupportReplyModal = function() { document.getElementById('supportReplyModal').classList.remove('open'); currentReplyMessageId = null; currentReplyUserId = null; };
+window.sendSupportReply = async function() { const reply = document.getElementById('supportReplyInput').value.trim(); if (!reply) { toast('⚠️ Reply দিন', true); return; } if (!currentReplyMessageId || !currentReplyUserId || !window._db) { toast('❌ Error: No message selected', true); return; } try { const msgData = { text: reply, userName: 'Support Team', userId: currentReplyUserId, time: Date.now(), isReply: true, repliedTo: currentReplyMessageId }; await window._push(window._ref(window._db, 'messages'), msgData); await window._update(window._ref(window._db, 'messages/' + currentReplyMessageId), { replied: true, repliedAt: Date.now() }); toast('✅ Reply sent!', false); closeSupportReplyModal(); loadSupportMessages(); } catch(e) { console.error(e); toast('❌ Error sending reply', true); } };
+window.loadAnnouncementSettings = async function() { if (!window._db) return; try { const snap = await window._get(window._ref(window._db, 'announcement')); if (snap.exists()) { const data = snap.val(); if (data.show === true && data.text) { document.getElementById('announcementText').textContent = data.text; document.getElementById('announcementBar').style.display = 'flex'; } else { document.getElementById('announcementBar').style.display = 'none'; } if (document.getElementById('adminAnnouncementText')) { document.getElementById('adminAnnouncementText').value = data.text || '📢 Welcome to ROYEL AVAITOR! New features added.'; document.getElementById('adminAnnouncementStatus').value = data.show === true ? 'show' : 'hide'; } } else { document.getElementById('announcementBar').style.display = 'none'; if (document.getElementById('adminAnnouncementText')) { document.getElementById('adminAnnouncementText').value = '📢 Welcome to ROYEL AVAITOR! New features added.'; document.getElementById('adminAnnouncementStatus').value = 'hide'; } } } catch(e) { console.error(e); } };
+window.closeAnnouncement = function() { document.getElementById('announcementBar').style.display = 'none'; };
+window.saveAnnouncementSettings = async function() { const text = document.getElementById('adminAnnouncementText').value.trim(); const status = document.getElementById('adminAnnouncementStatus').value; if (!text) { toast('⚠️ Announcement text দিন', true); return; } const show = status === 'show'; try { await window._set(window._ref(window._db, 'announcement'), { text: text, show: show, updatedAt: Date.now() }); toast('✅ Announcement updated!', false); loadAnnouncementSettings(); } catch(e) { console.error(e); toast('❌ Error saving announcement', true); } };
+window.openReferralModal = function() { document.getElementById('referralModal').classList.add('open'); };
+window.closeReferralModal = function() { document.getElementById('referralModal').classList.remove('open'); };
+window.copyReferralLink = function() { const link = document.getElementById('referralLinkText').textContent; navigator.clipboard.writeText(link); toast('✅ Referral link copied!', false); };
+window.processReferral = async function(referralCode, newUserId) { if (!referralCode || !newUserId || !window._db) return; try { const usersSnap = await window._get(window._ref(window._db, 'users')); if (!usersSnap.exists()) return; let referrerId = null; Object.entries(usersSnap.val()).forEach(([uid, data]) => { if (data.referralCode === referralCode && uid !== newUserId) referrerId = uid; }); if (!referrerId) return; await window._set(window._ref(window._db, 'referrals/' + newUserId), { referredBy: referrerId, referredAt: Date.now(), completed: false }); } catch(e) { console.error(e); } };
+window.checkAndProcessReferralBonus = async function(userId) { if (!window._db) return; try { const referralSnap = await window._get(window._ref(window._db, 'referrals/' + userId)); if (!referralSnap.exists()) return; const referral = referralSnap.val(); if (referral.completed) return; const referrerId = referral.referredBy; const referrerSnap = await window._get(window._ref(window._db, 'users/' + referrerId)); if (!referrerSnap.exists()) return; const BONUS_AMOUNT = 6000; const referrerData = referrerSnap.val(); const newBalance = (referrerData.balance || 0) + BONUS_AMOUNT; await window._update(window._ref(window._db, 'users/' + referrerId), { balance: newBalance, referralCount: (referrerData.referralCount || 0) + 1, referralEarned: (referrerData.referralEarned || 0) + BONUS_AMOUNT }); await window._update(window._ref(window._db, 'referrals/' + userId), { completed: true, bonusGiven: BONUS_AMOUNT }); await window._push(window._ref(window._db, 'users/' + referrerId + '/transactions'), { type: 'referral_bonus', amount: BONUS_AMOUNT, time: Date.now(), detail: 'Friend deposit bonus' }); if (window._curUser && window._curUser.uid === referrerId) { toast(`🎉 Referral bonus: +৳${BONUS_AMOUNT.toLocaleString('en')}!`, false); updateBals(); } } catch(e) { console.error(e); } };
+window.claimReward = async function() { if (!window._curUser || !window._db) return; const prof = window._userProfile || {}; const today = new Date().toDateString(); if (prof.lastClaimDate === today) { toast('⚠️ আজকের reward নেওয়া হয়েছে!', true); document.getElementById('rewardModal').classList.remove('open'); return; } if (window._realBal <= 0) { toast('❌ Deposit থাকতে হবে!', true); document.getElementById('rewardModal').classList.remove('open'); setTimeout(() => openDepositSSModal(), 600); return; } const dayNum = Math.min((prof.lastClaimedDay || 0) + 1, 7); const rewards = [500, 800, 1000, 1200, 1500, 2000, 3000]; const amt = rewards[dayNum - 1]; try { await window._update(window._ref(window._db, 'users/' + window._curUser.uid), { balance: window._realBal + amt, lastClaimedDay: dayNum >= 7 ? 0 : dayNum, lastClaimDate: today, dailyStreak: dayNum }); document.getElementById('rewardModal').classList.remove('open'); toast(`🎁 Day ${dayNum} Reward: ৳${amt.toLocaleString('en')} পেলেন! 🎉`, false); renderRewardDays(); loadHomeLb(); } catch(e) { console.error(e); toast('❌ Error claiming reward', true); } };
+window.renderRewardDays = function() { const prof = window._userProfile || {}; const today = new Date().toDateString(); const claimedDay = prof.lastClaimedDay || 0; const claimedToday = prof.lastClaimDate === today; const rewards = [500, 800, 1000, 1200, 1500, 2000, 3000]; const icons = ['🎁','🎀','💎','🌟','👑','🔥','🏆']; document.getElementById('rewardStreak').textContent = `Day ${claimedDay || 1}`; document.getElementById('rewardDays').innerHTML = rewards.map((r, i) => { const dayN = i + 1; const isClaimed = dayN <= claimedDay && !(dayN === claimedDay && !claimedToday); const isToday = dayN === (claimedToday ? claimedDay : claimedDay + 1); const isLocked = dayN > (claimedToday ? claimedDay : claimedDay + 1); return `<div class="reward-day ${isClaimed ? 'claimed' : ''} ${isToday ? 'today' : ''} ${isLocked ? 'locked' : ''}" onclick="${isLocked ? '' : isToday ? `openRewardClaim(${dayN},${r})` : 'void(0)'}">${isClaimed ? '<div class="rd-claimed">✅</div>' : ''}<div class="rd-day">DAY ${dayN}</div><div class="rd-ico">${icons[i]}</div><div class="rd-amt">৳${r >= 1000 ? Math.floor(r/1000) + 'K' : r}</div></div>`; }).join(''); };
+window.openRewardClaim = function(day, amt) { const icons = ['🎁','🎀','💎','🌟','👑','🔥','🏆']; document.getElementById('rcEmoji').textContent = icons[day - 1]; document.getElementById('rcDay').textContent = `DAY ${day}`; document.getElementById('rcTitle').textContent = `৳${amt.toLocaleString('en')} Reward!`; document.getElementById('rewardModal').classList.add('open'); };
+const DEFAULT_LB = [{id:'lb1', name:'RahimBetKing', country:'🇧🇩 Bangladesh', amount:485000},{id:'lb2', name:'Sumon_Royal', country:'🇧🇩 Bangladesh', amount:362000},{id:'lb3', name:'NightHawk99', country:'🇮🇳 India', amount:298000},{id:'lb4', name:'GoldRush_X', country:'🇵🇰 Pakistan', amount:241000},{id:'lb5', name:'TigerBet88', country:'🇧🇩 Bangladesh', amount:187000},{id:'lb6', name:'AcePlayer_BD', country:'🇧🇩 Bangladesh', amount:154000},{id:'lb7', name:'LuckyKing7', country:'🇱🇰 Sri Lanka', amount:132000},{id:'lb8', name:'SpeedBet_Pro', country:'🇧🇩 Bangladesh', amount:118000}];
+async function loadHomeLb() { if (!window._db || !window._ref || !window._get) { renderHomeLb(DEFAULT_LB); return; } try { const snap = await window._get(window._ref(window._db, 'leaderboard')); if (snap.exists()) { const data = snap.val(); const arr = Object.entries(data).map(([id, v]) => ({ id, ...v })).sort((a,b) => b.amount - a.amount); renderHomeLb(arr.length ? arr : DEFAULT_LB); } else { for (const e of DEFAULT_LB) { await window._set(window._ref(window._db, 'leaderboard/' + e.id), { name: e.name, country: e.country, amount: e.amount }); } renderHomeLb(DEFAULT_LB); } } catch(e) { console.error(e); renderHomeLb(DEFAULT_LB); } }
+function renderHomeLb(entries) { const medals = ['🥇', '🥈', '🥉']; const rankClass = ['hlb-rank-1', 'hlb-rank-2', 'hlb-rank-3']; const colors = ['#f0d060', '#c0c0c0', '#cd7f32']; document.getElementById('homeLbList').innerHTML = entries.map((e, i) => { const isTop = i < 3; const rankEl = isTop ? `<div class="hlb-rank-badge ${rankClass[i]}" style="color:#000">${medals[i]}</div>` : `<div class="hlb-rank-badge hlb-rank-other">#${i + 1}</div>`; return `<div class="hlb-row">${rankEl}<div class="hlb-info"><div class="hlb-name" style="${isTop ? 'color:' + colors[i] : ''}">${e.name}</div><div class="hlb-country">${e.country}</div></div><div style="text-align:right"><div class="hlb-amt">৳${Number(e.amount).toLocaleString('en')}</div>${isTop ? `<div class="hlb-crown">${i === 0 ? '👑 Champion' : i === 1 ? '⭐ Runner-up' : '🏅 3rd Place'}</div>` : ''}</div></div>`; }).join(''); }
+window.loadAdminLeaderboard = async function() { if (!window._db) return; try { const snap = await window._get(window._ref(window._db, 'leaderboard')); let entries = []; if (snap.exists()) { entries = Object.entries(snap.val()).map(([id, v]) => ({ id, ...v })).sort((a,b) => b.amount - a.amount); } else { for (const e of DEFAULT_LB) { await window._set(window._ref(window._db, 'leaderboard/' + e.id), { name: e.name, country: e.country, amount: e.amount }); } entries = DEFAULT_LB; } renderAdminLb(entries); } catch(e) { console.error(e); } };
+function renderAdminLb(entries) { const medals = ['🥇','🥈','🥉']; document.getElementById('adminLbList').innerHTML = entries.map((e,i) => `<div class="alb-row" id="alb-${e.id}"><div class="alb-rank-lbl">${i < 3 ? medals[i] : ('#' + (i+1) + ' PLACE')} — RANK ${i+1}</div><input class="alb-inp-full" id="albn-${e.id}" value="${e.name}" placeholder="Name"/><div class="alb-fields"><input class="alb-inp" id="albc-${e.id}" value="${e.country}" placeholder="🇧🇩 Country"/><input class="alb-inp" id="alba-${e.id}" value="${e.amount}" type="number" placeholder="Amount"/></div><div class="alb-actions"><button class="alb-save" onclick="saveLbEntry('${e.id}')">💾 SAVE</button><button class="alb-delete" onclick="deleteLbEntry('${e.id}')">🗑</button></div></div>`).join(''); }
+window.saveLbEntry = async function(id) { const name = document.getElementById('albn-' + id)?.value?.trim(); const country = document.getElementById('albc-' + id)?.value?.trim(); const amount = parseFloat(document.getElementById('alba-' + id)?.value) || 0; if (!name) { toast('⚠️ Name দিন', true); return; } try { await window._set(window._ref(window._db, 'leaderboard/' + id), { name, country, amount }); toast('✅ Leaderboard updated!', false); loadAdminLeaderboard(); loadHomeLb(); } catch(e) { console.error(e); toast('❌ Error saving entry', true); } };
+window.deleteLbEntry = async function(id) { if (!confirm('Delete this entry?')) return; try { await window._set(window._ref(window._db, 'leaderboard/' + id), null); toast('🗑 Deleted', false); loadAdminLeaderboard(); loadHomeLb(); } catch(e) { console.error(e); toast('❌ Error deleting entry', true); } };
+window.addLbEntry = async function() { const id = 'lb_' + Date.now(); try { await window._set(window._ref(window._db, 'leaderboard/' + id), { name: 'New Player', country: '🇧🇩 Bangladesh', amount: 0 }); toast('✅ New entry added!', false); loadAdminLeaderboard(); loadHomeLb(); } catch(e) { console.error(e); toast('❌ Error adding entry', true); } };
+window.setAvForcedMult = function() { const mult = parseFloat(document.getElementById('adminAvMult').value); if (isNaN(mult) || mult < 10 || mult > 100) { toast('⚠️ 10x to 100x এর মধ্যে দিন', true); return; } avForcedMult = mult; document.getElementById('avAdminStatus').innerHTML = `Current: Forced next crash at ${mult.toFixed(1)}x`; toast(`✅ Next Aviator crash set to ${mult}x`, false); };
+window.clearAvForcedMult = function() { avForcedMult = null; document.getElementById('avAdminStatus').innerHTML = 'Current: Random (10x-100x)'; toast('🔄 Random mode enabled', false); };
+document.addEventListener('DOMContentLoaded', function() { setTimeout(() => { updateBals(); if (document.getElementById('aviatorPage')) avStartRound(); loadHomeLb(); loadTransactionHistory(); loadAnnouncementSettings(); loadSupportMessages(); loadTotalUsersCount(); }, 1000); });
 </script>
 </body>
 </html>
+
+ে
