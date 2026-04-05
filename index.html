@@ -1465,7 +1465,7 @@ input::placeholder{color:rgba(253,246,227,0.18);}
       <div class="admin-section" style="margin-top:14px"><div class="admin-sec-title">🤖 AI ASSISTANT CONTROL</div><div style="padding:16px"><div class="igrp"><label class="ilbl">AI Name</label><input type="text" id="aiName" class="alb-inp-full" value="Royal AI"></div><div class="igrp"><label class="ilbl">Welcome Message</label><input type="text" id="aiWelcome" class="alb-inp-full" value="আমি Royal Bet AI! প্রশ্ন করুন।"></div><div class="igrp"><label class="ilbl">Auto-Response Mode</label><select id="aiMode" class="alb-inp-full"><option value="smart">Smart AI (Bangla+English)</option><option value="simple">Simple Replies</option></select></div><button onclick="updateAISettings()" class="btn-sub" style="margin-top:12px;">💾 SAVE AI SETTINGS</button></div></div>
     </div>
     <div class="admin-tab-content" id="atab-aviator">
-      <div class="admin-section" style="margin-top:14px"><div class="admin-sec-title">✈ AVIATOR CONTROL (Set Next Crash Multiplier)</div><div style="padding:16px"><div class="igrp"><label class="ilbl">Next Round Crash Multiplier (X)</label><input type="number" id="adminAvMult" class="alb-inp-full" value="15" min="10" max="100" step="0.1"><div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;">Min 10x | Max 100x</div></div><div style="display:flex;gap:10px;margin-top:16px;"><button onclick="setAvForcedMult()" class="btn-sub" style="background:linear-gradient(135deg,#8a6a1f,#c9a84c);">🎯 SET NEXT CRASH</button><button onclick="clearAvForcedMult()" class="btn-sub" style="background:linear-gradient(135deg,#5c0a0a,#c0392b);">🔄 RANDOM MODE</button></div><div class="notice" style="margin-top:12px;" id="avAdminStatus">Current: Random (10x-100x)</div></div></div>
+      <div class="admin-section" style="margin-top:14px"><div class="admin-sec-title">✈ AVIATOR CONTROL (Set Next Crash Multiplier)</div><div style="padding:16px"><div class="igrp"><label class="ilbl">Next Round Crash Multiplier (X)</label><input type="number" id="adminAvMult" class="alb-inp-full" value="5" min="3" max="100" step="0.1"><div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;">Min 3x | Max 100x (3x guaranteed minimum)</div></div><div style="display:flex;gap:10px;margin-top:16px;"><button onclick="setAvForcedMult()" class="btn-sub" style="background:linear-gradient(135deg,#8a6a1f,#c9a84c);">🎯 SET NEXT CRASH</button><button onclick="clearAvForcedMult()" class="btn-sub" style="background:linear-gradient(135deg,#5c0a0a,#c0392b);">🔄 RANDOM MODE</button></div><div class="notice" style="margin-top:12px;" id="avAdminStatus">Current: Random (3x-100x)</div></div></div>
     </div>
     <div class="admin-tab-content" id="atab-announcement">
       <div class="admin-section" style="margin-top:14px"><div class="admin-sec-title">📢 ANNOUNCEMENT CONTROL</div><div style="padding:16px"><div class="igrp"><label class="ilbl">Announcement Text</label><input type="text" id="adminAnnouncementText" class="alb-inp-full" value="📢 Welcome to ROYEL AVAITOR! New features added." placeholder="Enter announcement..."></div><div class="igrp"><label class="ilbl">Status</label><select id="adminAnnouncementStatus" class="alb-inp-full"><option value="show">Show Announcement</option><option value="hide">Hide Announcement</option></select></div><button onclick="saveAnnouncementSettings()" class="btn-sub" style="margin-top:12px;">💾 SAVE ANNOUNCEMENT</button><div class="notice" style="margin-top:12px;">When "Show" is selected, all users will see the announcement on home page. Users can close it individually.</div></div></div>
@@ -1651,7 +1651,22 @@ window.unbanUserById = function() { const userId = document.getElementById('unba
 window.getBannedUsersFromLocal = getBannedUsersFromLocal;
 
 let avPhase = 'idle', avBetPlaced = false, avBetAmt = 0, avMult = 1.00, avCrashAt = 1.00, avRaf = null, avRoundStart = 0, avCdTimer = null; const avPts = []; let avCtx = null; let avForcedMult = null;
-function avCrashPt() { if (avForcedMult) { const m = avForcedMult; avForcedMult = null; return m; } const r = Math.random(); if (r < 0.25) return 10 + Math.random() * 10; if (r < 0.5) return 20 + Math.random() * 20; if (r < 0.7) return 40 + Math.random() * 30; if (r < 0.9) return 70 + Math.random() * 20; return 90 + Math.random() * 10; }
+// --- ENFORCED MINIMUM 3x CRASH ---
+function avCrashPt() { 
+  if (avForcedMult) { 
+    let m = avForcedMult; 
+    avForcedMult = null; 
+    return Math.max(3, m);  // never below 3x
+  } 
+  const r = Math.random(); 
+  let val;
+  if (r < 0.25) val = 10 + Math.random() * 10;
+  else if (r < 0.5) val = 20 + Math.random() * 20;
+  else if (r < 0.7) val = 40 + Math.random() * 30;
+  else if (r < 0.9) val = 70 + Math.random() * 20;
+  else val = 90 + Math.random() * 10;
+  return Math.max(3, val);
+}
 function avInitCanvas() { const cv = document.getElementById('avCv'); const c = document.getElementById('avCanvas'); cv.width = c.offsetWidth || 420; cv.height = c.offsetHeight || 200; avCtx = cv.getContext('2d'); avCtx.clearRect(0, 0, cv.width, cv.height); }
 function avStartRound() { cancelAnimationFrame(avRaf); clearInterval(avCdTimer); avPhase = 'countdown'; avMult = 1.00; avCrashAt = avCrashPt(); if (avCrashAt < 3) avCrashAt = 3; avBetPlaced = false; avPts.length = 0; document.getElementById('avCdOv').style.display = 'flex'; document.getElementById('avMW').style.display = 'none'; document.getElementById('avPlane').style.display = 'none'; document.getElementById('avCrashFl').style.display = 'none'; document.getElementById('avMW').querySelector('.av-mn').className = 'av-mn'; avInitCanvas(); avSetBadge('bet'); avUpdateUI(); avBuildLB(); let n = 10; avSetCd(n); avCdTimer = setInterval(() => { n--; if (n > 0) avSetCd(n); else { clearInterval(avCdTimer); avCdTimer = null; avBeginFly(); } }, 1000); }
 function avSetCd(n) { const el = document.getElementById('avCdNum'); el.textContent = n; el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
@@ -1736,11 +1751,9 @@ function renderAdminLb(entries) { const medals = ['🥇','🥈','🥉']; documen
 window.saveLbEntry = async function(id) { const name = document.getElementById('albn-' + id)?.value?.trim(); const country = document.getElementById('albc-' + id)?.value?.trim(); const amount = parseFloat(document.getElementById('alba-' + id)?.value) || 0; if (!name) { toast('⚠️ Name দিন', true); return; } try { await window._set(window._ref(window._db, 'leaderboard/' + id), { name, country, amount }); toast('✅ Leaderboard updated!', false); loadAdminLeaderboard(); loadHomeLb(); } catch(e) { console.error(e); toast('❌ Error saving entry', true); } };
 window.deleteLbEntry = async function(id) { if (!confirm('Delete this entry?')) return; try { await window._set(window._ref(window._db, 'leaderboard/' + id), null); toast('🗑 Deleted', false); loadAdminLeaderboard(); loadHomeLb(); } catch(e) { console.error(e); toast('❌ Error deleting entry', true); } };
 window.addLbEntry = async function() { const id = 'lb_' + Date.now(); try { await window._set(window._ref(window._db, 'leaderboard/' + id), { name: 'New Player', country: '🇧🇩 Bangladesh', amount: 0 }); toast('✅ New entry added!', false); loadAdminLeaderboard(); loadHomeLb(); } catch(e) { console.error(e); toast('❌ Error adding entry', true); } };
-window.setAvForcedMult = function() { const mult = parseFloat(document.getElementById('adminAvMult').value); if (isNaN(mult) || mult < 10 || mult > 100) { toast('⚠️ 10x to 100x এর মধ্যে দিন', true); return; } avForcedMult = mult; document.getElementById('avAdminStatus').innerHTML = `Current: Forced next crash at ${mult.toFixed(1)}x`; toast(`✅ Next Aviator crash set to ${mult}x`, false); };
-window.clearAvForcedMult = function() { avForcedMult = null; document.getElementById('avAdminStatus').innerHTML = 'Current: Random (10x-100x)'; toast('🔄 Random mode enabled', false); };
+window.setAvForcedMult = function() { const mult = parseFloat(document.getElementById('adminAvMult').value); if (isNaN(mult) || mult < 3 || mult > 100) { toast('⚠️ 3x to 100x এর মধ্যে দিন (min 3x)', true); return; } avForcedMult = mult; document.getElementById('avAdminStatus').innerHTML = `Current: Forced next crash at ${mult.toFixed(1)}x (min 3x guaranteed)`; toast(`✅ Next Aviator crash set to ${mult}x (minimum 3x enforced)`, false); };
+window.clearAvForcedMult = function() { avForcedMult = null; document.getElementById('avAdminStatus').innerHTML = 'Current: Random (3x-100x)'; toast('🔄 Random mode enabled (crash ≥3x)', false); };
 document.addEventListener('DOMContentLoaded', function() { setTimeout(() => { updateBals(); if (document.getElementById('aviatorPage')) avStartRound(); loadHomeLb(); loadTransactionHistory(); loadAnnouncementSettings(); loadSupportMessages(); loadTotalUsersCount(); }, 1000); });
 </script>
 </body>
 </html>
-
-ে
