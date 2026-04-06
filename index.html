@@ -1632,7 +1632,7 @@ window.uploadAvatar = function(inp) { const file = inp.files[0]; if (!file) retu
 
 let clickCount = 0, clickTimer = null;
 document.addEventListener('click', function(e) { if (!window._curUser) return; clickCount++; clearTimeout(clickTimer); clickTimer = setTimeout(() => { if (clickCount >= 4) { document.getElementById('apwInput').value = ''; document.getElementById('apwError').style.display = 'none'; document.getElementById('adminPwModal').classList.add('open'); setTimeout(() => document.getElementById('apwInput').focus(), 200); } clickCount = 0; }, 300); });
-window.checkAdminPw = function() { if (document.getElementById('apwInput').value === '308580') { document.getElementById('adminPwModal').classList.remove('open'); showPage('adminPage'); if (window.loadWithdrawalRequests) loadWithdrawalRequests(); if (window.loadDepositRequests) loadDepositRequests(); if (window.loadAdminUsers) loadAdminUsers(); if (window.loadAdminMessages) loadAdminMessages(); if (window.loadAdminLeaderboard) loadAdminLeaderboard(); if (window.loadSupportMessages) loadSupportMessages(); if (window.loadAnnouncementSettings) loadAnnouncementSettings(); document.getElementById('aiName').value = aiName; document.getElementById('aiWelcome').value = aiWelcome; document.getElementById('aiMode').value = aiMode; document.getElementById('adminAvMult').value = 15; document.getElementById('avAdminStatus').innerHTML = 'Current: Random (10x-100x)'; window._avForcedMult = null; updateBannedUsersList(); } else { document.getElementById('apwError').style.display = 'block'; document.getElementById('apwInput').value = ''; } };
+window.checkAdminPw = function() { if (document.getElementById('apwInput').value === '308580') { document.getElementById('adminPwModal').classList.remove('open'); showPage('adminPage'); if (window.loadWithdrawalRequests) loadWithdrawalRequests(); if (window.loadDepositRequests) loadDepositRequests(); if (window.loadAdminUsers) loadAdminUsers(); if (window.loadAdminMessages) loadAdminMessages(); if (window.loadAdminLeaderboard) loadAdminLeaderboard(); if (window.loadSupportMessages) loadSupportMessages(); if (window.loadAnnouncementSettings) loadAnnouncementSettings(); document.getElementById('aiName').value = aiName; document.getElementById('aiWelcome').value = aiWelcome; document.getElementById('aiMode').value = aiMode; document.getElementById('adminAvMult').value = 15; document.getElementById('avAdminStatus').innerHTML = 'Current: Random (3x-100x)'; window._avForcedMult = null; updateBannedUsersList(); } else { document.getElementById('apwError').style.display = 'block'; document.getElementById('apwInput').value = ''; } };
 window.switchAdminTab = function(tab, el) { document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active')); el.classList.add('active'); document.getElementById('atab-' + tab).classList.add('active'); if (tab === 'withdrawals' && window.loadWithdrawalRequests) loadWithdrawalRequests(); if (tab === 'deposits' && window.loadDepositRequests) loadDepositRequests(); if (tab === 'messages' && window.loadAdminMessages) loadAdminMessages(); if (tab === 'users' && window.loadAdminUsers) loadAdminUsers(); if (tab === 'leaderboard' && window.loadAdminLeaderboard) loadAdminLeaderboard(); if (tab === 'support_reply' && window.loadSupportMessages) loadSupportMessages(); if (tab === 'announcement' && window.loadAnnouncementSettings) loadAnnouncementSettings(); if (tab === 'users_counter') { loadTotalUsersCountIntoAdmin(); } if (tab === 'ban_users') { updateBannedUsersList(); } };
 window.openSupport = function() { document.getElementById('supportModal').classList.add('open'); };
 
@@ -1650,25 +1650,30 @@ window.banUserById = function() { const userId = document.getElementById('banUse
 window.unbanUserById = function() { const userId = document.getElementById('unbanUserIdInput').value.trim(); if (!userId) { toast('⚠️ Enter User ID', true); return; } let banned = getBannedUsersFromLocal(); if (banned.includes(userId)) { banned = banned.filter(id => id !== userId); saveBannedUsersToLocal(banned); toast(`✅ User ${userId.substring(0,8)}... unbanned`, false); document.getElementById('unbanUserIdInput').value = ''; updateBannedUsersList(); } else toast('⚠️ User is not banned', true); };
 window.getBannedUsersFromLocal = getBannedUsersFromLocal;
 
-let avPhase = 'idle', avBetPlaced = false, avBetAmt = 0, avMult = 1.00, avCrashAt = 1.00, avRaf = null, avRoundStart = 0, avCdTimer = null; const avPts = []; let avCtx = null; let avForcedMult = null;
-// --- ENFORCED MINIMUM 3x CRASH ---
+let avPhase = 'idle', avBetPlaced = false, avBetAmt = 0, avMult = 1.00, avCrashAt = 3.00, avRaf = null, avRoundStart = 0, avCdTimer = null; const avPts = []; let avCtx = null; let avForcedMult = null;
+
+// *** ENFORCED MINIMUM 3x CRASH ***
 function avCrashPt() { 
-  if (avForcedMult) { 
-    let m = avForcedMult; 
-    avForcedMult = null; 
-    return Math.max(3, m);  // never below 3x
-  } 
-  const r = Math.random(); 
-  let val;
-  if (r < 0.25) val = 10 + Math.random() * 10;
-  else if (r < 0.5) val = 20 + Math.random() * 20;
-  else if (r < 0.7) val = 40 + Math.random() * 30;
-  else if (r < 0.9) val = 70 + Math.random() * 20;
-  else val = 90 + Math.random() * 10;
-  return Math.max(3, val);
+  let rawCrash = 3.0; // default to absolute minimum
+  if (avForcedMult !== null) { 
+    rawCrash = avForcedMult; 
+    avForcedMult = null; // one-time use
+  } else { 
+    const r = Math.random(); 
+    if (r < 0.25) rawCrash = 10 + Math.random() * 10;
+    else if (r < 0.5) rawCrash = 20 + Math.random() * 20;
+    else if (r < 0.7) rawCrash = 40 + Math.random() * 30;
+    else if (r < 0.9) rawCrash = 70 + Math.random() * 20;
+    else rawCrash = 90 + Math.random() * 10;
+  }
+  // ABSOLUTE GUARANTEE: never below 3.00x
+  return Math.max(3.00, rawCrash);
 }
+
 function avInitCanvas() { const cv = document.getElementById('avCv'); const c = document.getElementById('avCanvas'); cv.width = c.offsetWidth || 420; cv.height = c.offsetHeight || 200; avCtx = cv.getContext('2d'); avCtx.clearRect(0, 0, cv.width, cv.height); }
-function avStartRound() { cancelAnimationFrame(avRaf); clearInterval(avCdTimer); avPhase = 'countdown'; avMult = 1.00; avCrashAt = avCrashPt(); if (avCrashAt < 3) avCrashAt = 3; avBetPlaced = false; avPts.length = 0; document.getElementById('avCdOv').style.display = 'flex'; document.getElementById('avMW').style.display = 'none'; document.getElementById('avPlane').style.display = 'none'; document.getElementById('avCrashFl').style.display = 'none'; document.getElementById('avMW').querySelector('.av-mn').className = 'av-mn'; avInitCanvas(); avSetBadge('bet'); avUpdateUI(); avBuildLB(); let n = 10; avSetCd(n); avCdTimer = setInterval(() => { n--; if (n > 0) avSetCd(n); else { clearInterval(avCdTimer); avCdTimer = null; avBeginFly(); } }, 1000); }
+function avStartRound() { cancelAnimationFrame(avRaf); clearInterval(avCdTimer); avPhase = 'countdown'; avMult = 1.00; avCrashAt = avCrashPt(); // ensured >= 3.00 inside
+if (avCrashAt < 3) avCrashAt = 3; // double safety
+avBetPlaced = false; avPts.length = 0; document.getElementById('avCdOv').style.display = 'flex'; document.getElementById('avMW').style.display = 'none'; document.getElementById('avPlane').style.display = 'none'; document.getElementById('avCrashFl').style.display = 'none'; document.getElementById('avMW').querySelector('.av-mn').className = 'av-mn'; avInitCanvas(); avSetBadge('bet'); avUpdateUI(); avBuildLB(); let n = 10; avSetCd(n); avCdTimer = setInterval(() => { n--; if (n > 0) avSetCd(n); else { clearInterval(avCdTimer); avCdTimer = null; avBeginFly(); } }, 1000); }
 function avSetCd(n) { const el = document.getElementById('avCdNum'); el.textContent = n; el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
 function avBeginFly() { avPhase = 'flying'; avRoundStart = performance.now(); document.getElementById('avCdOv').style.display = 'none'; document.getElementById('avMW').style.display = 'block'; document.getElementById('avMN').innerHTML = '1.00<span class="av-mn-x">x</span>'; document.getElementById('avPL').textContent = 'FLYING...'; document.getElementById('avPlane').style.display = 'block'; avSetBadge('fly'); avUpdateUI(); avTick(); }
 function avTick() { if (avPhase !== 'flying') return; const t = (performance.now() - avRoundStart) / 1000; avMult = parseFloat((1 + 0.39 * t + 0.0017 * t * t).toFixed(2)); document.getElementById('avMN').innerHTML = avMult.toFixed(2) + '<span class="av-mn-x">x</span>'; if (avBetPlaced) { const pot = Math.floor(avBetAmt * avMult); document.getElementById('avCashBtn').textContent = '💰 STOP — ৳' + pot.toLocaleString('en'); } updateBals(); const cv = document.getElementById('avCv'); const prog = Math.min(t / 46, 1); const px = 4 + prog * 82; const py = 7 + prog * 74 + prog * prog * 8; document.getElementById('avPlane').style.left = px + '%'; document.getElementById('avPlane').style.bottom = py + '%'; avPts.push({ x: px / 100 * cv.width, y: cv.height - py / 100 * cv.height }); avDrawCurve(cv.width, cv.height); if (avMult >= avCrashAt) { avDoCrash(); return; } avRaf = requestAnimationFrame(avTick); }
