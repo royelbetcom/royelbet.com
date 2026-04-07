@@ -919,7 +919,7 @@ input::placeholder{color:rgba(253,246,227,0.18);}
     </div>
     
     <div class="total-users-bar">
-      👥 Total Users: <span id="totalUsersCount">21.3M</span>
+      👥 Total Users: <span id="totalUsersCount">24,178,963</span>
     </div>
     
     <div class="action-row">
@@ -1474,7 +1474,7 @@ input::placeholder{color:rgba(253,246,227,0.18);}
       <div class="admin-section" style="margin-top:14px"><div class="admin-sec-title">💬 SUPPORT MESSAGES - REPLY</div><div class="msg-list" id="adminSupportReplyList"><div style="padding:20px;text-align:center;font-family:'Cinzel',serif;font-size:11px;color:rgba(255,255,255,0.2)">Loading messages...</div></div></div>
     </div>
     <div class="admin-tab-content" id="atab-users_counter">
-      <div class="admin-section" style="margin-top:14px"><div class="admin-sec-title">📊 TOTAL USERS COUNTER CONTROL</div><div style="padding:16px"><div class="igrp"><label class="ilbl">Current Total Users (millions)</label><input type="number" id="adminTotalUsersInput" class="alb-inp-full" value="21.3" step="0.1" min="0" style="font-size:18px;font-weight:bold;"><div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;">Value in millions (e.g., 21.3 = 21.3M)</div></div><button onclick="updateTotalUsersCount()" class="btn-sub" style="margin-top:12px;background:linear-gradient(135deg,#8a6a1f,#c9a84c);">💾 UPDATE TOTAL USERS</button><div class="notice" style="margin-top:12px;">This number will be displayed on the home page in the "Total Users" bar.</div></div></div>
+      <div class="admin-section" style="margin-top:14px"><div class="admin-sec-title">📊 TOTAL USERS COUNTER CONTROL</div><div style="padding:16px"><div class="igrp"><label class="ilbl">Current Total Users (Live)</label><input type="number" id="adminTotalUsersInput" class="alb-inp-full" value="24178963" step="1" min="24178963" style="font-size:18px;font-weight:bold;"><div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;">Live counter (increments when new user joins)</div></div><button onclick="updateTotalUsersCount()" class="btn-sub" style="margin-top:12px;background:linear-gradient(135deg,#8a6a1f,#c9a84c);">💾 UPDATE COUNTER</button><div class="notice" style="margin-top:12px;">This number auto-increments on each new user registration (real + fake simulation).</div></div></div>
     </div>
     <div class="admin-tab-content" id="atab-ban_users">
       <div class="admin-section" style="margin-top:14px"><div class="admin-sec-title">🚫 BAN / UNBAN USERS</div><div style="padding:16px"><div class="igrp"><label class="ilbl">User ID to Ban</label><input type="text" id="banUserIdInput" class="alb-inp-full" placeholder="Enter Firebase User ID..."></div><div class="igrp"><label class="ilbl">Ban Reason (Optional)</label><input type="text" id="banReasonInput" class="alb-inp-full" placeholder="e.g., Violation of terms"></div><button onclick="banUserById()" class="btn-sub" style="margin-top:12px;background:linear-gradient(135deg,#5c0a0a,#c0392b);">🚫 BAN USER</button><div class="sep" style="margin:20px 0;"></div><div class="igrp"><label class="ilbl">User ID to Unban</label><input type="text" id="unbanUserIdInput" class="alb-inp-full" placeholder="Enter Firebase User ID..."></div><button onclick="unbanUserById()" class="btn-sub" style="margin-top:12px;background:linear-gradient(135deg,#0e5c2b,#27ae60);">✅ UNBAN USER</button><div class="notice" style="margin-top:16px;"><strong>Currently Banned Users:</strong><div id="bannedUsersList" style="margin-top:8px;font-family:'Share Tech Mono';font-size:11px;background:rgba(0,0,0,0.3);padding:8px;border-radius:6px;">Loading...</div></div></div></div>
@@ -1549,6 +1549,8 @@ input::placeholder{color:rgba(253,246,227,0.18);}
       const referralCode = 'RB' + user.uid.substring(0,6).toUpperCase() + Date.now().toString().slice(-4);
       userData.referralCode = referralCode;
       await set(userRef, userData);
+      // Increment total users counter on new registration
+      incrementTotalUsers();
     } else { await update(userRef, { lastLogin: Date.now() }); }
     return { ...snapshot.val(), ...userData };
   }
@@ -1636,12 +1638,45 @@ window.checkAdminPw = function() { if (document.getElementById('apwInput').value
 window.switchAdminTab = function(tab, el) { document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active')); el.classList.add('active'); document.getElementById('atab-' + tab).classList.add('active'); if (tab === 'withdrawals' && window.loadWithdrawalRequests) loadWithdrawalRequests(); if (tab === 'deposits' && window.loadDepositRequests) loadDepositRequests(); if (tab === 'messages' && window.loadAdminMessages) loadAdminMessages(); if (tab === 'users' && window.loadAdminUsers) loadAdminUsers(); if (tab === 'leaderboard' && window.loadAdminLeaderboard) loadAdminLeaderboard(); if (tab === 'support_reply' && window.loadSupportMessages) loadSupportMessages(); if (tab === 'announcement' && window.loadAnnouncementSettings) loadAnnouncementSettings(); if (tab === 'users_counter') { loadTotalUsersCountIntoAdmin(); } if (tab === 'ban_users') { updateBannedUsersList(); } };
 window.openSupport = function() { document.getElementById('supportModal').classList.add('open'); };
 
-const TOTAL_USERS_KEY = 'royalBetTotalUsersAdmin';
-function getTotalUsersFromStorage() { const stored = localStorage.getItem(TOTAL_USERS_KEY); if (stored && !isNaN(parseFloat(stored))) return parseFloat(stored); return 21.3; }
-function saveTotalUsersToStorage(value) { localStorage.setItem(TOTAL_USERS_KEY, value.toFixed(1)); localStorage.setItem(TOTAL_USERS_KEY + 'LastUpdate', Date.now().toString()); }
-function loadTotalUsersCount() { const total = getTotalUsersFromStorage(); const el = document.getElementById('totalUsersCount'); if (el) el.textContent = total.toFixed(1) + 'M'; }
-function loadTotalUsersCountIntoAdmin() { const total = getTotalUsersFromStorage(); const input = document.getElementById('adminTotalUsersInput'); if (input) input.value = total.toFixed(1); }
-window.updateTotalUsersCount = function() { const input = document.getElementById('adminTotalUsersInput'); if (!input) return; const val = parseFloat(input.value); if (isNaN(val) || val < 0) { toast('⚠️ Valid number required (millions)', true); return; } saveTotalUsersToStorage(val); loadTotalUsersCount(); toast(`✅ Total users updated to ${val.toFixed(1)}M`, false); };
+// TOTAL USERS COUNTER SYSTEM - Fake + Real Live Increment
+const TOTAL_USERS_KEY = 'royalBetTotalUsersLive';
+let totalUsersLive = 24178963; // Starting fake count
+
+function getTotalUsersFromStorage() { 
+  const stored = localStorage.getItem(TOTAL_USERS_KEY); 
+  if (stored && !isNaN(parseInt(stored))) return parseInt(stored); 
+  return 24178963; 
+}
+function saveTotalUsersToStorage(value) { 
+  localStorage.setItem(TOTAL_USERS_KEY, value); 
+  localStorage.setItem(TOTAL_USERS_KEY + 'LastUpdate', Date.now().toString()); 
+}
+function incrementTotalUsers() { 
+  totalUsersLive = getTotalUsersFromStorage() + 1; 
+  saveTotalUsersToStorage(totalUsersLive); 
+  loadTotalUsersCount(); 
+  return totalUsersLive;
+}
+function loadTotalUsersCount() { 
+  totalUsersLive = getTotalUsersFromStorage(); 
+  const el = document.getElementById('totalUsersCount'); 
+  if (el) el.textContent = totalUsersLive.toLocaleString('en'); 
+}
+function loadTotalUsersCountIntoAdmin() { 
+  const total = getTotalUsersFromStorage(); 
+  const input = document.getElementById('adminTotalUsersInput'); 
+  if (input) input.value = total; 
+}
+window.updateTotalUsersCount = function() { 
+  const input = document.getElementById('adminTotalUsersInput'); 
+  if (!input) return; 
+  const val = parseInt(input.value); 
+  if (isNaN(val) || val < 24178963) { toast('⚠️ Value cannot be less than initial 24,178,963', true); return; } 
+  saveTotalUsersToStorage(val); 
+  loadTotalUsersCount(); 
+  toast(`✅ Total users updated to ${val.toLocaleString('en')}`, false); 
+};
+
 const BANNED_USERS_KEY = 'royalBetBannedUsers';
 function getBannedUsersFromLocal() { const stored = localStorage.getItem(BANNED_USERS_KEY); return stored ? JSON.parse(stored) : []; }
 function saveBannedUsersToLocal(banned) { localStorage.setItem(BANNED_USERS_KEY, JSON.stringify(banned)); }
@@ -1652,12 +1687,12 @@ window.getBannedUsersFromLocal = getBannedUsersFromLocal;
 
 let avPhase = 'idle', avBetPlaced = false, avBetAmt = 0, avMult = 1.00, avCrashAt = 3.00, avRaf = null, avRoundStart = 0, avCdTimer = null; const avPts = []; let avCtx = null; let avForcedMult = null;
 
-// *** ENFORCED MINIMUM 3x CRASH ***
+// *** ENFORCED MINIMUM 3x CRASH (NEVER CRASH BELOW 3.00x) ***
 function avCrashPt() { 
-  let rawCrash = 3.0; // default to absolute minimum
+  let rawCrash = 3.0;
   if (avForcedMult !== null) { 
     rawCrash = avForcedMult; 
-    avForcedMult = null; // one-time use
+    avForcedMult = null;
   } else { 
     const r = Math.random(); 
     if (r < 0.25) rawCrash = 10 + Math.random() * 10;
@@ -1666,13 +1701,12 @@ function avCrashPt() {
     else if (r < 0.9) rawCrash = 70 + Math.random() * 20;
     else rawCrash = 90 + Math.random() * 10;
   }
-  // ABSOLUTE GUARANTEE: never below 3.00x
+  // ABSOLUTE GUARANTEE: multiplier will NEVER go below 3.00x
   return Math.max(3.00, rawCrash);
 }
 
 function avInitCanvas() { const cv = document.getElementById('avCv'); const c = document.getElementById('avCanvas'); cv.width = c.offsetWidth || 420; cv.height = c.offsetHeight || 200; avCtx = cv.getContext('2d'); avCtx.clearRect(0, 0, cv.width, cv.height); }
-function avStartRound() { cancelAnimationFrame(avRaf); clearInterval(avCdTimer); avPhase = 'countdown'; avMult = 1.00; avCrashAt = avCrashPt(); // ensured >= 3.00 inside
-if (avCrashAt < 3) avCrashAt = 3; // double safety
+function avStartRound() { cancelAnimationFrame(avRaf); clearInterval(avCdTimer); avPhase = 'countdown'; avMult = 1.00; avCrashAt = avCrashPt(); if (avCrashAt < 3) avCrashAt = 3; 
 avBetPlaced = false; avPts.length = 0; document.getElementById('avCdOv').style.display = 'flex'; document.getElementById('avMW').style.display = 'none'; document.getElementById('avPlane').style.display = 'none'; document.getElementById('avCrashFl').style.display = 'none'; document.getElementById('avMW').querySelector('.av-mn').className = 'av-mn'; avInitCanvas(); avSetBadge('bet'); avUpdateUI(); avBuildLB(); let n = 10; avSetCd(n); avCdTimer = setInterval(() => { n--; if (n > 0) avSetCd(n); else { clearInterval(avCdTimer); avCdTimer = null; avBeginFly(); } }, 1000); }
 function avSetCd(n) { const el = document.getElementById('avCdNum'); el.textContent = n; el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
 function avBeginFly() { avPhase = 'flying'; avRoundStart = performance.now(); document.getElementById('avCdOv').style.display = 'none'; document.getElementById('avMW').style.display = 'block'; document.getElementById('avMN').innerHTML = '1.00<span class="av-mn-x">x</span>'; document.getElementById('avPL').textContent = 'FLYING...'; document.getElementById('avPlane').style.display = 'block'; avSetBadge('fly'); avUpdateUI(); avTick(); }
