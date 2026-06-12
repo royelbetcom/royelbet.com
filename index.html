@@ -43,6 +43,7 @@ body{font-family:'Lato',sans-serif;background:#061509;min-height:100vh;overflow-
 @keyframes slideDown{from{opacity:0;transform:translateY(-100%)}to{opacity:1;transform:translateY(0)}}
 @keyframes slideUp{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-100%)}}
 @keyframes candleRise{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes tradeLabelPop{0%{transform:scale(0.8);opacity:0}100%{transform:scale(1);opacity:1}}
 
 .ai-assistant{position:fixed;bottom:80px;right:16px;z-index:999;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#8a6a1f,#c9a84c);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 20px rgba(201,168,76,0.5);animation:quantum 3s infinite;transition:all 0.3s;}
 .ai-assistant:hover{transform:scale(1.1);}
@@ -738,6 +739,28 @@ body{font-family:'Lato',sans-serif;background:#061509;min-height:100vh;overflow-
 .trading-history-direction.down { color: #e74c3c; }
 .trading-history-amount.win { color: #2ecc71; }
 .trading-history-amount.loss { color: #e74c3c; }
+/* Trade Label on Canvas */
+.trade-label {
+  position: absolute;
+  font-size: 11px;
+  font-family: 'Cinzel', serif;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.7);
+  pointer-events: none;
+  z-index: 20;
+  white-space: nowrap;
+  animation: tradeLabelPop 0.3s ease;
+}
+.trade-label.buy {
+  color: #2ecc71;
+  border-left: 3px solid #2ecc71;
+}
+.trade-label.sell {
+  color: #e74c3c;
+  border-left: 3px solid #e74c3c;
+}
 #profilePage{align-items:flex-start;padding:0;}
 .prof-wrap{width:100%;max-width:480px;min-height:100vh;margin:0 auto;display:flex;flex-direction:column;padding-bottom:68px;}
 .prof-topbar{background:linear-gradient(135deg,#0a0020,#1a0040);padding:14px 20px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid rgba(201,168,76,0.2);flex-shrink:0;}
@@ -1209,7 +1232,7 @@ input::placeholder{color:rgba(253,246,227,0.18);}
     </div>
   </div>
   
-  <div class="trading-chart-container">
+  <div class="trading-chart-container" id="tradingChartContainer">
     <canvas id="tradingFullCanvas" width="400" height="240"></canvas>
   </div>
   
@@ -1887,7 +1910,7 @@ window.checkAdminPw = function() { if (document.getElementById('apwInput').value
 window.switchAdminTab = function(tab, el) { document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active')); el.classList.add('active'); document.getElementById('atab-' + tab).classList.add('active'); if (tab === 'withdrawals' && window.loadWithdrawalRequests) loadWithdrawalRequests(); if (tab === 'deposits' && window.loadDepositRequests) loadDepositRequests(); if (tab === 'messages' && window.loadAdminMessages) loadAdminMessages(); if (tab === 'users' && window.loadAdminUsers) loadAdminUsers(); if (tab === 'leaderboard' && window.loadAdminLeaderboard) loadAdminLeaderboard(); if (tab === 'support_reply' && window.loadSupportMessages) loadSupportMessages(); if (tab === 'announcement' && window.loadAnnouncementSettings) loadAnnouncementSettings(); if (tab === 'users_counter') { loadTotalUsersCountIntoAdmin(); } if (tab === 'ban_users') { updateBannedUsersList(); } };
 window.openSupport = function() { document.getElementById('supportModal').classList.add('open'); };
 
-// FULL SCREEN TRADING GAME
+// FULL SCREEN TRADING GAME - FIXED BET LOGIC
 let tradingFullCandles = [];
 let tradingFullPrice = 100.00;
 let tradingFullTimer = 60;
@@ -1898,6 +1921,9 @@ let tradingFullLeaderboard = [];
 let tradingFullHistory = [];
 let tradingFullPattern = [];
 let tradingDemoBalance = 10000;
+let activeTrade = null; // { amount, direction, placedAt, candleIndex }
+let tradeLabels = [];
+
 const BANGLADESHI_NAMES_FULL = ['Rahim', 'Karim', 'Sumon', 'Jahid', 'Shakib', 'Mushfiq', 'Tamim', 'Liton', 'Mustafiz', 'Taskin', 'Sabbir', 'Nasir', 'Imrul', 'Mominul', 'Mehedi'];
 
 function initTradingFull() {
@@ -1910,12 +1936,16 @@ function initTradingFull() {
   tradingFullCandles = [];
   tradingFullPrice = 100.00;
   tradingFullPattern = [];
+  activeTrade = null;
+  tradeLabels = [];
+  // Generate 40 initial candles
   for (let i = 0; i < 40; i++) {
     let direction = getPatternBasedDirectionFull();
-    let changePercent = (Math.random() * 1.2 + 0.2) / 100;
+    let changePercent = (Math.random() * 1.0 + 0.2) / 100;
     let open = tradingFullPrice;
     let close = direction === 'up' ? open * (1 + changePercent) : open * (1 - changePercent);
-    tradingFullCandles.push({ open, high: Math.max(open, close) * (1 + Math.random() * 0.008), low: Math.min(open, close) * (1 - Math.random() * 0.008), close, direction });
+    let candle = { open, high: Math.max(open, close) * (1 + Math.random() * 0.006), low: Math.min(open, close) * (1 - Math.random() * 0.006), close, direction, isComplete: true };
+    tradingFullCandles.push(candle);
     tradingFullPrice = close;
   }
   generateFakeLeaderboardFull();
@@ -1930,7 +1960,6 @@ function getPatternBasedDirectionFull() {
   if (tradingFullPattern.length >= 3 && tradingFullPattern.slice(-3).every(d => d === 'up')) return 'up';
   if (tradingFullPattern.length >= 3 && tradingFullPattern.slice(-3).every(d => d === 'down')) return 'down';
   if (tradingFullPattern.length >= 3 && tradingFullPattern[tradingFullPattern.length-3] === 'up' && tradingFullPattern[tradingFullPattern.length-2] === 'down' && tradingFullPattern[tradingFullPattern.length-1] === 'up') return 'down';
-  if (Math.random() < 0.08) return 'down';
   let r = Math.random();
   if (r < 0.45) return 'up';
   if (r < 0.9) return 'down';
@@ -1952,6 +1981,35 @@ function startTradingFullTimer() {
   tradingFullInterval = setInterval(() => {
     tradingFullTimer--;
     if (tradingFullTimer <= 0) {
+      // Candle closes - evaluate active trade
+      if (activeTrade) {
+        const lastCandle = tradingFullCandles[tradingFullCandles.length - 1];
+        const isWin = (activeTrade.direction === lastCandle.direction);
+        if (isWin) {
+          const winAmount = activeTrade.amount * 1.85;
+          if (activeTrade.useDemo) tradingDemoBalance += winAmount;
+          else window._realBal += winAmount;
+          toast(`🎉 Trade won! +$${winAmount.toFixed(2)}`, false);
+          if (!activeTrade.useDemo) window._writeBalance(window._realBal);
+          tradingFullHistory.unshift({ direction: activeTrade.direction, amount: activeTrade.amount, win: true, time: Date.now() });
+        } else {
+          toast(`❌ Trade lost! -$${activeTrade.amount.toFixed(2)}`, true);
+          tradingFullHistory.unshift({ direction: activeTrade.direction, amount: activeTrade.amount, win: false, time: Date.now() });
+        }
+        if (window._saveBetHistory) {
+          window._saveBetHistory({
+            game: 'Trading',
+            detail: `${activeTrade.direction.toUpperCase()} trade`,
+            bet: activeTrade.amount,
+            profit: isWin ? activeTrade.amount * 0.85 : -activeTrade.amount,
+            time: Date.now()
+          });
+        }
+        activeTrade = null;
+        loadTradingFullHistory();
+        updateTradingFullUI();
+      }
+      // Generate new candle
       generateNewFullCandle();
       tradingFullTimer = 60;
     }
@@ -1974,7 +2032,7 @@ function generateNewFullCandle() {
   let changePercent = (Math.random() * 1.0 + 0.3) / 100;
   let open = tradingFullPrice;
   let close = direction === 'up' ? open * (1 + changePercent) : open * (1 - changePercent);
-  let candle = { open, high: Math.max(open, close) * (1 + Math.random() * 0.006), low: Math.min(open, close) * (1 - Math.random() * 0.006), close, direction };
+  let candle = { open, high: Math.max(open, close) * (1 + Math.random() * 0.006), low: Math.min(open, close) * (1 - Math.random() * 0.006), close, direction, isComplete: true };
   tradingFullCandles.push(candle);
   if (tradingFullCandles.length > 50) tradingFullCandles.shift();
   tradingFullPrice = close;
@@ -2018,6 +2076,22 @@ function drawTradingFullChart() {
     tradingFullCtx.lineTo(x + candleWidth / 2, lowY);
     tradingFullCtx.stroke();
   }
+  // Draw trade labels on chart
+  const container = document.getElementById('tradingChartContainer');
+  if (container) {
+    // Remove old labels
+    document.querySelectorAll('.trade-label').forEach(l => l.remove());
+    // Add active trade label if exists
+    if (activeTrade) {
+      const label = document.createElement('div');
+      label.className = `trade-label ${activeTrade.direction === 'up' ? 'buy' : 'sell'}`;
+      label.textContent = `$${activeTrade.amount} ${activeTrade.direction === 'up' ? 'BUY ▲' : 'SELL ▼'}`;
+      label.style.position = 'absolute';
+      label.style.bottom = '20px';
+      label.style.left = '20px';
+      container.appendChild(label);
+    }
+  }
 }
 
 function generateFakeLeaderboardFull() {
@@ -2054,13 +2128,14 @@ function loadTradingFullHistory() {
     historyDiv.innerHTML = '<div style="padding:12px;text-align:center;color:rgba(255,255,255,0.3);font-size:11px;">No trades yet</div>';
     return;
   }
-  historyDiv.innerHTML = tradingFullHistory.slice(-10).reverse().map(h => 
-    `<div class="trading-history-item"><span class="trading-history-direction ${h.direction}">${h.direction === 'up' ? '▲ UP' : '▼ DOWN'}</span><span>$${h.amount.toFixed(2)}</span><span class="trading-history-amount ${h.win ? 'win' : 'loss'}">${h.win ? '+$' + (h.amount * 1.85 - h.amount).toFixed(2) : '-$' + h.amount.toFixed(2)}</span><span style="font-size:9px;">${new Date(h.time).toLocaleTimeString()}</span></div>`
+  historyDiv.innerHTML = tradingFullHistory.slice(0, 10).map(h => 
+    `<div class="trading-history-item"><span class="trading-history-direction ${h.direction}">${h.direction === 'up' ? '▲ UP' : '▼ DOWN'}</span><span>$${h.amount.toFixed(2)}</span><span class="trading-history-amount ${h.win ? 'win' : 'loss'}">${h.win ? '+$' + (h.amount * 0.85).toFixed(2) : '-$' + h.amount.toFixed(2)}</span><span style="font-size:9px;">${new Date(h.time).toLocaleTimeString()}</span></div>`
   ).join('');
 }
 
 window.placeTradeFull = function(direction) {
   if (!window._curUser) { toast('⚠️ Login first!', true); return; }
+  if (activeTrade) { toast('⚠️ You already have an active trade! Wait for current candle to close.', true); return; }
   let betAmount = parseFloat(document.getElementById('tradingFullBetAmount').value);
   if (isNaN(betAmount) || betAmount < 1) { toast('⚠️ Minimum bet $1', true); return; }
   if (betAmount > 3000) { toast('⚠️ Maximum bet $3000', true); return; }
@@ -2071,34 +2146,23 @@ window.placeTradeFull = function(direction) {
     availableBalance = tradingDemoBalance;
   }
   if (availableBalance < betAmount) { toast('❌ Insufficient balance!', true); return; }
-  if (tradingFullCandles.length === 0) { toast('⚠️ Wait for chart to load', true); return; }
-  const lastCandle = tradingFullCandles[tradingFullCandles.length - 1];
-  const isWin = (direction === 'up' && lastCandle.direction === 'up') || (direction === 'down' && lastCandle.direction === 'down');
-  let winAmount = 0;
-  if (isWin) {
-    winAmount = betAmount * 1.85;
-    if (useDemo) tradingDemoBalance += winAmount;
-    else window._realBal += winAmount;
-    toast(`🎉 You won! +$${winAmount.toFixed(2)}`, false);
+  // Deduct bet amount immediately
+  if (useDemo) {
+    tradingDemoBalance -= betAmount;
   } else {
-    if (useDemo) tradingDemoBalance -= betAmount;
-    else window._realBal -= betAmount;
-    toast(`❌ You lost! -$${betAmount.toFixed(2)}`, true);
+    window._realBal -= betAmount;
+    window._writeBalance(window._realBal);
   }
-  updateBals();
-  if (!useDemo) window._writeBalance(window._realBal);
-  tradingFullHistory.push({ direction, amount: betAmount, win: isWin, time: Date.now() });
-  loadTradingFullHistory();
-  if (window._saveBetHistory) {
-    window._saveBetHistory({
-      game: 'Trading',
-      detail: `${direction.toUpperCase()} trade @ $${tradingFullPrice.toFixed(2)}`,
-      bet: betAmount,
-      profit: isWin ? winAmount - betAmount : -betAmount,
-      time: Date.now()
-    });
-  }
+  // Store active trade
+  activeTrade = {
+    amount: betAmount,
+    direction: direction,
+    useDemo: useDemo,
+    placedAt: Date.now()
+  };
   updateTradingFullUI();
+  drawTradingFullChart();
+  toast(`✅ ${direction === 'up' ? 'BUY' : 'SELL'} placed! $${betAmount} deducted. Wait for candle close.`, false);
 };
 
 window.openTradingScreen = function() {
@@ -2116,6 +2180,7 @@ window.openTradingScreen = function() {
 window.closeTradingScreen = function() {
   const tradingScreen = document.getElementById('tradingGameScreen');
   if (tradingScreen) tradingScreen.classList.remove('active');
+  if (tradingFullInterval) clearInterval(tradingFullInterval);
 };
 
 // TOTAL USERS COUNTER SYSTEM
