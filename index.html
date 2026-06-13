@@ -1085,63 +1085,6 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   opacity: 0.5;
   user-select: none;
 }
-/* ===== Aviator UI Enhancements (styles only) ===== */
-/* Smooth gradient canvas with subtle rays */
-.av-wrap{width:100%;max-width:480px;margin:0 auto;display:flex;flex-direction:column;min-height:100vh}
-.av-canvas{position:relative;height:380px;border-radius:14px;margin:16px;background:radial-gradient(1200px 600px at 30% 18%,#07142a 0%,#040617 40%,#000 100%);overflow:hidden;border:1px solid rgba(255,255,255,0.03);box-shadow:0 20px 60px rgba(0,0,0,0.6);}
-.av-canvas::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(120deg,rgba(32,70,120,0.03) 0 2px,transparent 2px 26px);mix-blend-mode:overlay;pointer-events:none}
-.av-canvas::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 10%, rgba(255,255,255,0.02), transparent 20%);pointer-events:none}
-
-/* Center multiplier with glow */
-.av-mult-wrap{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);z-index:8;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none}
-.av-mn{font-family:'Cinzel',serif;font-size:72px;font-weight:900;line-height:1;color:transparent;background:linear-gradient(90deg,#6dd5fa 0%,#c778d9 55%,#ff8ba7 100%);-webkit-background-clip:text;background-clip:text;text-shadow:0 8px 40px rgba(120,40,160,0.18);filter:drop-shadow(0 4px 30px rgba(120,40,160,0.12));transition:transform 220ms cubic-bezier(.2,.9,.3,1)}
-.av-mn.av-hit{transform:scale(1.06)}
-.av-mn-x{font-size:18px;margin-left:6px;color:rgba(255,255,255,0.9);background:none}
-.av-plbl{font-size:12px;color:rgba(255,255,255,0.65);letter-spacing:2px;text-transform:uppercase}
-
-@keyframes avPulse{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
-.av-mn{animation:avPulse 2.4s ease-in-out infinite}
-
-/* Plane with glowing red trail (pure CSS, does not change DOM text/IDs) */
-.av-plane-el{position:absolute;font-size:42px;z-index:9;left:50%;top:68%;transform:translate(-50%,-50%);transition:transform 200ms linear;will-change:transform,opacity}
-.av-plane-el{filter:drop-shadow(0 6px 20px rgba(255,80,80,0.55));}
-.av-plane-el::before{content:'';position:absolute;right:calc(100% + 10px);top:50%;transform:translateY(-50%);width:220px;height:22px;border-radius:40px;background:linear-gradient(90deg,rgba(255,90,90,0.95),rgba(255,130,120,0.45),rgba(255,130,120,0.06));filter:blur(10px);opacity:0.95}
-.av-plane-el::after{content:'';position:absolute;right:calc(100% + 10px);top:50%;transform:translateY(-50%);width:160px;height:8px;border-radius:20px;background:linear-gradient(90deg,rgba(255,140,140,0.9),rgba(255,120,120,0.35),transparent);filter:blur(6px);opacity:0.9}
-
-/* Crash overlay */
-.crash-fl{font-family:'Cinzel',serif;font-size:28px;color:#ff6b6b;text-shadow:0 8px 30px rgba(255,80,80,0.12);z-index:11}
-
-/* Top history / small multipliers pills (styled for potential JS insertion into .av-grid) */
-.av-grid{position:absolute;top:12px;left:12px;display:flex;gap:8px;flex-wrap:wrap;z-index:7;padding-right:12px}
-.av-grid .pill{padding:6px 10px;border-radius:999px;background:linear-gradient(135deg,rgba(17,43,75,0.4),rgba(10,18,30,0.25));border:1px solid rgba(255,255,255,0.03);font-family:'Share Tech Mono',monospace;font-size:12px;color:#9bd0ff;box-shadow:0 4px 18px rgba(30,120,220,0.04)}
-.av-grid .pill.hot{color:#ff9ad1;background:linear-gradient(135deg,rgba(60,20,80,0.25),rgba(40,10,30,0.18));box-shadow:0 6px 30px rgba(200,100,180,0.06)}
-
-/* Bet controls — glassmorphism */
-.av-ctrl{display:flex;flex-direction:column;gap:12px;padding:14px;margin:0 16px 20px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.02));border:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(8px);border-radius:14px}
-.av-bet-row{display:flex;align-items:center;gap:10px}
-.av-bet-lbl{font-family:'Cinzel',serif;font-size:12px;color:rgba(255,255,255,0.7);letter-spacing:2px}
-.av-inp{flex:1;padding:10px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:#fff;font-family:'Share Tech Mono',monospace;font-size:14px;outline:none;transition:box-shadow 0.18s}
-.av-inp:focus{box-shadow:0 6px 24px rgba(0,200,120,0.08);border-color:rgba(46,204,113,0.25)}
-.av-qbs{display:flex;flex-wrap:wrap;gap:8px}
-.av-qb{padding:8px 10px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);color:rgba(255,255,255,0.8);cursor:pointer;font-family:'Share Tech Mono',monospace}
-.av-qb:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.6)}
-
-/* Primary Bet button — bright green rounded */
-.btn-bet{flex:1;padding:14px;border-radius:12px;background:linear-gradient(135deg,#2ee07a,#00c853);border:none;color:#021008;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 8px 30px rgba(0,200,120,0.18);transition:transform 0.16s,box-shadow 0.16s}
-.btn-bet:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(0,200,120,0.26)}
-.btn-bet:active{transform:translateY(0);box-shadow:0 6px 18px rgba(0,170,100,0.18)}
-.btn-cash{flex:1;padding:14px;border-radius:12px;background:linear-gradient(135deg,#ff7a59,#ff3b30);border:none;color:#fff;font-size:16px;font-weight:800;cursor:pointer;border:1px solid rgba(255,255,255,0.04);transition:transform 0.16s}
-.av-acts{display:flex;gap:12px}
-
-/* Leaderboard tweaks */
-.av-lb{margin:0 16px 26px}
-.av-lb-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:10px;background:linear-gradient(135deg,rgba(255,255,255,0.02),rgba(0,0,0,0.02));border:1px solid rgba(255,255,255,0.03)}
-.av-lb-ttl{font-family:'Cinzel',serif;font-size:12px;color:rgba(255,255,255,0.9);letter-spacing:2px}
-.av-lb-live{display:flex;align-items:center;gap:8px;color:#ff6b6b;font-weight:700}
-.lb-dot{width:10px;height:10px;border-radius:50%;background:#2ecc71;box-shadow:0 0 8px rgba(46,204,113,0.6)}
-
-/* smaller devices adjustments */
-@media (max-width:420px){.av-mn{font-size:54px}.av-canvas{height:300px}}
 </style>
 </head>
 <body>
@@ -1796,9 +1739,6 @@ input::placeholder{color:rgba(253,246,227,0.18);}
     <div class="admin-tab-content" id="atab-aviator">
       <div class="admin-section" style="margin-top:14px"><div class="admin-sec-title">✈ AVIATOR CONTROL (Set Next Crash Multiplier)</div><div style="padding:16px"><div class="igrp"><label class="ilbl">Next Round Crash Multiplier (X)</label><input type="number" id="adminAvMult" class="alb-inp-full" value="5" min="3" max="100" step="0.1"><div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;">Min 3x | Max 100x (3x guaranteed minimum)</div></div><div style="display:flex;gap:10px;margin-top:16px;"><button onclick="setAvForcedMult()" class="btn-sub" style="background:linear-gradient(135deg,#8a6a1f,#c9a84c);">🎯 SET NEXT CRASH</button><button onclick="clearAvForcedMult()" class="btn-sub" style="background:linear-gradient(135deg,#5c0a0a,#c0392b);">🔄 RANDOM MODE</button></div><div class="notice" style="margin-top:12px;" id="avAdminStatus">Current: Random (5x-12x range)</div></div></div>
     </div>
-    <div class="admin-tab-content" id="atab-trading_control">
-      <div class="admin-section" style="margin-top:14px"><div class="admin-sec-title">📈 TRADING CANDLE REAL-TIME CONTROL</div><div style="padding:16px"><div class="igrp"><label class="ilbl">▸ Force Next Candle Direction (Synced)</label><div style="display:flex;gap:10px;margin-top:8px"><button onclick="forceNextCandle('green')" class="btn-sub" style="background:linear-gradient(135deg,#0e5c2b,#27ae60);flex:1">📈 GREEN (UP)</button><button onclick="forceNextCandle('red')" class="btn-sub" style="background:linear-gradient(135deg,#5c0a0a,#c0392b);flex:1">📉 RED (DOWN)</button></div><div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:8px;">Force the next candle to close green (up) or red (down) with realistic price movement</div></div><div style="margin-top:20px;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.05)"><div style="font-family:'Cinzel',serif;font-size:11px;color:rgba(52,152,219,0.8);margin-bottom:8px">📊 LIVE TRADING DATA:</div><div id="tradingLiveData" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(255,255,255,0.6);line-height:1.8">Loading live data...</div><button onclick="refreshLiveGameData()" style="margin-top:12px;padding:8px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:rgba(255,255,255,0.5);font-size:10px;cursor:pointer">🔄 Refresh</button></div></div>
-    </div>
     <div class="admin-tab-content" id="atab-announcement">
       <div class="admin-section" style="margin-top:14px"><div class="admin-sec-title">📢 ANNOUNCEMENT CONTROL</div><div style="padding:16px"><div class="igrp"><label class="ilbl">Announcement Text</label><input type="text" id="adminAnnouncementText" class="alb-inp-full" value="📢 Welcome to ROYEL AVAITOR! New features added." placeholder="Enter announcement..."></div><div class="igrp"><label class="ilbl">Status</label><select id="adminAnnouncementStatus" class="alb-inp-full"><option value="show">Show Announcement</option><option value="hide">Hide Announcement</option></select></div><button onclick="saveAnnouncementSettings()" class="btn-sub" style="margin-top:12px;">💾 SAVE ANNOUNCEMENT</button><div class="notice" style="margin-top:12px;">When "Show" is selected, all users will see the announcement on home page. Users can close it individually.</div></div></div>
     </div>
@@ -2038,7 +1978,7 @@ function resizeTradingFullCanvas() {
 function startTradingFullTimer() {
   if (tradingFullInterval) clearInterval(tradingFullInterval);
   tradingFullTimer = 60;
-  tradingFullInterval = setInterval(async () => {
+  tradingFullInterval = setInterval(() => {
     tradingFullTimer--;
     if (tradingFullTimer <= 0) {
       // Candle closes - evaluate active trade
@@ -2069,8 +2009,8 @@ function startTradingFullTimer() {
         loadTradingFullHistory();
         updateTradingFullUI();
       }
-      // Generate new candle - AWAIT Firebase direction
-      await generateNewFullCandle();
+      // Generate new candle
+      generateNewFullCandle();
       tradingFullTimer = 60;
     }
     updateTradingFullTimerDisplay();
@@ -2085,21 +2025,10 @@ function updateTradingFullTimerDisplay() {
   if (countdownEl) countdownEl.textContent = `Next candle in: ${tradingFullTimer}s`;
 }
 
-async function generateNewFullCandle() {
-  // CRITICAL: Get direction from Firebase, NOT local random
-  let direction = 'up';
-  try {
-    if (window._get && window._ref && window._db) {
-      const snap = await window._get(window._ref(window._db, 'gameState/trading/currentCandle/direction'));
-      direction = snap.exists() ? snap.val() : 'up';
-    }
-  } catch(e) {
-    console.error('Error fetching trading direction:', e);
-  }
-  
+function generateNewFullCandle() {
+  let direction = getPatternBasedDirectionFull();
   tradingFullPattern.push(direction);
   if (tradingFullPattern.length > 10) tradingFullPattern.shift();
-  
   let changePercent = (Math.random() * 1.0 + 0.3) / 100;
   let open = tradingFullPrice;
   let close = direction === 'up' ? open * (1 + changePercent) : open * (1 - changePercent);
@@ -2109,7 +2038,6 @@ async function generateNewFullCandle() {
   tradingFullPrice = close;
   updateTradingFullUI();
   drawTradingFullChart();
-  console.log('📊 New trading candle from Firebase:', direction);
 }
 
 function updateTradingFullUI() {
@@ -2273,80 +2201,18 @@ function updateBannedUsersList() { const banned = getBannedUsersFromLocal(); con
 window.banUserById = function() { const userId = document.getElementById('banUserIdInput').value.trim(); const reason = document.getElementById('banReasonInput').value.trim() || 'No reason provided'; if (!userId) { toast('⚠️ Enter User ID', true); return; } let banned = getBannedUsersFromLocal(); if (!banned.includes(userId)) { banned.push(userId); saveBannedUsersToLocal(banned); toast(`🚫 User ${userId.substring(0,8)}... banned. Reason: ${reason}`, false); document.getElementById('banUserIdInput').value = ''; document.getElementById('banReasonInput').value = ''; updateBannedUsersList(); if (window._curUser && window._curUser.uid === userId) logout(); } else toast('⚠️ User is already banned', true); };
 window.unbanUserById = function() { const userId = document.getElementById('unbanUserIdInput').value.trim(); if (!userId) { toast('⚠️ Enter User ID', true); return; } let banned = getBannedUsersFromLocal(); if (banned.includes(userId)) { banned = banned.filter(id => id !== userId); saveBannedUsersToLocal(banned); toast(`✅ User ${userId.substring(0,8)}... unbanned`, false); document.getElementById('unbanUserIdInput').value = ''; updateBannedUsersList(); } else toast('⚠️ User is not banned', true); };
 
-// AVIATOR GAME WITH REAL-TIME FIREBASE SYNC
-let avPhase = 'idle', avBetPlaced = false, avBetAmt = 0, avMult = 1.00, avCrashAt = 5.00, avRaf = null, avRoundStart = 0, avCdTimer = null; const avPts = []; let avCtx = null;
-let avFirebaseListener = null;
-let avGameState = { isRunning: false, multiplier: 1.00, crashPoint: 5.00, nextCrashPoint: 5.00, phase: 'idle', lastUpdate: 0, adminControlled: false };
+// AVIATOR GAME (unchanged)
+let avPhase = 'idle', avBetPlaced = false, avBetAmt = 0, avMult = 1.00, avCrashAt = 5.00, avRaf = null, avRoundStart = 0, avCdTimer = null; const avPts = []; let avCtx = null; let avForcedMult = null;
 
-// CRITICAL: Listen to Firebase in REAL-TIME and update game IMMEDIATELY
-window.setupAviatorRealtimeSync = function() {
-  if (!window._db || !window._onValue || !window._ref) return;
-  const gameRef = window._ref(window._db, 'gameState/aviator');
-  if (avFirebaseListener) avFirebaseListener();
-  avFirebaseListener = window._onValue(gameRef, (snap) => {
-    if (snap.exists()) {
-      const data = snap.val();
-      const oldState = { ...avGameState };
-      avGameState = { ...avGameState, ...data };
-      console.log('📡 Aviator Firebase Sync:', avGameState);
-      
-      // If game state changes, update UI immediately
-      if (avGameState.isRunning !== oldState.isRunning || avGameState.multiplier !== oldState.multiplier) {
-        avUpdateUI();
-      }
-    }
-  }, (err) => { console.error('Aviator sync error:', err); });
-};
-
-// GET CRASH POINT FROM FIREBASE - DO NOT GENERATE LOCALLY
-async function avCrashPt() {
-  let crash = 5.00;
-  try {
-    if (window._get && window._ref && window._db) {
-      const snap = await window._get(window._ref(window._db, 'gameState/aviator/nextCrashPoint'));
-      crash = snap.exists() ? snap.val() : 5.00;
-    }
-  } catch(e) { console.error('Error fetching crash point:', e); }
-  // Validate range
-  return Math.max(5.00, Math.min(12.00, crash));
+function avCrashPt() { 
+  let rawCrash = 5.0;
+  if (avForcedMult !== null) { rawCrash = Math.max(5.0, avForcedMult); avForcedMult = null; } 
+  else { const r = Math.random(); if (r < 0.35) rawCrash = 5.0 + Math.random() * 1.5; else if (r < 0.65) rawCrash = 6.5 + Math.random() * 2.0; else if (r < 0.85) rawCrash = 8.5 + Math.random() * 2.0; else rawCrash = 10.5 + Math.random() * 1.5; }
+  return Math.max(5.00, Math.min(12.00, rawCrash));
 }
 
 function avInitCanvas() { const cv = document.getElementById('avCv'); const c = document.getElementById('avCanvas'); cv.width = c.offsetWidth || 420; cv.height = c.offsetHeight || 200; avCtx = cv.getContext('2d'); avCtx.clearRect(0, 0, cv.width, cv.height); }
-// ASYNC FUNCTION - MUST WAIT FOR FIREBASE BEFORE STARTING
-async function avStartRound() {
-  cancelAnimationFrame(avRaf);
-  clearInterval(avCdTimer);
-  avPhase = 'countdown';
-  avMult = 1.00;
-  
-  // CRITICAL: Fetch crash point from Firebase BEFORE starting countdown
-  avCrashAt = await avCrashPt();
-  console.log('🎯 Round crash point from Firebase:', avCrashAt);
-  
-  avBetPlaced = false;
-  avPts.length = 0;
-  document.getElementById('avCdOv').style.display = 'flex';
-  document.getElementById('avMW').style.display = 'none';
-  document.getElementById('avPlane').style.display = 'none';
-  document.getElementById('avCrashFl').style.display = 'none';
-  document.getElementById('avMW').querySelector('.av-mn').className = 'av-mn';
-  avInitCanvas();
-  avSetBadge('bet');
-  avUpdateUI();
-  avBuildLB();
-  
-  let n = 10;
-  avSetCd(n);
-  avCdTimer = setInterval(() => {
-    n--;
-    if (n > 0) avSetCd(n);
-    else {
-      clearInterval(avCdTimer);
-      avCdTimer = null;
-      avBeginFly();
-    }
-  }, 1000);
-}
+function avStartRound() { cancelAnimationFrame(avRaf); clearInterval(avCdTimer); avPhase = 'countdown'; avMult = 1.00; avCrashAt = avCrashPt(); if (avCrashAt < 5) avCrashAt = 5; avBetPlaced = false; avPts.length = 0; document.getElementById('avCdOv').style.display = 'flex'; document.getElementById('avMW').style.display = 'none'; document.getElementById('avPlane').style.display = 'none'; document.getElementById('avCrashFl').style.display = 'none'; document.getElementById('avMW').querySelector('.av-mn').className = 'av-mn'; avInitCanvas(); avSetBadge('bet'); avUpdateUI(); avBuildLB(); let n = 10; avSetCd(n); avCdTimer = setInterval(() => { n--; if (n > 0) avSetCd(n); else { clearInterval(avCdTimer); avCdTimer = null; avBeginFly(); } }, 1000); }
 function avSetCd(n) { const el = document.getElementById('avCdNum'); el.textContent = n; el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
 function avBeginFly() { avPhase = 'flying'; avRoundStart = performance.now(); document.getElementById('avCdOv').style.display = 'none'; document.getElementById('avMW').style.display = 'block'; document.getElementById('avMN').innerHTML = '1.00<span class="av-mn-x">x</span>'; document.getElementById('avPL').textContent = 'FLYING...'; document.getElementById('avPlane').style.display = 'block'; avSetBadge('fly'); avUpdateUI(); avTick(); }
 function avTick() { if (avPhase !== 'flying') return; const t = (performance.now() - avRoundStart) / 1000; avMult = parseFloat((1 + 0.39 * t + 0.0017 * t * t).toFixed(2)); document.getElementById('avMN').innerHTML = avMult.toFixed(2) + '<span class="av-mn-x">x</span>'; if (avBetPlaced) { const pot = Math.floor(avBetAmt * avMult); document.getElementById('avCashBtn').textContent = '💰 STOP — $' + pot.toLocaleString('en'); } updateBals(); const cv = document.getElementById('avCv'); const prog = Math.min(t / 46, 1); const px = 4 + prog * 82; const py = 7 + prog * 74 + prog * prog * 8; document.getElementById('avPlane').style.left = px + '%'; document.getElementById('avPlane').style.bottom = py + '%'; avPts.push({ x: px / 100 * cv.width, y: cv.height - py / 100 * cv.height }); avDrawCurve(cv.width, cv.height); if (avMult >= avCrashAt) { avDoCrash(); return; } avRaf = requestAnimationFrame(avTick); }
@@ -2410,83 +2276,8 @@ window.closeReferralModal = function() { document.getElementById('referralModal'
 window.copyReferralLink = function() { const link = document.getElementById('referralLinkText').textContent; navigator.clipboard.writeText(link); toast('✅ Referral link copied!', false); };
 window.processReferral = async function(referralCode, newUserId) { if (!referralCode || !newUserId || !window._db) return; try { const usersSnap = await window._get(window._ref(window._db, 'users')); if (!usersSnap.exists()) return; let referrerId = null; Object.entries(usersSnap.val()).forEach(([uid, data]) => { if (data.referralCode === referralCode && uid !== newUserId) referrerId = uid; }); if (!referrerId) return; await window._set(window._ref(window._db, 'referrals/' + newUserId), { referredBy: referrerId, referredAt: Date.now(), completed: false }); } catch(e) { console.error(e); } };
 window.checkAndProcessReferralBonus = async function(userId) { if (!window._db) return; try { const referralSnap = await window._get(window._ref(window._db, 'referrals/' + userId)); if (!referralSnap.exists()) return; const referral = referralSnap.val(); if (referral.completed) return; const referrerId = referral.referredBy; const referrerSnap = await window._get(window._ref(window._db, 'users/' + referrerId)); if (!referrerSnap.exists()) return; const BONUS_AMOUNT = 50; const referrerData = referrerSnap.val(); const newBalance = (referrerData.balance || 0) / 120 + BONUS_AMOUNT; await window._update(window._ref(window._db, 'users/' + referrerId), { balance: newBalance * 120, referralCount: (referrerData.referralCount || 0) + 1, referralEarned: (referrerData.referralEarned || 0) + BONUS_AMOUNT * 120 }); await window._update(window._ref(window._db, 'referrals/' + userId), { completed: true, bonusGiven: BONUS_AMOUNT }); await window._push(window._ref(window._db, 'users/' + referrerId + '/transactions'), { type: 'referral_bonus', amount: BONUS_AMOUNT, time: Date.now(), detail: 'Friend deposit bonus' }); if (window._curUser && window._curUser.uid === referrerId) { toast(`🎉 Referral bonus: +$${BONUS_AMOUNT.toLocaleString('en')}!`, false); updateBals(); } } catch(e) { console.error(e); } };
-window.claimReward = async function() {
-  if (!window._curUser || !window._db) return;
-  const prof = window._userProfile || {};
-  const now = Date.now();
-  const lastClaim = prof.lastBonusClaim || 0;
-  const hoursSinceLastClaim = (now - lastClaim) / (1000 * 60 * 60);
-  const HOURS_BETWEEN_CLAIMS = 24;
-  
-  if (lastClaim > 0 && hoursSinceLastClaim < HOURS_BETWEEN_CLAIMS) {
-    const hoursRemaining = Math.ceil(HOURS_BETWEEN_CLAIMS - hoursSinceLastClaim);
-    const minutesRemaining = Math.ceil((HOURS_BETWEEN_CLAIMS - hoursSinceLastClaim) * 60) % 60;
-    toast(`⏳ Next bonus in ${hoursRemaining}h ${minutesRemaining}m`, true);
-    document.getElementById('rewardModal').classList.remove('open');
-    return;
-  }
-  
-  if (window._realBal <= 0) {
-    toast('❌ Deposit থাকতে হবে!', true);
-    document.getElementById('rewardModal').classList.remove('open');
-    setTimeout(() => openDepositSSModal(), 600);
-    return;
-  }
-  
-  const dayNum = Math.min((prof.lastClaimedDay || 0) + 1, 7);
-  const rewards = [4.17, 6.67, 8.33, 10, 12.5, 16.67, 25];
-  const amt = rewards[dayNum - 1];
-  
-  try {
-    await window._update(window._ref(window._db, 'users/' + window._curUser.uid), {
-      balance: (window._realBal + amt) * 120,
-      lastClaimedDay: dayNum >= 7 ? 0 : dayNum,
-      lastBonusClaim: now,
-      dailyStreak: dayNum
-    });
-    document.getElementById('rewardModal').classList.remove('open');
-    toast(`🎁 Day ${dayNum} Reward: $${amt.toLocaleString('en')} পেলেন! 🎉`, false);
-    renderRewardDays();
-    loadHomeLb();
-  } catch(e) {
-    console.error(e);
-    toast('❌ Error claiming reward', true);
-  }
-};
-window.renderRewardDays = function() {
-  const prof = window._userProfile || {};
-  const now = Date.now();
-  const lastClaim = prof.lastBonusClaim || 0;
-  const hoursSinceLastClaim = (now - lastClaim) / (1000 * 60 * 60);
-  const HOURS_BETWEEN_CLAIMS = 24;
-  const claimedDay = prof.lastClaimedDay || 0;
-  const canClaimToday = lastClaim === 0 || hoursSinceLastClaim >= HOURS_BETWEEN_CLAIMS;
-  
-  const rewards = [4.17, 6.67, 8.33, 10, 12.5, 16.67, 25];
-  const icons = ['🎁','🎀','💎','🌟','👑','🔥','🏆'];
-  
-  document.getElementById('rewardStreak').textContent = `Day ${claimedDay || 1}`;
-  document.getElementById('rewardDays').innerHTML = rewards.map((r, i) => {
-    const dayN = i + 1;
-    const isClaimed = dayN <= claimedDay;
-    const isToday = canClaimToday && dayN === (claimedDay + 1 > 7 ? 1 : claimedDay + 1);
-    const isLocked = dayN > (claimedDay + 1);
-    return `<div class="reward-day ${isClaimed ? 'claimed' : ''} ${isToday ? 'today' : ''} ${isLocked ? 'locked' : ''}" onclick="${isLocked ? '' : isToday ? `openRewardClaim(${dayN},${r})` : 'void(0)'}">` +
-      (isClaimed ? '<div class="rd-claimed">✅</div>' : '') +
-      `<div class="rd-day">DAY ${dayN}</div><div class="rd-ico">${icons[i]}</div><div class="rd-amt">$${r >= 10 ? Math.floor(r) + '' : r}</div></div>`;
-  }).join('');
-  
-  // Show countdown timer for next claim if applicable
-  const countdownEl = document.getElementById('rewardCountdown');
-  if (countdownEl && lastClaim > 0 && !canClaimToday) {
-    const hoursRemaining = Math.ceil(HOURS_BETWEEN_CLAIMS - hoursSinceLastClaim);
-    const minutesRemaining = Math.ceil((HOURS_BETWEEN_CLAIMS - hoursSinceLastClaim) * 60) % 60;
-    countdownEl.textContent = `Next bonus in ${hoursRemaining}h ${minutesRemaining}m`;
-    countdownEl.style.display = 'block';
-  } else if (countdownEl) {
-    countdownEl.style.display = 'none';
-  }
-};
+window.claimReward = async function() { if (!window._curUser || !window._db) return; const prof = window._userProfile || {}; const today = new Date().toDateString(); if (prof.lastClaimDate === today) { toast('⚠️ আজকের reward নেওয়া হয়েছে!', true); document.getElementById('rewardModal').classList.remove('open'); return; } if (window._realBal <= 0) { toast('❌ Deposit থাকতে হবে!', true); document.getElementById('rewardModal').classList.remove('open'); setTimeout(() => openDepositSSModal(), 600); return; } const dayNum = Math.min((prof.lastClaimedDay || 0) + 1, 7); const rewards = [4.17, 6.67, 8.33, 10, 12.5, 16.67, 25]; const amt = rewards[dayNum - 1]; try { await window._update(window._ref(window._db, 'users/' + window._curUser.uid), { balance: (window._realBal + amt) * 120, lastClaimedDay: dayNum >= 7 ? 0 : dayNum, lastClaimDate: today, dailyStreak: dayNum }); document.getElementById('rewardModal').classList.remove('open'); toast(`🎁 Day ${dayNum} Reward: $${amt.toLocaleString('en')} পেলেন! 🎉`, false); renderRewardDays(); loadHomeLb(); } catch(e) { console.error(e); toast('❌ Error claiming reward', true); } };
+window.renderRewardDays = function() { const prof = window._userProfile || {}; const today = new Date().toDateString(); const claimedDay = prof.lastClaimedDay || 0; const claimedToday = prof.lastClaimDate === today; const rewards = [4.17, 6.67, 8.33, 10, 12.5, 16.67, 25]; const icons = ['🎁','🎀','💎','🌟','👑','🔥','🏆']; document.getElementById('rewardStreak').textContent = `Day ${claimedDay || 1}`; document.getElementById('rewardDays').innerHTML = rewards.map((r, i) => { const dayN = i + 1; const isClaimed = dayN <= claimedDay && !(dayN === claimedDay && !claimedToday); const isToday = dayN === (claimedToday ? claimedDay : claimedDay + 1); const isLocked = dayN > (claimedToday ? claimedDay : claimedDay + 1); return `<div class="reward-day ${isClaimed ? 'claimed' : ''} ${isToday ? 'today' : ''} ${isLocked ? 'locked' : ''}" onclick="${isLocked ? '' : isToday ? `openRewardClaim(${dayN},${r})` : 'void(0)'}">${isClaimed ? '<div class="rd-claimed">✅</div>' : ''}<div class="rd-day">DAY ${dayN}</div><div class="rd-ico">${icons[i]}</div><div class="rd-amt">$${r >= 10 ? Math.floor(r) + '' : r}</div></div>`; }).join(''); };
 window.openRewardClaim = function(day, amt) { const icons = ['🎁','🎀','💎','🌟','👑','🔥','🏆']; document.getElementById('rcEmoji').textContent = icons[day - 1]; document.getElementById('rcDay').textContent = `DAY ${day}`; document.getElementById('rcTitle').textContent = `$${amt.toLocaleString('en')} Reward!`; document.getElementById('rewardModal').classList.add('open'); };
 const DEFAULT_LB = [{id:'lb1', name:'RahimBetKing', country:'🇧🇩 Bangladesh', amount:4041.67},{id:'lb2', name:'Sumon_Royal', country:'🇧🇩 Bangladesh', amount:3016.67},{id:'lb3', name:'NightHawk99', country:'🇮🇳 India', amount:2483.33},{id:'lb4', name:'GoldRush_X', country:'🇵🇰 Pakistan', amount:2008.33},{id:'lb5', name:'TigerBet88', country:'🇧🇩 Bangladesh', amount:1558.33},{id:'lb6', name:'AcePlayer_BD', country:'🇧🇩 Bangladesh', amount:1283.33},{id:'lb7', name:'LuckyKing7', country:'🇱🇰 Sri Lanka', amount:1100},{id:'lb8', name:'SpeedBet_Pro', country:'🇧🇩 Bangladesh', amount:983.33}];
 async function loadHomeLb() { if (!window._db || !window._ref || !window._get) { renderHomeLb(DEFAULT_LB); return; } try { const snap = await window._get(window._ref(window._db, 'leaderboard')); if (snap.exists()) { const data = snap.val(); const arr = Object.entries(data).map(([id, v]) => ({ id, ...v })).sort((a,b) => b.amount - a.amount); renderHomeLb(arr.length ? arr : DEFAULT_LB); } else { for (const e of DEFAULT_LB) { await window._set(window._ref(window._db, 'leaderboard/' + e.id), { name: e.name, country: e.country, amount: e.amount }); } renderHomeLb(DEFAULT_LB); } } catch(e) { console.error(e); renderHomeLb(DEFAULT_LB); } }
@@ -2496,257 +2287,9 @@ function renderAdminLb(entries) { const medals = ['🥇','🥈','🥉']; documen
 window.saveLbEntry = async function(id) { const name = document.getElementById('albn-' + id)?.value?.trim(); const country = document.getElementById('albc-' + id)?.value?.trim(); const amount = parseFloat(document.getElementById('alba-' + id)?.value) || 0; if (!name) { toast('⚠️ Name দিন', true); return; } try { await window._set(window._ref(window._db, 'leaderboard/' + id), { name, country, amount }); toast('✅ Leaderboard updated!', false); loadAdminLeaderboard(); loadHomeLb(); } catch(e) { console.error(e); toast('❌ Error saving entry', true); } };
 window.deleteLbEntry = async function(id) { if (!confirm('Delete this entry?')) return; try { await window._set(window._ref(window._db, 'leaderboard/' + id), null); toast('🗑 Deleted', false); loadAdminLeaderboard(); loadHomeLb(); } catch(e) { console.error(e); toast('❌ Error deleting entry', true); } };
 window.addLbEntry = async function() { const id = 'lb_' + Date.now(); try { await window._set(window._ref(window._db, 'leaderboard/' + id), { name: 'New Player', country: '🇧🇩 Bangladesh', amount: 0 }); toast('✅ New entry added!', false); loadAdminLeaderboard(); loadHomeLb(); } catch(e) { console.error(e); toast('❌ Error adding entry', true); } };
-window.setAvForcedMult = async function() {
-  const mult = parseFloat(document.getElementById('adminAvMult').value);
-  if (isNaN(mult) || mult < 5 || mult > 12) {
-    toast('⚠️ 5x to 12x এর মধ্যে দিন (min 5x)', true);
-    return;
-  }
-  if (!window._db || !window._set || !window._ref) {
-    toast('❌ Firebase not connected', true);
-    return;
-  }
-  try {
-    await window._set(window._ref(window._db, 'gameState/aviator/nextCrashPoint'), mult);
-    await window._set(window._ref(window._db, 'gameState/aviator/adminControlled'), true);
-    await window._set(window._ref(window._db, 'gameState/aviator/lastUpdate'), Date.now());
-    document.getElementById('avAdminStatus').innerHTML = `✅ CONTROLLED: Next crash at ${mult.toFixed(1)}x`;
-    toast(`✅ Next Aviator crash set to ${mult}x (synced to all devices)`, false);
-  } catch(e) {
-    console.error(e);
-    toast('❌ Error setting crash point', true);
-  }
-};
-
-// TRADING GAME STATE LISTENER - CRITICAL FOR SYNC
-window.setupTradingGameRealtimeSync = function() {
-  if (!window._db || !window._onValue || !window._ref) return;
-  const tradingRef = window._ref(window._db, 'gameState/trading/currentCandle');
-  if (tradingCandleListener) tradingCandleListener();
-  tradingCandleListener = window._onValue(tradingRef, (snap) => {
-    if (snap.exists()) {
-      const data = snap.val();
-      Object.assign(tradingGameState, data);
-      console.log('📈 Trading Firebase Sync - Direction:', tradingGameState.direction);
-    }
-  }, (err) => { console.error('Trading sync error:', err); });
-};
-
-// ADMIN: Force trading candle color globally
-window.forceNextCandle = async function(color) {
-  if (!['up', 'down'].includes(color)) {
-    toast('Color must be up or down', true);
-    return;
-  }
-  if (!window._db || !window._set || !window._ref) {
-    toast('❌ Firebase not connected', true);
-    return;
-  }
-  try {
-    await window._set(window._ref(window._db, 'gameState/trading/currentCandle/direction'), color);
-    await window._set(window._ref(window._db, 'gameState/trading/currentCandle/adminControlled'), true);
-    await window._set(window._ref(window._db, 'gameState/trading/currentCandle/lastUpdate'), Date.now());
-    const colorLabel = color === 'up' ? '📈 GREEN (UP)' : '📉 RED (DOWN)';
-    toast(`✅ Forced trading candle to ${colorLabel} (synced to all devices)`, false);
-  } catch(e) {
-    console.error(e);
-    toast('❌ Error forcing candle', true);
-  }
-};
-
-window.clearAvForcedMult = async function() {
-  if (!window._db || !window._set || !window._ref) {
-    toast('❌ Firebase not connected', true);
-    return;
-  }
-  try {
-    // Generate random crash point
-    const r = Math.random();
-    let crash = 5.0;
-    if (r < 0.35) crash = 5.0 + Math.random() * 1.5;
-    else if (r < 0.65) crash = 6.5 + Math.random() * 2.0;
-    else if (r < 0.85) crash = 8.5 + Math.random() * 2.0;
-    else crash = 10.5 + Math.random() * 1.5;
-    crash = Math.max(5.00, Math.min(12.00, crash));
-    
-    await window._set(window._ref(window._db, 'gameState/aviator/nextCrashPoint'), crash);
-    await window._set(window._ref(window._db, 'gameState/aviator/adminControlled'), false);
-    await window._set(window._ref(window._db, 'gameState/aviator/lastUpdate'), Date.now());
-    document.getElementById('avAdminStatus').innerHTML = `🎲 RANDOM: Next crash ${crash.toFixed(2)}x`;
-    toast(`🔄 Random mode enabled (next: ${crash.toFixed(2)}x)`, false);
-  } catch(e) {
-    console.error(e);
-    toast('❌ Error clearing forced multiplier', true);
-  }
-};
-
-window.initializeGameStateSync = function() {
-  window.setupAviatorRealtimeSync();
-  window.setupTradingGameRealtimeSync();
-  
-  // Periodic sync updates
-  setInterval(() => {
-    if (window._db && window._set && window._ref) {
-      window._set(window._ref(window._db, 'gameState/lastClientSync'), { timestamp: Date.now() }).catch(() => {});
-    }
-  }, 5000);
-};
-
-// Admin: Update Aviator game state
-window.adminUpdateAviatorState = async function(state) {
-  if (!window._db || !window._set || !window._ref) {
-    toast('Firebase not connected', true);
-    return false;
-  }
-  try {
-    await window._set(window._ref(window._db, 'gameState/aviator'), {
-      ...avGameState,
-      ...state,
-      lastUpdate: Date.now(),
-      updatedBy: window._curUser?.uid || 'admin'
-    });
-    return true;
-  } catch(e) {
-    console.error(e);
-    return false;
-  }
-};
-
-// Admin: Update Trading game state
-window.adminUpdateTradingState = async function(state) {
-  if (!window._db || !window._set || !window._ref) {
-    toast('Firebase not connected', true);
-    return false;
-  }
-  try {
-    await window._set(window._ref(window._db, 'gameState/trading/currentCandle'), {
-      ...tradingGameState,
-      ...state,
-      lastUpdate: Date.now(),
-      updatedBy: window._curUser?.uid || 'admin'
-    });
-    return true;
-  } catch(e) {
-    console.error(e);
-    return false;
-  }
-};
-
-// Admin: Force crash point
-window.forceNextCrash = async function(multiplier) {
-  if (multiplier < 5 || multiplier > 12) {
-    toast('Crash must be between 5x and 12x', true);
-    return;
-  }
-  const success = await window.adminUpdateAviatorState({ nextCrashPoint: multiplier, adminControlled: true });
-  if (success) {
-    toast(`Forced next crash to ${multiplier}x (synced)`, false);
-  }
-};
-
-// Admin: Force trading candle color
-window.forceNextCandle = async function(color) {
-  if (!['green', 'red'].includes(color)) {
-    toast('Color must be green or red', true);
-    return;
-  }
-  const startPrice = tradingGameState.closePrice || 100;
-  let closePrice = startPrice;
-  if (color === 'green') {
-    closePrice = startPrice * (1 + (Math.random() * 0.05 + 0.01)); // 1-6% up
-  } else if (color === 'red') {
-    closePrice = startPrice * (1 - (Math.random() * 0.05 + 0.01)); // 1-6% down
-  }
-  
-  const success = await window.adminUpdateTradingState({
-    direction: color === 'green' ? 'up' : 'down',
-    openPrice: startPrice,
-    closePrice: closePrice,
-    highPrice: Math.max(startPrice, closePrice) * 1.02,
-    lowPrice: Math.min(startPrice, closePrice) * 0.98,
-    color: color,
-    adminControlled: true
-  });
-  
-  if (success) {
-    toast(`Forced trading candle to ${color} (synced)`, false);
-  }
-};
-
-// Create/Initialize Firebase game state structure
-window.initializeFirebaseGameState = async function() {
-  if (!window._db || !window._set || !window._ref) return;
-  try {
-    // Initialize Aviator state
-    await window._set(window._ref(window._db, 'gameState/aviator'), {
-      isRunning: false,
-      multiplier: 1.00,
-      crashPoint: 5.00,
-      nextCrashPoint: 5.00,
-      phase: 'idle',
-      adminControlled: false,
-      lastUpdate: Date.now()
-    });
-    
-    // Initialize Trading state
-    await window._set(window._ref(window._db, 'gameState/trading/currentCandle'), {
-      isRunning: false,
-      direction: 'up',
-      startPrice: 100,
-      currentPrice: 100,
-      openPrice: 100,
-      closePrice: 100,
-      highPrice: 100,
-      lowPrice: 100,
-      color: 'green',
-      phase: 'idle',
-      adminControlled: false,
-      nextCandleCloses: Date.now() + 60000,
-      lastUpdate: Date.now()
-    });
-    
-    console.log('Firebase game state initialized');
-  } catch(e) {
-    console.error('Error initializing Firebase game state:', e);
-  }
-};
-
-// Admin: Get live game data
-window.getLiveGameData = async function() {
-  if (!window._db || !window._get || !window._ref) return null;
-  try {
-    const aviSnap = await window._get(window._ref(window._db, 'gameState/aviator'));
-    const tradSnap = await window._get(window._ref(window._db, 'gameState/trading/currentCandle'));
-    return {
-      aviator: aviSnap.exists() ? aviSnap.val() : null,
-      trading: tradSnap.exists() ? tradSnap.val() : null
-    };
-  } catch(e) {
-    console.error(e);
-    return null;
-  }
-};
-
-// Refresh bonus countdown every minute
-setInterval(() => {
-  if (window._userProfile && document.getElementById('rewardDays')) {
-    window.renderRewardDays();
-  }
-}, 60000);
-
-document.addEventListener('DOMContentLoaded', function() {
-  setTimeout(() => {
-    updateBals();
-    window.initializeFirebaseGameState();
-    window.initializeGameStateSync();
-    if (document.getElementById('aviatorPage')) avStartRound();
-    loadHomeLb();
-    loadTransactionHistory();
-    loadAnnouncementSettings();
-    loadSupportMessages();
-    loadTotalUsersCount();
-  }, 1000);
-});
+window.setAvForcedMult = function() { const mult = parseFloat(document.getElementById('adminAvMult').value); if (isNaN(mult) || mult < 5 || mult > 12) { toast('⚠️ 5x to 12x এর মধ্যে দিন (min 5x)', true); return; } avForcedMult = mult; document.getElementById('avAdminStatus').innerHTML = `Current: Forced next crash at ${mult.toFixed(1)}x (min 5x guaranteed)`; toast(`✅ Next Aviator crash set to ${mult}x (minimum 5x enforced)`, false); };
+window.clearAvForcedMult = function() { avForcedMult = null; document.getElementById('avAdminStatus').innerHTML = 'Current: Random (5x-12x range)'; toast('🔄 Random mode enabled (crash range 5x-12x)', false); };
+document.addEventListener('DOMContentLoaded', function() { setTimeout(() => { updateBals(); if (document.getElementById('aviatorPage')) avStartRound(); loadHomeLb(); loadTransactionHistory(); loadAnnouncementSettings(); loadSupportMessages(); loadTotalUsersCount(); }, 1000); });
 </script>
 </body>
 </html>
