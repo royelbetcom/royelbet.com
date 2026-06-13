@@ -2038,7 +2038,7 @@ function resizeTradingFullCanvas() {
 function startTradingFullTimer() {
   if (tradingFullInterval) clearInterval(tradingFullInterval);
   tradingFullTimer = 60;
-  tradingFullInterval = setInterval(() => {
+  tradingFullInterval = setInterval(async () => {
     tradingFullTimer--;
     if (tradingFullTimer <= 0) {
       // Candle closes - evaluate active trade
@@ -2069,8 +2069,8 @@ function startTradingFullTimer() {
         loadTradingFullHistory();
         updateTradingFullUI();
       }
-      // Generate new candle
-      generateNewFullCandle();
+      // Generate new candle - AWAIT Firebase direction
+      await generateNewFullCandle();
       tradingFullTimer = 60;
     }
     updateTradingFullTimerDisplay();
@@ -2085,10 +2085,21 @@ function updateTradingFullTimerDisplay() {
   if (countdownEl) countdownEl.textContent = `Next candle in: ${tradingFullTimer}s`;
 }
 
-function generateNewFullCandle() {
-  let direction = getPatternBasedDirectionFull();
+async function generateNewFullCandle() {
+  // CRITICAL: Get direction from Firebase, NOT local random
+  let direction = 'up';
+  try {
+    if (window._get && window._ref && window._db) {
+      const snap = await window._get(window._ref(window._db, 'gameState/trading/currentCandle/direction'));
+      direction = snap.exists() ? snap.val() : 'up';
+    }
+  } catch(e) {
+    console.error('Error fetching trading direction:', e);
+  }
+  
   tradingFullPattern.push(direction);
   if (tradingFullPattern.length > 10) tradingFullPattern.shift();
+  
   let changePercent = (Math.random() * 1.0 + 0.3) / 100;
   let open = tradingFullPrice;
   let close = direction === 'up' ? open * (1 + changePercent) : open * (1 - changePercent);
@@ -2098,6 +2109,7 @@ function generateNewFullCandle() {
   tradingFullPrice = close;
   updateTradingFullUI();
   drawTradingFullChart();
+  console.log('📊 New trading candle from Firebase:', direction);
 }
 
 function updateTradingFullUI() {
@@ -2264,9 +2276,9 @@ window.unbanUserById = function() { const userId = document.getElementById('unba
 // AVIATOR GAME WITH REAL-TIME FIREBASE SYNC
 let avPhase = 'idle', avBetPlaced = false, avBetAmt = 0, avMult = 1.00, avCrashAt = 5.00, avRaf = null, avRoundStart = 0, avCdTimer = null; const avPts = []; let avCtx = null;
 let avFirebaseListener = null;
-let avGameState = { isRunning: false, multiplier: 1.00, crashPoint: 5.00, nextCrashPoint: 5.00, phase: 'idle', lastUpdate: Date.now() };
+let avGameState = { isRunning: false, multiplier: 1.00, crashPoint: 5.00, nextCrashPoint: 5.00, phase: 'idle', lastUpdate: 0, adminControlled: false };
 
-// Listen to Firebase for real-time Aviator game state
+// CRITICAL: Listen to Firebase in REAL-TIME and update game IMMEDIATELY
 window.setupAviatorRealtimeSync = function() {
   if (!window._db || !window._onValue || !window._ref) return;
   const gameRef = window._ref(window._db, 'gameState/aviator');
@@ -2274,31 +2286,67 @@ window.setupAviatorRealtimeSync = function() {
   avFirebaseListener = window._onValue(gameRef, (snap) => {
     if (snap.exists()) {
       const data = snap.val();
+      const oldState = { ...avGameState };
       avGameState = { ...avGameState, ...data };
-      // Don't override local crash point in middle of round
-      if (avPhase === 'countdown') {
-        avCrashAt = avGameState.nextCrashPoint || 5.00;
+      console.log('📡 Aviator Firebase Sync:', avGameState);
+      
+      // If game state changes, update UI immediately
+      if (avGameState.isRunning !== oldState.isRunning || avGameState.multiplier !== oldState.multiplier) {
+        avUpdateUI();
       }
     }
   }, (err) => { console.error('Aviator sync error:', err); });
 };
 
-// Generate crash point server-side controlled
+// GET CRASH POINT FROM FIREBASE - DO NOT GENERATE LOCALLY
 async function avCrashPt() {
   let crash = 5.00;
   try {
-    if (window._db && window._get && window._ref) {
+    if (window._get && window._ref && window._db) {
       const snap = await window._get(window._ref(window._db, 'gameState/aviator/nextCrashPoint'));
-      if (snap.exists()) {
-        crash = Math.max(5.00, Math.min(12.00, snap.val()));
-      }
+      crash = snap.exists() ? snap.val() : 5.00;
     }
-  } catch(e) { console.error(e); }
-  return crash;
+  } catch(e) { console.error('Error fetching crash point:', e); }
+  // Validate range
+  return Math.max(5.00, Math.min(12.00, crash));
 }
 
 function avInitCanvas() { const cv = document.getElementById('avCv'); const c = document.getElementById('avCanvas'); cv.width = c.offsetWidth || 420; cv.height = c.offsetHeight || 200; avCtx = cv.getContext('2d'); avCtx.clearRect(0, 0, cv.width, cv.height); }
-function avStartRound() { cancelAnimationFrame(avRaf); clearInterval(avCdTimer); avPhase = 'countdown'; avMult = 1.00; avCrashAt = avCrashPt(); if (avCrashAt < 5) avCrashAt = 5; avBetPlaced = false; avPts.length = 0; document.getElementById('avCdOv').style.display = 'flex'; document.getElementById('avMW').style.display = 'none'; document.getElementById('avPlane').style.display = 'none'; document.getElementById('avCrashFl').style.display = 'none'; document.getElementById('avMW').querySelector('.av-mn').className = 'av-mn'; avInitCanvas(); avSetBadge('bet'); avUpdateUI(); avBuildLB(); let n = 10; avSetCd(n); avCdTimer = setInterval(() => { n--; if (n > 0) avSetCd(n); else { clearInterval(avCdTimer); avCdTimer = null; avBeginFly(); } }, 1000); }
+// ASYNC FUNCTION - MUST WAIT FOR FIREBASE BEFORE STARTING
+async function avStartRound() {
+  cancelAnimationFrame(avRaf);
+  clearInterval(avCdTimer);
+  avPhase = 'countdown';
+  avMult = 1.00;
+  
+  // CRITICAL: Fetch crash point from Firebase BEFORE starting countdown
+  avCrashAt = await avCrashPt();
+  console.log('🎯 Round crash point from Firebase:', avCrashAt);
+  
+  avBetPlaced = false;
+  avPts.length = 0;
+  document.getElementById('avCdOv').style.display = 'flex';
+  document.getElementById('avMW').style.display = 'none';
+  document.getElementById('avPlane').style.display = 'none';
+  document.getElementById('avCrashFl').style.display = 'none';
+  document.getElementById('avMW').querySelector('.av-mn').className = 'av-mn';
+  avInitCanvas();
+  avSetBadge('bet');
+  avUpdateUI();
+  avBuildLB();
+  
+  let n = 10;
+  avSetCd(n);
+  avCdTimer = setInterval(() => {
+    n--;
+    if (n > 0) avSetCd(n);
+    else {
+      clearInterval(avCdTimer);
+      avCdTimer = null;
+      avBeginFly();
+    }
+  }, 1000);
+}
 function avSetCd(n) { const el = document.getElementById('avCdNum'); el.textContent = n; el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
 function avBeginFly() { avPhase = 'flying'; avRoundStart = performance.now(); document.getElementById('avCdOv').style.display = 'none'; document.getElementById('avMW').style.display = 'block'; document.getElementById('avMN').innerHTML = '1.00<span class="av-mn-x">x</span>'; document.getElementById('avPL').textContent = 'FLYING...'; document.getElementById('avPlane').style.display = 'block'; avSetBadge('fly'); avUpdateUI(); avTick(); }
 function avTick() { if (avPhase !== 'flying') return; const t = (performance.now() - avRoundStart) / 1000; avMult = parseFloat((1 + 0.39 * t + 0.0017 * t * t).toFixed(2)); document.getElementById('avMN').innerHTML = avMult.toFixed(2) + '<span class="av-mn-x">x</span>'; if (avBetPlaced) { const pot = Math.floor(avBetAmt * avMult); document.getElementById('avCashBtn').textContent = '💰 STOP — $' + pot.toLocaleString('en'); } updateBals(); const cv = document.getElementById('avCv'); const prog = Math.min(t / 46, 1); const px = 4 + prog * 82; const py = 7 + prog * 74 + prog * prog * 8; document.getElementById('avPlane').style.left = px + '%'; document.getElementById('avPlane').style.bottom = py + '%'; avPts.push({ x: px / 100 * cv.width, y: cv.height - py / 100 * cv.height }); avDrawCurve(cv.width, cv.height); if (avMult >= avCrashAt) { avDoCrash(); return; } avRaf = requestAnimationFrame(avTick); }
@@ -2470,6 +2518,42 @@ window.setAvForcedMult = async function() {
   }
 };
 
+// TRADING GAME STATE LISTENER - CRITICAL FOR SYNC
+window.setupTradingGameRealtimeSync = function() {
+  if (!window._db || !window._onValue || !window._ref) return;
+  const tradingRef = window._ref(window._db, 'gameState/trading/currentCandle');
+  if (tradingCandleListener) tradingCandleListener();
+  tradingCandleListener = window._onValue(tradingRef, (snap) => {
+    if (snap.exists()) {
+      const data = snap.val();
+      Object.assign(tradingGameState, data);
+      console.log('📈 Trading Firebase Sync - Direction:', tradingGameState.direction);
+    }
+  }, (err) => { console.error('Trading sync error:', err); });
+};
+
+// ADMIN: Force trading candle color globally
+window.forceNextCandle = async function(color) {
+  if (!['up', 'down'].includes(color)) {
+    toast('Color must be up or down', true);
+    return;
+  }
+  if (!window._db || !window._set || !window._ref) {
+    toast('❌ Firebase not connected', true);
+    return;
+  }
+  try {
+    await window._set(window._ref(window._db, 'gameState/trading/currentCandle/direction'), color);
+    await window._set(window._ref(window._db, 'gameState/trading/currentCandle/adminControlled'), true);
+    await window._set(window._ref(window._db, 'gameState/trading/currentCandle/lastUpdate'), Date.now());
+    const colorLabel = color === 'up' ? '📈 GREEN (UP)' : '📉 RED (DOWN)';
+    toast(`✅ Forced trading candle to ${colorLabel} (synced to all devices)`, false);
+  } catch(e) {
+    console.error(e);
+    toast('❌ Error forcing candle', true);
+  }
+};
+
 window.clearAvForcedMult = async function() {
   if (!window._db || !window._set || !window._ref) {
     toast('❌ Firebase not connected', true);
@@ -2495,36 +2579,7 @@ window.clearAvForcedMult = async function() {
     toast('❌ Error clearing forced multiplier', true);
   }
 };
-// ===== FIREBASE REAL-TIME GAME STATE MANAGEMENT =====
-let tradingGameListener = null, tradingCandleListener = null;
-const tradingGameState = {
-  isRunning: false,
-  direction: 'up',
-  startPrice: 100,
-  currentPrice: 100,
-  openPrice: 100,
-  closePrice: 100,
-  highPrice: 100,
-  lowPrice: 100,
-  phase: 'idle',
-  nextCandleCloses: 0,
-  lastUpdate: Date.now()
-};
 
-// Setup Trading game real-time listener
-window.setupTradingGameRealtimeSync = function() {
-  if (!window._db || !window._onValue || !window._ref) return;
-  const tradingRef = window._ref(window._db, 'gameState/trading/currentCandle');
-  if (tradingCandleListener) tradingCandleListener();
-  tradingCandleListener = window._onValue(tradingRef, (snap) => {
-    if (snap.exists()) {
-      const data = snap.val();
-      Object.assign(tradingGameState, data);
-    }
-  }, (err) => { console.error('Trading sync error:', err); });
-};
-
-// Setup continuous game state sync
 window.initializeGameStateSync = function() {
   window.setupAviatorRealtimeSync();
   window.setupTradingGameRealtimeSync();
