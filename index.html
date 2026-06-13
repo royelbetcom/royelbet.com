@@ -1085,6 +1085,63 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   opacity: 0.5;
   user-select: none;
 }
+/* ===== Aviator UI Enhancements (styles only) ===== */
+/* Smooth gradient canvas with subtle rays */
+.av-wrap{width:100%;max-width:480px;margin:0 auto;display:flex;flex-direction:column;min-height:100vh}
+.av-canvas{position:relative;height:380px;border-radius:14px;margin:16px;background:radial-gradient(1200px 600px at 30% 18%,#07142a 0%,#040617 40%,#000 100%);overflow:hidden;border:1px solid rgba(255,255,255,0.03);box-shadow:0 20px 60px rgba(0,0,0,0.6);}
+.av-canvas::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(120deg,rgba(32,70,120,0.03) 0 2px,transparent 2px 26px);mix-blend-mode:overlay;pointer-events:none}
+.av-canvas::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 10%, rgba(255,255,255,0.02), transparent 20%);pointer-events:none}
+
+/* Center multiplier with glow */
+.av-mult-wrap{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);z-index:8;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none}
+.av-mn{font-family:'Cinzel',serif;font-size:72px;font-weight:900;line-height:1;color:transparent;background:linear-gradient(90deg,#6dd5fa 0%,#c778d9 55%,#ff8ba7 100%);-webkit-background-clip:text;background-clip:text;text-shadow:0 8px 40px rgba(120,40,160,0.18);filter:drop-shadow(0 4px 30px rgba(120,40,160,0.12));transition:transform 220ms cubic-bezier(.2,.9,.3,1)}
+.av-mn.av-hit{transform:scale(1.06)}
+.av-mn-x{font-size:18px;margin-left:6px;color:rgba(255,255,255,0.9);background:none}
+.av-plbl{font-size:12px;color:rgba(255,255,255,0.65);letter-spacing:2px;text-transform:uppercase}
+
+@keyframes avPulse{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
+.av-mn{animation:avPulse 2.4s ease-in-out infinite}
+
+/* Plane with glowing red trail (pure CSS, does not change DOM text/IDs) */
+.av-plane-el{position:absolute;font-size:42px;z-index:9;left:50%;top:68%;transform:translate(-50%,-50%);transition:transform 200ms linear;will-change:transform,opacity}
+.av-plane-el{filter:drop-shadow(0 6px 20px rgba(255,80,80,0.55));}
+.av-plane-el::before{content:'';position:absolute;right:calc(100% + 10px);top:50%;transform:translateY(-50%);width:220px;height:22px;border-radius:40px;background:linear-gradient(90deg,rgba(255,90,90,0.95),rgba(255,130,120,0.45),rgba(255,130,120,0.06));filter:blur(10px);opacity:0.95}
+.av-plane-el::after{content:'';position:absolute;right:calc(100% + 10px);top:50%;transform:translateY(-50%);width:160px;height:8px;border-radius:20px;background:linear-gradient(90deg,rgba(255,140,140,0.9),rgba(255,120,120,0.35),transparent);filter:blur(6px);opacity:0.9}
+
+/* Crash overlay */
+.crash-fl{font-family:'Cinzel',serif;font-size:28px;color:#ff6b6b;text-shadow:0 8px 30px rgba(255,80,80,0.12);z-index:11}
+
+/* Top history / small multipliers pills (styled for potential JS insertion into .av-grid) */
+.av-grid{position:absolute;top:12px;left:12px;display:flex;gap:8px;flex-wrap:wrap;z-index:7;padding-right:12px}
+.av-grid .pill{padding:6px 10px;border-radius:999px;background:linear-gradient(135deg,rgba(17,43,75,0.4),rgba(10,18,30,0.25));border:1px solid rgba(255,255,255,0.03);font-family:'Share Tech Mono',monospace;font-size:12px;color:#9bd0ff;box-shadow:0 4px 18px rgba(30,120,220,0.04)}
+.av-grid .pill.hot{color:#ff9ad1;background:linear-gradient(135deg,rgba(60,20,80,0.25),rgba(40,10,30,0.18));box-shadow:0 6px 30px rgba(200,100,180,0.06)}
+
+/* Bet controls — glassmorphism */
+.av-ctrl{display:flex;flex-direction:column;gap:12px;padding:14px;margin:0 16px 20px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.02));border:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(8px);border-radius:14px}
+.av-bet-row{display:flex;align-items:center;gap:10px}
+.av-bet-lbl{font-family:'Cinzel',serif;font-size:12px;color:rgba(255,255,255,0.7);letter-spacing:2px}
+.av-inp{flex:1;padding:10px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:#fff;font-family:'Share Tech Mono',monospace;font-size:14px;outline:none;transition:box-shadow 0.18s}
+.av-inp:focus{box-shadow:0 6px 24px rgba(0,200,120,0.08);border-color:rgba(46,204,113,0.25)}
+.av-qbs{display:flex;flex-wrap:wrap;gap:8px}
+.av-qb{padding:8px 10px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);color:rgba(255,255,255,0.8);cursor:pointer;font-family:'Share Tech Mono',monospace}
+.av-qb:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.6)}
+
+/* Primary Bet button — bright green rounded */
+.btn-bet{flex:1;padding:14px;border-radius:12px;background:linear-gradient(135deg,#2ee07a,#00c853);border:none;color:#021008;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 8px 30px rgba(0,200,120,0.18);transition:transform 0.16s,box-shadow 0.16s}
+.btn-bet:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(0,200,120,0.26)}
+.btn-bet:active{transform:translateY(0);box-shadow:0 6px 18px rgba(0,170,100,0.18)}
+.btn-cash{flex:1;padding:14px;border-radius:12px;background:linear-gradient(135deg,#ff7a59,#ff3b30);border:none;color:#fff;font-size:16px;font-weight:800;cursor:pointer;border:1px solid rgba(255,255,255,0.04);transition:transform 0.16s}
+.av-acts{display:flex;gap:12px}
+
+/* Leaderboard tweaks */
+.av-lb{margin:0 16px 26px}
+.av-lb-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:10px;background:linear-gradient(135deg,rgba(255,255,255,0.02),rgba(0,0,0,0.02));border:1px solid rgba(255,255,255,0.03)}
+.av-lb-ttl{font-family:'Cinzel',serif;font-size:12px;color:rgba(255,255,255,0.9);letter-spacing:2px}
+.av-lb-live{display:flex;align-items:center;gap:8px;color:#ff6b6b;font-weight:700}
+.lb-dot{width:10px;height:10px;border-radius:50%;background:#2ecc71;box-shadow:0 0 8px rgba(46,204,113,0.6)}
+
+/* smaller devices adjustments */
+@media (max-width:420px){.av-mn{font-size:54px}.av-canvas{height:300px}}
 </style>
 </head>
 <body>
