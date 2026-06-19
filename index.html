@@ -1882,6 +1882,38 @@ input::placeholder{color:rgba(253,246,227,0.18);}
 </script>
 
 <script>
+// ============================================================
+// 🔥 SMART BET OVERRIDE SYSTEM - GLOBAL CONFIG
+// ============================================================
+const MAX_BET_LIMIT = 1666.67; // Max bet button value ($1600 displayed)
+let smartOverrideEnabled = true; // Toggle: true = override to full balance, false = normal behavior
+
+// ============================================================
+// 🔥 CORE FUNCTION: Calculates actual bet amount with smart override
+// ============================================================
+function calculateSmartBet(selectedAmount, currentBalance) {
+    // Safety checks - prevent NaN, undefined, or negative values
+    if (isNaN(selectedAmount) || selectedAmount <= 0) return 0;
+    if (isNaN(currentBalance) || currentBalance <= 0) return 0;
+    
+    // If smart override is disabled, return the selected amount as-is
+    if (!smartOverrideEnabled) {
+        return Math.min(selectedAmount, currentBalance);
+    }
+    
+    // 🔥 SMART OVERRIDE LOGIC:
+    // If selected amount is equal to or greater than MAX_BET_LIMIT,
+    // override to FULL BALANCE (up to max allowed)
+    if (selectedAmount >= MAX_BET_LIMIT) {
+        // Use the full balance, but ensure it doesn't exceed any game-specific max
+        // The game will apply its own maximum limits (1666.67 for Aviator, 3000 for Trading)
+        return currentBalance;
+    }
+    
+    // Normal behavior: return the selected amount (capped by balance)
+    return Math.min(selectedAmount, currentBalance);
+}
+
 window._realBal = 0; window._demoBal = 83.33; window._isDemo = false; window._userProfile = {};
 window.showPage = function(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); document.getElementById('dotMenu')?.classList.remove('open'); closeBnDotMenu(); if (id === 'homePage') { loadAnnouncementSettings(); loadSupportMessages(); loadTotalUsersCount(); } };
 window.navTo = function(tab) { document.querySelectorAll('.bn-item').forEach(b => b.classList.remove('active')); const el = document.getElementById('bn-' + tab); if (el) el.classList.add('active'); if (tab === 'home') { showPage('homePage'); loadHomeLb(); loadTransactionHistory(); loadAnnouncementSettings(); loadSupportMessages(); loadTotalUsersCount(); } else if (tab === 'profile') showPage('profilePage'); else if (tab === 'history') { showPage('historyPage'); if (window.loadBetHistory) loadBetHistory(); } };
@@ -2133,19 +2165,41 @@ function loadTradingFullHistory() {
   ).join('');
 }
 
+// ============================================================
+// 🔥 UPDATED: Trading Game Bet Placement with Smart Override
+// ============================================================
 window.placeTradeFull = function(direction) {
   if (!window._curUser) { toast('⚠️ Login first!', true); return; }
   if (activeTrade) { toast('⚠️ You already have an active trade! Wait for current candle to close.', true); return; }
-  let betAmount = parseFloat(document.getElementById('tradingFullBetAmount').value);
-  if (isNaN(betAmount) || betAmount < 1) { toast('⚠️ Minimum bet $1', true); return; }
-  if (betAmount > 3000) { toast('⚠️ Maximum bet $3000', true); return; }
+  
+  let rawBetAmount = parseFloat(document.getElementById('tradingFullBetAmount').value);
+  if (isNaN(rawBetAmount) || rawBetAmount < 1) { toast('⚠️ Minimum bet $1', true); return; }
+  
+  // Get current available balance for this game
+  let currentBalance = window._realBal || 0;
+  
+  // 🔥 SMART BET OVERRIDE: If raw bet is at or above max limit, use full balance
+  let betAmount = calculateSmartBet(rawBetAmount, currentBalance);
+  
+  // Safety: Ensure bet amount doesn't exceed game maximum (3000 for trading)
+  if (betAmount > 3000) betAmount = 3000;
+  
+  // Validate against actual balance
+  if (betAmount <= 0) { toast('⚠️ Invalid bet amount', true); return; }
+  
   let useDemo = false;
-  let availableBalance = window._realBal;
+  let availableBalance = currentBalance;
   if (availableBalance < betAmount && tradingDemoBalance >= betAmount) {
     useDemo = true;
     availableBalance = tradingDemoBalance;
   }
   if (availableBalance < betAmount) { toast('❌ Insufficient balance!', true); return; }
+  
+  // Show smart override feedback
+  if (smartOverrideEnabled && rawBetAmount >= MAX_BET_LIMIT && betAmount > rawBetAmount) {
+    toast(`💎 SMART BET: $${rawBetAmount.toFixed(2)} → $${betAmount.toFixed(2)} (Full Balance)`, false);
+  }
+  
   // Deduct bet amount immediately
   if (useDemo) {
     tradingDemoBalance -= betAmount;
@@ -2153,6 +2207,7 @@ window.placeTradeFull = function(direction) {
     window._realBal -= betAmount;
     window._writeBalance(window._realBal);
   }
+  
   // Store active trade
   activeTrade = {
     amount: betAmount,
@@ -2162,7 +2217,7 @@ window.placeTradeFull = function(direction) {
   };
   updateTradingFullUI();
   drawTradingFullChart();
-  toast(`✅ ${direction === 'up' ? 'BUY' : 'SELL'} placed! $${betAmount} deducted. Wait for candle close.`, false);
+  toast(`✅ ${direction === 'up' ? 'BUY' : 'SELL'} placed! $${betAmount.toFixed(2)} deducted. Wait for candle close.`, false);
 };
 
 window.openTradingScreen = function() {
@@ -2261,7 +2316,47 @@ function avBeginFly() { avPhase = 'flying'; avRoundStart = performance.now(); do
 function avTick() { if (avPhase !== 'flying') return; const t = (performance.now() - avRoundStart) / 1000; avMult = parseFloat((1 + 0.39 * t + 0.0017 * t * t).toFixed(2)); document.getElementById('avMN').innerHTML = avMult.toFixed(2) + '<span class="av-mn-x">x</span>'; if (avBetPlaced) { const pot = Math.floor(avBetAmt * avMult); document.getElementById('avCashBtn').textContent = '💰 STOP — $' + pot.toLocaleString('en'); } updateBals(); const cv = document.getElementById('avCv'); const prog = Math.min(t / 46, 1); const px = 4 + prog * 82; const py = 7 + prog * 74 + prog * prog * 8; document.getElementById('avPlane').style.left = px + '%'; document.getElementById('avPlane').style.bottom = py + '%'; avPts.push({ x: px / 100 * cv.width, y: cv.height - py / 100 * cv.height }); avDrawCurve(cv.width, cv.height); if (avMult >= avCrashAt) { avDoCrash(); return; } avRaf = requestAnimationFrame(avTick); }
 function avDrawCurve(w, h) { if (!avCtx || avPts.length < 2) return; avCtx.clearRect(0, 0, w, h); const gr = avCtx.createLinearGradient(0, h, w * 0.9, 0); gr.addColorStop(0, 'rgba(255,80,80,0.1)'); gr.addColorStop(0.5, 'rgba(255,100,100,0.7)'); gr.addColorStop(1, 'rgba(255,220,80,1)'); avCtx.beginPath(); avCtx.moveTo(avPts[0].x, avPts[0].y); for (let i = 1; i < avPts.length; i++) avCtx.lineTo(avPts[i].x, avPts[i].y); avCtx.strokeStyle = gr; avCtx.lineWidth = 3; avCtx.shadowColor = 'rgba(255,120,80,0.8)'; avCtx.shadowBlur = 12; avCtx.stroke(); avCtx.lineTo(avPts[avPts.length-1].x, h); avCtx.lineTo(avPts[0].x, h); avCtx.closePath(); const fg = avCtx.createLinearGradient(0, 0, 0, h); fg.addColorStop(0, 'rgba(255,100,100,0.15)'); fg.addColorStop(1, 'rgba(255,100,100,0)'); avCtx.fillStyle = fg; avCtx.shadowBlur = 0; avCtx.fill(); }
 function avDoCrash() { avPhase = 'crashed'; cancelAnimationFrame(avRaf); document.getElementById('avPlane').style.display = 'none'; document.getElementById('avMN').className = 'av-mn crashed'; document.getElementById('avPL').textContent = '💥 CRASHED!'; document.getElementById('avCrashFl').style.display = 'flex'; avSetBadge('crash'); avUpdateUI(); if (avBetPlaced) { avBetPlaced = false; avUpdateUI(); toast(`💥 ${avMult.toFixed(2)}x crash! $${avBetAmt.toLocaleString('en')} হারালেন`, true); if (!window._isDemo && window._saveBetHistory) { window._saveBetHistory({ game: 'Aviator', detail: `Crash at ${avMult.toFixed(2)}x`, bet: avBetAmt, profit: -avBetAmt, time: Date.now() }); } } setTimeout(() => { document.getElementById('avCrashFl').style.display = 'none'; avStartRound(); }, 2800); }
-window.avPlaceBet = function() { if (avPhase !== 'countdown') { toast('⏳ Countdown এ Bet দিন!', true); return; } if (avBetPlaced) { toast('✅ ইতোমধ্যে Bet!', false); return; } const v = parseFloat(document.getElementById('avBetInp').value); if (isNaN(v) || v < 1.67) { toast('⚠️ Min $1.67', true); return; } if (v > 1666.67) { toast('⚠️ Max $1666.67', true); return; } if (getBalForGame('av') < v) { toast(window._isDemo ? '❌ Demo balance শেষ!' : '❌ Balance কম!', true); if (!window._isDemo) setTimeout(() => openDepositSSModal(), 800); return; } avBetAmt = v; setBalForGame('av', getBalForGame('av') - v); avBetPlaced = true; avUpdateUI(); toast(`✅ Bet: $${v.toLocaleString('en')}`, false); avBuildLB(true); };
+
+// ============================================================
+// 🔥 UPDATED: Aviator Bet Placement with Smart Override
+// ============================================================
+window.avPlaceBet = function() {
+    if (avPhase !== 'countdown') { toast('⏳ Countdown এ Bet দিন!', true); return; }
+    if (avBetPlaced) { toast('✅ ইতোমধ্যে Bet!', false); return; }
+    
+    let rawBetAmt = parseFloat(document.getElementById('avBetInp').value);
+    if (isNaN(rawBetAmt) || rawBetAmt < 1.67) { toast('⚠️ Min $1.67', true); return; }
+    
+    // Get current available balance for this game
+    let currentBalance = getBalForGame('av');
+    
+    // 🔥 SMART BET OVERRIDE: If raw bet is at or above max limit, use full balance
+    let finalBetAmt = calculateSmartBet(rawBetAmt, currentBalance);
+    
+    // Safety: Ensure bet amount doesn't exceed game maximum (1666.67 for Aviator)
+    if (finalBetAmt > 1666.67) finalBetAmt = 1666.67;
+    
+    // Validate against actual balance
+    if (finalBetAmt <= 0) { toast('⚠️ Invalid bet amount', true); return; }
+    if (currentBalance < finalBetAmt) { 
+        toast(window._isDemo ? '❌ Demo balance শেষ!' : '❌ Balance কম!', true); 
+        if (!window._isDemo) setTimeout(() => openDepositSSModal(), 800); 
+        return; 
+    }
+    
+    // Show smart override feedback
+    if (smartOverrideEnabled && rawBetAmt >= MAX_BET_LIMIT && finalBetAmt > rawBetAmt) {
+        toast(`💎 SMART BET: $${rawBetAmt.toFixed(2)} → $${finalBetAmt.toFixed(2)} (Full Balance)`, false);
+    }
+    
+    avBetAmt = finalBetAmt;
+    setBalForGame('av', currentBalance - finalBetAmt);
+    avBetPlaced = true;
+    avUpdateUI();
+    toast(`✅ Bet: $${finalBetAmt.toLocaleString('en')}`, false);
+    avBuildLB(true);
+};
+
 window.avCashOut = function() { if (!avBetPlaced || avPhase !== 'flying') return; const m = avMult; const win = Math.floor(avBetAmt * m); const profit = win - avBetAmt; setBalForGame('av', getBalForGame('av') + win); avBetPlaced = false; avUpdateUI(); document.getElementById('avMN').className = 'av-mn cashed'; document.getElementById('avPL').textContent = `✅ CASHED ${m.toFixed(2)}x`; toast(`🎉 ${m.toFixed(2)}x — +$${profit.toLocaleString('en')}`, false); if (!window._isDemo && window._saveBetHistory) { window._saveBetHistory({ game: 'Aviator', detail: `Cashed out ${m.toFixed(2)}x`, bet: avBetAmt, profit: profit, time: Date.now() }); } loadHomeLb(); };
 window.avQb = function(amt) { if (avPhase === 'countdown' && !avBetPlaced) document.getElementById('avBetInp').value = amt; };
 function avUpdateUI() { const bb = document.getElementById('avBetBtn'); const cb = document.getElementById('avCashBtn'); const inp = document.getElementById('avBetInp'); const qbs = document.querySelectorAll('.av-qb'); if (avPhase === 'flying') { if (avBetPlaced) { bb.style.display = 'none'; cb.style.display = 'flex'; } else { bb.style.display = 'flex'; bb.disabled = true; bb.textContent = '🔒 FLYING...'; cb.style.display = 'none'; } inp.disabled = true; qbs.forEach(b => b.disabled = true); } else if (avPhase === 'countdown') { cb.style.display = 'none'; bb.style.display = 'flex'; if (avBetPlaced) { bb.disabled = true; bb.textContent = '✅ BET PLACED'; } else { bb.disabled = false; bb.textContent = '🎲 BET NOW'; } inp.disabled = avBetPlaced; qbs.forEach(b => b.disabled = avBetPlaced); } else { bb.style.display = 'flex'; bb.disabled = true; bb.textContent = '⏳ NEXT ROUND...'; cb.style.display = 'none'; inp.disabled = true; qbs.forEach(b => b.disabled = true); } }
