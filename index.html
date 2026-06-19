@@ -2201,18 +2201,61 @@ function updateBannedUsersList() { const banned = getBannedUsersFromLocal(); con
 window.banUserById = function() { const userId = document.getElementById('banUserIdInput').value.trim(); const reason = document.getElementById('banReasonInput').value.trim() || 'No reason provided'; if (!userId) { toast('⚠️ Enter User ID', true); return; } let banned = getBannedUsersFromLocal(); if (!banned.includes(userId)) { banned.push(userId); saveBannedUsersToLocal(banned); toast(`🚫 User ${userId.substring(0,8)}... banned. Reason: ${reason}`, false); document.getElementById('banUserIdInput').value = ''; document.getElementById('banReasonInput').value = ''; updateBannedUsersList(); if (window._curUser && window._curUser.uid === userId) logout(); } else toast('⚠️ User is already banned', true); };
 window.unbanUserById = function() { const userId = document.getElementById('unbanUserIdInput').value.trim(); if (!userId) { toast('⚠️ Enter User ID', true); return; } let banned = getBannedUsersFromLocal(); if (banned.includes(userId)) { banned = banned.filter(id => id !== userId); saveBannedUsersToLocal(banned); toast(`✅ User ${userId.substring(0,8)}... unbanned`, false); document.getElementById('unbanUserIdInput').value = ''; updateBannedUsersList(); } else toast('⚠️ User is not banned', true); };
 
-// AVIATOR GAME (unchanged)
-let avPhase = 'idle', avBetPlaced = false, avBetAmt = 0, avMult = 1.00, avCrashAt = 5.00, avRaf = null, avRoundStart = 0, avCdTimer = null; const avPts = []; let avCtx = null; let avForcedMult = null;
+// AVIATOR GAME (UPDATED WITH RANDOM CRASH SYSTEM)
 
+// ============================================================
+// 🔥 CRITICAL CHANGE: AVIATOR CRASH SYSTEM REPLACED WITH REAL RANDOM
+// ============================================================
+let avPhase = 'idle', avBetPlaced = false, avBetAmt = 0, avMult = 1.00, avCrashAt = 1.01, avRaf = null, avRoundStart = 0, avCdTimer = null; 
+const avPts = []; 
+let avCtx = null; 
+let avForcedMult = null; // For admin forced crash
+
+// ============================================================
+// 🔥 REPLACED: NEW REAL RANDOM CRASH GENERATOR WITH WEIGHTED PROBABILITY
+// Generates random crash multiplier between 1.01 and infinity
+// Weighted: 70% → 1.01x to 3.00x, 25% → 3.01x to 10.00x, 5% → 10.01x+
+// ============================================================
 function avCrashPt() { 
-  let rawCrash = 5.0;
-  if (avForcedMult !== null) { rawCrash = Math.max(5.0, avForcedMult); avForcedMult = null; } 
-  else { const r = Math.random(); if (r < 0.35) rawCrash = 5.0 + Math.random() * 1.5; else if (r < 0.65) rawCrash = 6.5 + Math.random() * 2.0; else if (r < 0.85) rawCrash = 8.5 + Math.random() * 2.0; else rawCrash = 10.5 + Math.random() * 1.5; }
-  return Math.max(5.00, Math.min(12.00, rawCrash));
+    // If admin has forced a specific crash value, use it
+    if (avForcedMult !== null) { 
+        const forced = Math.max(1.01, avForcedMult); 
+        avForcedMult = null; // Reset after use
+        return parseFloat(forced.toFixed(2)); 
+    } 
+    
+    // 🔥 REAL RANDOM CRASH GENERATOR WITH WEIGHTED PROBABILITY
+    const roll = Math.random(); // 0.00 to 0.999...
+    let rawCrash = 1.01;
+    
+    if (roll < 0.70) { 
+        // 70% chance: 1.01x to 3.00x
+        // Use exponential distribution to favor lower multipliers (more realistic)
+        const r = Math.random();
+        if (r < 0.30) {
+            rawCrash = 1.01 + Math.random() * 0.50; // 1.01 - 1.51
+        } else if (r < 0.60) {
+            rawCrash = 1.51 + Math.random() * 0.50; // 1.51 - 2.01
+        } else if (r < 0.80) {
+            rawCrash = 2.01 + Math.random() * 0.50; // 2.01 - 2.51
+        } else {
+            rawCrash = 2.51 + Math.random() * 0.49; // 2.51 - 3.00
+        }
+    } else if (roll < 0.95) { 
+        // 25% chance: 3.01x to 10.00x
+        rawCrash = 3.01 + Math.random() * 6.99; // 3.01 - 10.00
+    } else { 
+        // 5% chance: 10.01x+
+        rawCrash = 10.01 + Math.random() * 20; // 10.01 - 30.01 (rare high multipliers)
+    }
+    
+    // Ensure minimum 1.01x and round to 2 decimal places
+    return parseFloat(Math.max(1.01, rawCrash).toFixed(2));
 }
 
 function avInitCanvas() { const cv = document.getElementById('avCv'); const c = document.getElementById('avCanvas'); cv.width = c.offsetWidth || 420; cv.height = c.offsetHeight || 200; avCtx = cv.getContext('2d'); avCtx.clearRect(0, 0, cv.width, cv.height); }
-function avStartRound() { cancelAnimationFrame(avRaf); clearInterval(avCdTimer); avPhase = 'countdown'; avMult = 1.00; avCrashAt = avCrashPt(); if (avCrashAt < 5) avCrashAt = 5; avBetPlaced = false; avPts.length = 0; document.getElementById('avCdOv').style.display = 'flex'; document.getElementById('avMW').style.display = 'none'; document.getElementById('avPlane').style.display = 'none'; document.getElementById('avCrashFl').style.display = 'none'; document.getElementById('avMW').querySelector('.av-mn').className = 'av-mn'; avInitCanvas(); avSetBadge('bet'); avUpdateUI(); avBuildLB(); let n = 10; avSetCd(n); avCdTimer = setInterval(() => { n--; if (n > 0) avSetCd(n); else { clearInterval(avCdTimer); avCdTimer = null; avBeginFly(); } }, 1000); }
+function avStartRound() { cancelAnimationFrame(avRaf); clearInterval(avCdTimer); avPhase = 'countdown'; avMult = 1.00; avCrashAt = avCrashPt(); // Now generates 1.01x+ random values
+avBetPlaced = false; avPts.length = 0; document.getElementById('avCdOv').style.display = 'flex'; document.getElementById('avMW').style.display = 'none'; document.getElementById('avPlane').style.display = 'none'; document.getElementById('avCrashFl').style.display = 'none'; document.getElementById('avMW').querySelector('.av-mn').className = 'av-mn'; avInitCanvas(); avSetBadge('bet'); avUpdateUI(); avBuildLB(); let n = 10; avSetCd(n); avCdTimer = setInterval(() => { n--; if (n > 0) avSetCd(n); else { clearInterval(avCdTimer); avCdTimer = null; avBeginFly(); } }, 1000); }
 function avSetCd(n) { const el = document.getElementById('avCdNum'); el.textContent = n; el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
 function avBeginFly() { avPhase = 'flying'; avRoundStart = performance.now(); document.getElementById('avCdOv').style.display = 'none'; document.getElementById('avMW').style.display = 'block'; document.getElementById('avMN').innerHTML = '1.00<span class="av-mn-x">x</span>'; document.getElementById('avPL').textContent = 'FLYING...'; document.getElementById('avPlane').style.display = 'block'; avSetBadge('fly'); avUpdateUI(); avTick(); }
 function avTick() { if (avPhase !== 'flying') return; const t = (performance.now() - avRoundStart) / 1000; avMult = parseFloat((1 + 0.39 * t + 0.0017 * t * t).toFixed(2)); document.getElementById('avMN').innerHTML = avMult.toFixed(2) + '<span class="av-mn-x">x</span>'; if (avBetPlaced) { const pot = Math.floor(avBetAmt * avMult); document.getElementById('avCashBtn').textContent = '💰 STOP — $' + pot.toLocaleString('en'); } updateBals(); const cv = document.getElementById('avCv'); const prog = Math.min(t / 46, 1); const px = 4 + prog * 82; const py = 7 + prog * 74 + prog * prog * 8; document.getElementById('avPlane').style.left = px + '%'; document.getElementById('avPlane').style.bottom = py + '%'; avPts.push({ x: px / 100 * cv.width, y: cv.height - py / 100 * cv.height }); avDrawCurve(cv.width, cv.height); if (avMult >= avCrashAt) { avDoCrash(); return; } avRaf = requestAnimationFrame(avTick); }
@@ -2224,7 +2267,7 @@ window.avQb = function(amt) { if (avPhase === 'countdown' && !avBetPlaced) docum
 function avUpdateUI() { const bb = document.getElementById('avBetBtn'); const cb = document.getElementById('avCashBtn'); const inp = document.getElementById('avBetInp'); const qbs = document.querySelectorAll('.av-qb'); if (avPhase === 'flying') { if (avBetPlaced) { bb.style.display = 'none'; cb.style.display = 'flex'; } else { bb.style.display = 'flex'; bb.disabled = true; bb.textContent = '🔒 FLYING...'; cb.style.display = 'none'; } inp.disabled = true; qbs.forEach(b => b.disabled = true); } else if (avPhase === 'countdown') { cb.style.display = 'none'; bb.style.display = 'flex'; if (avBetPlaced) { bb.disabled = true; bb.textContent = '✅ BET PLACED'; } else { bb.disabled = false; bb.textContent = '🎲 BET NOW'; } inp.disabled = avBetPlaced; qbs.forEach(b => b.disabled = avBetPlaced); } else { bb.style.display = 'flex'; bb.disabled = true; bb.textContent = '⏳ NEXT ROUND...'; cb.style.display = 'none'; inp.disabled = true; qbs.forEach(b => b.disabled = true); } }
 function avSetBadge(p) { const b = document.getElementById('avPhBadge'); b.className = 'ph-badge ' + p; if (p === 'bet') b.textContent = '🟡 BETTING OPEN'; else if (p === 'fly') b.textContent = '🟢 FLYING'; else b.textContent = '🔴 CRASHED'; }
 const AV_NAMES = ['Rahim_X','Karim99','Sumon★','NightKing','BetKing88','GoldRush','Lucky7','SpeedBet','TigerBet','AcePlayer','RoyalFly','DiamondX','StormBet','PhoenixUp','NightHawk','PlatinumK','IronFist','CobraKing','MaxBet99','UltraFly']; let avUsedNames = new Set();
-function avBuildLB(showUser = false) { if (avUsedNames.size > AV_NAMES.length - 5) avUsedNames.clear(); const avail = AV_NAMES.filter(n => !avUsedNames.has(n)); const entries = []; const used = new Set(); while (entries.length < 15 && avail.length > entries.length) { const i = Math.floor(Math.random() * avail.length); const n = avail[i]; if (!used.has(n)) { used.add(n); avUsedNames.add(n); const m = parseFloat((5 + Math.random() * 7).toFixed(2)); const b = Math.floor(1.67 + Math.random() * 1665); entries.push({ n, m, b, isUser: false }); } } if (showUser && avBetPlaced && window._curUser) { const userName = (window._userProfile?.name || window._curUser.displayName || 'You').split(' ')[0]; entries.unshift({ n: '⭐ ' + userName, m: avMult || 1.00, b: avBetAmt, isUser: true }); } entries.sort((a,b) => b.m - a.m); document.getElementById('avLbBody').innerHTML = entries.map((e,i) => { let rc = '', rl = '#' + (i+1); if (i===0) { rc='g'; rl='🥇'; } else if (i===1) { rc='s'; rl='🥈'; } else if (i===2) { rc='b'; rl='🥉'; } return `<div class="lb-row ${e.isUser ? 'you' : ''}"><div class="lb-rank ${rc}">${rl}</div><div class="lb-name">${e.n}</div><div class="lb-mult">${e.m.toFixed(2)}x</div><div class="lb-bet">$${e.b.toLocaleString('en')}</div></div>`; }).join(''); }
+function avBuildLB(showUser = false) { if (avUsedNames.size > AV_NAMES.length - 5) avUsedNames.clear(); const avail = AV_NAMES.filter(n => !avUsedNames.has(n)); const entries = []; const used = new Set(); while (entries.length < 15 && avail.length > entries.length) { const i = Math.floor(Math.random() * avail.length); const n = avail[i]; if (!used.has(n)) { used.add(n); avUsedNames.add(n); const m = parseFloat((1.01 + Math.random() * 10).toFixed(2)); const b = Math.floor(1.67 + Math.random() * 1665); entries.push({ n, m, b, isUser: false }); } } if (showUser && avBetPlaced && window._curUser) { const userName = (window._userProfile?.name || window._curUser.displayName || 'You').split(' ')[0]; entries.unshift({ n: '⭐ ' + userName, m: avMult || 1.00, b: avBetAmt, isUser: true }); } entries.sort((a,b) => b.m - a.m); document.getElementById('avLbBody').innerHTML = entries.map((e,i) => { let rc = '', rl = '#' + (i+1); if (i===0) { rc='g'; rl='🥇'; } else if (i===1) { rc='s'; rl='🥈'; } else if (i===2) { rc='b'; rl='🥉'; } return `<div class="lb-row ${e.isUser ? 'you' : ''}"><div class="lb-rank ${rc}">${rl}</div><div class="lb-name">${e.n}</div><div class="lb-mult">${e.m.toFixed(2)}x</div><div class="lb-bet">$${e.b.toLocaleString('en')}</div></div>`; }).join(''); }
 
 // AI, Support, Deposit, Withdrawal functions (simplified)
 let aiName = 'Royal AI', aiWelcome = 'আমি Royal Bet AI! প্রশ্ন করুন।', aiMode = 'smart';
@@ -2287,10 +2330,31 @@ function renderAdminLb(entries) { const medals = ['🥇','🥈','🥉']; documen
 window.saveLbEntry = async function(id) { const name = document.getElementById('albn-' + id)?.value?.trim(); const country = document.getElementById('albc-' + id)?.value?.trim(); const amount = parseFloat(document.getElementById('alba-' + id)?.value) || 0; if (!name) { toast('⚠️ Name দিন', true); return; } try { await window._set(window._ref(window._db, 'leaderboard/' + id), { name, country, amount }); toast('✅ Leaderboard updated!', false); loadAdminLeaderboard(); loadHomeLb(); } catch(e) { console.error(e); toast('❌ Error saving entry', true); } };
 window.deleteLbEntry = async function(id) { if (!confirm('Delete this entry?')) return; try { await window._set(window._ref(window._db, 'leaderboard/' + id), null); toast('🗑 Deleted', false); loadAdminLeaderboard(); loadHomeLb(); } catch(e) { console.error(e); toast('❌ Error deleting entry', true); } };
 window.addLbEntry = async function() { const id = 'lb_' + Date.now(); try { await window._set(window._ref(window._db, 'leaderboard/' + id), { name: 'New Player', country: '🇧🇩 Bangladesh', amount: 0 }); toast('✅ New entry added!', false); loadAdminLeaderboard(); loadHomeLb(); } catch(e) { console.error(e); toast('❌ Error adding entry', true); } };
-window.setAvForcedMult = function() { const mult = parseFloat(document.getElementById('adminAvMult').value); if (isNaN(mult) || mult < 5 || mult > 12) { toast('⚠️ 5x to 12x এর মধ্যে দিন (min 5x)', true); return; } avForcedMult = mult; document.getElementById('avAdminStatus').innerHTML = `Current: Forced next crash at ${mult.toFixed(1)}x (min 5x guaranteed)`; toast(`✅ Next Aviator crash set to ${mult}x (minimum 5x enforced)`, false); };
-window.clearAvForcedMult = function() { avForcedMult = null; document.getElementById('avAdminStatus').innerHTML = 'Current: Random (5x-12x range)'; toast('🔄 Random mode enabled (crash range 5x-12x)', false); };
+// ============================================================
+// 🔥 UPDATED ADMIN CONTROLS FOR AVIATOR
+// ============================================================
+// Force next crash to a specific value (or reset to random)
+window.setAvForcedMult = function() { 
+    const mult = parseFloat(document.getElementById('adminAvMult').value); 
+    if (isNaN(mult) || mult < 1.01) { 
+        toast('⚠️ Minimum 1.01x required', true); 
+        return; 
+    } 
+    if (mult > 100) { 
+        toast('⚠️ Maximum 100x allowed', true); 
+        return; 
+    }
+    avForcedMult = mult; 
+    document.getElementById('avAdminStatus').innerHTML = `Current: Forced next crash at ${mult.toFixed(2)}x`; 
+    toast(`✅ Next Aviator crash set to ${mult.toFixed(2)}x`, false); 
+};
+window.clearAvForcedMult = function() { 
+    avForcedMult = null; 
+    document.getElementById('avAdminStatus').innerHTML = 'Current: Random (1.01x+)'; 
+    toast('🔄 Random mode enabled (fully random crash from 1.01x+)', false); 
+};
+
 document.addEventListener('DOMContentLoaded', function() { setTimeout(() => { updateBals(); if (document.getElementById('aviatorPage')) avStartRound(); loadHomeLb(); loadTransactionHistory(); loadAnnouncementSettings(); loadSupportMessages(); loadTotalUsersCount(); }, 1000); });
 </script>
 </body>
 </html>
-
