@@ -1085,6 +1085,314 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   opacity: 0.5;
   user-select: none;
 }
+
+/* ============================================================ */
+/* 🔥 NEW NEON DEPOSIT & WITHDRAW UI STYLES (Binance-inspired)  */
+/* ============================================================ */
+.modal-ov .modal {
+  background: linear-gradient(160deg, #0c0a1a, #06050f);
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  box-shadow: 0 -10px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(201, 168, 76, 0.05);
+}
+.modal-ov .modal .modal-hdr {
+  border-bottom: 1px solid rgba(201, 168, 76, 0.12);
+  padding: 18px 24px 14px;
+  background: rgba(0, 0, 0, 0.2);
+}
+.modal-ov .modal .modal-title {
+  font-size: 18px;
+  letter-spacing: 3px;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(240, 208, 96, 0.3);
+}
+.modal-ov .modal .modal-body {
+  padding: 20px 24px 28px;
+}
+
+/* Balance Display */
+.deposit-balance-box, .withdraw-balance-box {
+  background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02));
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.deposit-balance-box .label, .withdraw-balance-box .label {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+}
+.deposit-balance-box .amount, .withdraw-balance-box .amount {
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--gl);
+  text-shadow: 0 0 20px rgba(240,208,96,0.2);
+}
+
+/* Payment Method Grid */
+.method-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.method-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 12px 6px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.method-card:hover {
+  background: rgba(201,168,76,0.06);
+  border-color: rgba(201,168,76,0.2);
+  transform: translateY(-2px);
+}
+.method-card.sel {
+  background: rgba(201,168,76,0.12);
+  border-color: var(--gl);
+  box-shadow: 0 0 25px rgba(201,168,76,0.15), inset 0 0 20px rgba(201,168,76,0.05);
+}
+.method-card .method-ico {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+.method-card .method-nm {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 1px;
+}
+.method-card .method-sub {
+  font-size: 8px;
+  color: rgba(255,255,255,0.25);
+  margin-top: 2px;
+}
+
+/* Quick Amount Buttons */
+.quick-amounts {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.quick-amounts .qa-btn {
+  flex: 1;
+  min-width: 48px;
+  padding: 8px 4px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  color: rgba(255,255,255,0.5);
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.quick-amounts .qa-btn:hover {
+  background: rgba(201,168,76,0.08);
+  border-color: rgba(201,168,76,0.2);
+  color: var(--gl);
+}
+
+/* Exchange Rate / Fee Display */
+.exchange-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 12px;
+}
+.exchange-row:last-child {
+  border-bottom: none;
+}
+.exchange-row .ex-label {
+  color: rgba(255,255,255,0.35);
+}
+.exchange-row .ex-value {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  color: rgba(255,255,255,0.8);
+}
+.exchange-row .ex-value.highlight {
+  color: var(--gl);
+}
+.exchange-row .ex-value.positive {
+  color: #2ecc71;
+}
+.exchange-row .ex-value.negative {
+  color: #e74c3c;
+}
+
+/* Withdrawal Summary Box */
+.withdraw-summary {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(201,168,76,0.1);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 14px 0 16px;
+}
+.withdraw-summary .ws-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 12px;
+}
+.withdraw-summary .ws-row .ws-label {
+  color: rgba(255,255,255,0.4);
+}
+.withdraw-summary .ws-row .ws-value {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  color: #fff;
+}
+.withdraw-summary .ws-row .ws-value.gold {
+  color: var(--gl);
+}
+.withdraw-summary .ws-total {
+  border-top: 1px solid rgba(201,168,76,0.15);
+  margin-top: 8px;
+  padding-top: 10px;
+}
+.withdraw-summary .ws-total .ws-value {
+  font-size: 18px;
+  color: var(--gl);
+  text-shadow: 0 0 20px rgba(240,208,96,0.2);
+}
+
+/* VIP Bonus Banner */
+.vip-bonus-banner {
+  background: linear-gradient(135deg, rgba(255,165,0,0.1), rgba(201,168,76,0.02));
+  border: 1px solid rgba(255,165,0,0.2);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.vip-bonus-banner .vip-text {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffa500;
+  letter-spacing: 1px;
+}
+.vip-bonus-banner .vip-sub {
+  font-size: 9px;
+  color: rgba(255,165,0,0.5);
+}
+.vip-bonus-banner .vip-btn {
+  background: linear-gradient(135deg, #ffa500, #cc8800);
+  border: none;
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  font-weight: 700;
+  color: #0d0500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.vip-bonus-banner .vip-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255,165,0,0.3);
+}
+
+/* Withdraw Form - Hide/Show */
+.mform {
+  display: none;
+}
+.mform.active {
+  display: block;
+  animation: fadeUp 0.3s ease;
+}
+
+/* Need Help Section */
+.need-help {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+}
+.need-help .help-link {
+  color: #3498db;
+  cursor: pointer;
+  font-family: 'Cinzel', serif;
+  letter-spacing: 1px;
+}
+.need-help .help-link:hover {
+  text-decoration: underline;
+}
+
+/* Form Inputs inside modal */
+.modal-body input[type="text"],
+.modal-body input[type="number"],
+.modal-body input[type="tel"] {
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 12px 16px;
+  color: #fff;
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s;
+}
+.modal-body input:focus {
+  border-color: var(--gl);
+  box-shadow: 0 0 20px rgba(201,168,76,0.05);
+}
+.modal-body .ilbl {
+  color: rgba(255,255,255,0.35);
+  font-size: 10px;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+/* Glow Submit Button */
+.btn-glow-submit {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #8a6a1f, #c9a84c, #f0d060);
+  border: none;
+  border-radius: 12px;
+  color: #0d0500;
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 25px rgba(201,168,76,0.2);
+}
+.btn-glow-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 40px rgba(201,168,76,0.4);
+}
+.btn-glow-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Neon Divider */
+.neon-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.2), transparent);
+  margin: 16px 0;
+}
 </style>
 </head>
 <body>
@@ -1401,180 +1709,296 @@ input::placeholder{color:rgba(253,246,227,0.18);}
 
 <div class="toast" id="toast"></div>
 
-<!-- DEPOSIT SCREENSHOT MODAL -->
+<!-- DEPOSIT SCREENSHOT MODAL (REDESIGNED) -->
 <div class="deposit-ss-modal" id="depositSSModal">
-  <div class="deposit-ss-box">
-    <div class="deposit-ss-title">📸 Deposit Screenshot</div>
-    <div class="deposit-ss-sub">Binance Pay / Transfer Screenshot</div>
+  <div class="deposit-ss-box" style="max-width:420px; padding:20px 20px 24px; background: linear-gradient(160deg, #0c0a1a, #06050f); border: 1px solid rgba(201,168,76,0.25); box-shadow: 0 0 60px rgba(0,0,0,0.9), 0 0 30px rgba(201,168,76,0.05);">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+      <div class="deposit-ss-title" style="font-size:20px; color:#fff; text-shadow:0 0 30px rgba(240,208,96,0.2);">💎 Deposit</div>
+      <button onclick="closeDepositSSModal()" style="background:none; border:none; color:rgba(255,255,255,0.3); font-size:20px; cursor:pointer;">✕</button>
+    </div>
+    <div style="font-size:11px; color:rgba(255,255,255,0.3); letter-spacing:2px; margin-bottom:16px; font-family:'Cinzel',serif;">Add funds to your account</div>
     
-    <div class="bnb-card" style="margin-bottom:16px;padding:12px;">
-      <div class="bnb-logo-row" style="margin-bottom:8px;">
-        <svg class="bnb-logo-svg" viewBox="0 0 126.61 126.61" xmlns="http://www.w3.org/2000/svg" style="width:32px;height:32px">
-          <polygon points="38.73 53.2 63.3 28.58 87.89 53.2 102.07 39 63.3 0.19 24.56 39" fill="#F0B90B"/>
-          <rect x="15.4" y="53.78" width="20" height="20" transform="translate(-31.1 34.4) rotate(-45)" fill="#F0B90B"/>
-          <polygon points="38.73 73.4 63.3 98.02 87.89 73.4 102.15 87.61 63.3 126.42 24.48 87.64" fill="#F0B90B"/>
-          <rect x="91.21" y="53.78" width="20" height="20" transform="translate(-14.1 92.2) rotate(-45)" fill="#F0B90B"/>
-          <polygon points="63.3 41.54 78.83 57.09 63.3 72.62 47.77 57.09" fill="#F0B90B"/>
-        </svg>
-        <div><div class="bnb-name" style="font-size:14px;">BINANCE</div></div>
+    <!-- Balance Display -->
+    <div class="deposit-balance-box" style="margin-bottom:16px;">
+      <span class="label">💰 Balance</span>
+      <span class="amount" id="depositBalDisplay">$0.00</span>
+    </div>
+    
+    <!-- VIP Bonus Banner -->
+    <div class="vip-bonus-banner">
+      <div>
+        <div class="vip-text">🎁 VIP BONUS</div>
+        <div class="vip-sub">GET UP TO 50% BONUS</div>
       </div>
-      <div class="bnb-field" style="margin-bottom:0;">
-        <div class="bnb-field-key">Binance ID</div>
-        <div class="bnb-field-val" style="font-size:14px;">894307667 <button class="bnb-copy" onclick="copyTxt('894307667',this)">📋 Copy</button></div>
+      <button class="vip-btn" onclick="toast('🎉 VIP Bonus claimed!', false)">Claim Now</button>
+    </div>
+    
+    <!-- Payment Method -->
+    <div style="font-family:'Cinzel',serif; font-size:10px; color:rgba(255,255,255,0.3); letter-spacing:2px; margin-bottom:8px;">SELECT PAYMENT METHOD</div>
+    <div class="method-grid" style="margin-bottom:14px;">
+      <div class="method-card sel" onclick="swmDeposit('binance',this)"><div class="method-ico">🔶</div><div class="method-nm">Binance</div><div class="method-sub">Crypto</div></div>
+      <div class="method-card" onclick="swmDeposit('bkash',this)"><div class="method-ico">📱</div><div class="method-nm">bKash</div><div class="method-sub">Mobile</div></div>
+      <div class="method-card" onclick="swmDeposit('nagad',this)"><div class="method-ico">🟠</div><div class="method-nm">Nagad</div><div class="method-sub">Banking</div></div>
+    </div>
+    
+    <!-- Binance Info (default) -->
+    <div id="depositMethodInfo" style="margin-bottom:14px;">
+      <div class="bnb-card" style="margin-bottom:0; padding:12px; border-color: rgba(240,185,11,0.3);">
+        <div class="bnb-logo-row" style="margin-bottom:6px;">
+          <svg class="bnb-logo-svg" viewBox="0 0 126.61 126.61" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:28px;">
+            <polygon points="38.73 53.2 63.3 28.58 87.89 53.2 102.07 39 63.3 0.19 24.56 39" fill="#F0B90B"/>
+            <rect x="15.4" y="53.78" width="20" height="20" transform="translate(-31.1 34.4) rotate(-45)" fill="#F0B90B"/>
+            <polygon points="38.73 73.4 63.3 98.02 87.89 73.4 102.15 87.61 63.3 126.42 24.48 87.64" fill="#F0B90B"/>
+            <rect x="91.21" y="53.78" width="20" height="20" transform="translate(-14.1 92.2) rotate(-45)" fill="#F0B90B"/>
+            <polygon points="63.3 41.54 78.83 57.09 63.3 72.62 47.77 57.09" fill="#F0B90B"/>
+          </svg>
+          <div><div class="bnb-name" style="font-size:13px;">BINANCE</div></div>
+        </div>
+        <div class="bnb-field" style="margin-bottom:0; padding:8px 12px;">
+          <div class="bnb-field-key">Binance ID</div>
+          <div class="bnb-field-val" style="font-size:13px;">894307667 <button class="bnb-copy" onclick="copyTxt('894307667',this)">📋 Copy</button></div>
+        </div>
       </div>
     </div>
     
-    <div class="igrp" style="margin-bottom:12px;">
-      <label class="ilbl">Amount (USDT)</label>
+    <!-- Amount Input -->
+    <div class="igrp" style="margin-bottom:8px;">
+      <label class="ilbl">Enter Amount (USD)</label>
       <div class="iwrap">
         <span class="ico">💵</span>
-        <input type="number" id="depSSAmt" placeholder="Min 50 USDT" value="50"/>
+        <input type="number" id="depSSAmt" placeholder="Min $50" value="50" style="background:rgba(0,0,0,0.5); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:12px 16px 12px 40px; color:#fff; font-size:16px;"/>
       </div>
     </div>
     
-    <div class="deposit-ss-preview" id="ssPreview" onclick="document.getElementById('ssFileInput').click()">
+    <!-- Quick Amounts -->
+    <div class="quick-amounts" style="margin-bottom:12px;">
+      <div class="qa-btn" onclick="document.getElementById('depSSAmt').value='50'">$50</div>
+      <div class="qa-btn" onclick="document.getElementById('depSSAmt').value='100'">$100</div>
+      <div class="qa-btn" onclick="document.getElementById('depSSAmt').value='500'">$500</div>
+      <div class="qa-btn" onclick="document.getElementById('depSSAmt').value='1000'">$1,000</div>
+    </div>
+    
+    <!-- Screenshot Upload -->
+    <div style="font-family:'Cinzel',serif; font-size:9px; color:rgba(255,255,255,0.25); letter-spacing:2px; margin-bottom:4px;">UPLOAD SCREENSHOT</div>
+    <div class="deposit-ss-preview" id="ssPreview" onclick="document.getElementById('ssFileInput').click()" style="height:120px; border-color:rgba(201,168,76,0.15); border-radius:10px; margin-bottom:12px;">
       <img id="ssPreviewImg" style="display:none"/>
       <div class="deposit-ss-placeholder" id="ssPlaceholder">
         <span>📸</span>
-        <div>Click to upload screenshot</div>
+        <div style="font-size:11px;">Click to upload</div>
       </div>
     </div>
     <input type="file" id="ssFileInput" accept="image/*" style="display:none" onchange="previewScreenshot(this)"/>
     
-    <div class="deposit-ss-msg" id="depositSSMsg">
-      আপনার স্ক্রিনশট যাচাই করা হচ্ছে, ২–৫ মিনিটের মধ্যে ব্যালেন্স যোগ হবে।
+    <div class="deposit-ss-msg" id="depositSSMsg" style="font-size:11px; padding:10px; margin-bottom:12px; border-radius:8px; background:rgba(255,165,0,0.06); border:1px solid rgba(255,165,0,0.15); color:#ffa500; text-align:left;">
+      ⏳ Your screenshot will be verified within 2–5 minutes.
     </div>
     
-    <div class="deposit-ss-btns">
-      <button class="deposit-ss-btn cancel" onclick="closeDepositSSModal()">Cancel</button>
-      <button class="deposit-ss-btn submit" id="submitSSBtn" onclick="submitDepositWithSS()" disabled>📤 Submit</button>
+    <div class="deposit-ss-btns" style="gap:12px;">
+      <button class="deposit-ss-btn cancel" onclick="closeDepositSSModal()" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); color:rgba(255,255,255,0.4); padding:12px;">Cancel</button>
+      <button class="deposit-ss-btn submit" id="submitSSBtn" onclick="submitDepositWithSS()" disabled style="padding:12px; background:linear-gradient(135deg,#8a6a1f,#c9a84c,#f0d060); color:#0d0500; font-weight:700; border-radius:10px; box-shadow:0 4px 25px rgba(201,168,76,0.2);">📤 Submit</button>
     </div>
   </div>
 </div>
 
-<!-- WITHDRAW MODAL -->
+<!-- WITHDRAW MODAL (REDESIGNED) -->
 <div class="modal-ov" id="withdrawModal">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-hdr"><div class="modal-title">💸 Withdraw Funds</div><button class="modal-x" onclick="closeModal('withdraw')">✕</button></div>
-    <div class="modal-body">
-      <div class="method-grid">
-        <div class="method-card" onclick="swm('bkash',this)"><div class="method-ico">📱</div><div class="method-nm">bKash</div><div style="font-size:8px;color:rgba(201,168,76,0.3)">Personal</div></div>
-        <div class="method-card" onclick="swm('nagad',this)"><div class="method-ico">🟠</div><div class="method-nm">Nagad</div><div style="font-size:8px;color:rgba(201,168,76,0.3)">Instant</div></div>
-        <div class="method-card" onclick="swm('binance',this)"><div class="method-ico">🔶</div><div class="method-nm">Binance</div><div style="font-size:8px;color:rgba(201,168,76,0.3)">Crypto</div></div>
-        <div class="method-card" onclick="swm('upay',this)"><div class="method-ico">💜</div><div class="method-nm">Upay</div><div style="font-size:8px;color:rgba(201,168,76,0.3)">Wallet</div></div>
-        <div class="method-card" onclick="swm('rocket',this)"><div class="method-ico">🚀</div><div class="method-nm">Rocket</div><div style="font-size:8px;color:rgba(201,168,76,0.3)">Fast</div></div>
+  <div class="modal" style="background:linear-gradient(160deg,#0c0a1a,#06050f); border:1px solid rgba(201,168,76,0.25);">
+    <div class="modal-handle" style="background:rgba(201,168,76,0.2);"></div>
+    <div class="modal-hdr" style="padding:18px 24px 14px; border-bottom:1px solid rgba(201,168,76,0.12); background:rgba(0,0,0,0.2);">
+      <div class="modal-title" style="font-size:20px; color:#fff; text-shadow:0 0 30px rgba(240,208,96,0.2);">💸 Withdraw</div>
+      <button class="modal-x" onclick="closeModal('withdraw')" style="color:rgba(255,255,255,0.3); font-size:20px;">✕</button>
+    </div>
+    <div class="modal-body" style="padding:20px 24px 28px;">
+      <div style="font-size:11px; color:rgba(255,255,255,0.3); letter-spacing:2px; margin-bottom:16px; font-family:'Cinzel',serif;">Withdraw your winnings</div>
+      
+      <!-- Balance Display -->
+      <div class="withdraw-balance-box" style="margin-bottom:16px;">
+        <span class="label">💰 Available Balance</span>
+        <span class="amount" id="withdrawBalDisplay">$0.00</span>
       </div>
       
-      <div class="sep"></div>
-      
-      <!-- bKash Form -->
-      <div class="mform" id="form-bkash">
-        <div style="background:rgba(201,168,76,0.05);border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid rgba(201,168,76,0.15)">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%23E2136E'/%3E%3Cpath fill='%23FFFFFF' d='M12 16h24v16H12z'/%3E%3Ctext x='14' y='28' font-family='Arial' font-size='12' fill='%23E2136E' font-weight='bold'%3EbKash%3C/text%3E%3C/svg%3E" style="width:40px;height:40px;"/>
-            <div><div style="font-family:'Cinzel',serif;font-size:16px;color:#fff">bKash</div><div style="font-size:10px;color:rgba(201,168,76,0.4)">Personal Wallet</div></div>
-          </div>
-          <div class="igrp">
-            <label class="ilbl">bKash Number</label>
-            <div class="iwrap"><span class="ico">📱</span><input type="tel" id="wdBkashNum" placeholder="+880 1XXXXXXXXX"/></div>
-          </div>
-          <div class="igrp">
-            <label class="ilbl">Amount $</label>
-            <div class="iwrap"><span class="ico">💵</span><input type="number" id="wdBkashAmt" placeholder="Min $1.67"/></div>
-          </div>
-        </div>
-        <div class="notice warn" style="margin-bottom:16px">⏱️ Your withdrawal is being processed. It will be verified by admin.</div>
-        <button class="btn-sub" onclick="submitWithdraw('bKash')">Withdraw via bKash</button>
+      <!-- Select Withdrawal Method -->
+      <div style="font-family:'Cinzel',serif; font-size:10px; color:rgba(255,255,255,0.3); letter-spacing:2px; margin-bottom:8px;">SELECT WITHDRAWAL METHOD</div>
+      <div class="method-grid" style="margin-bottom:14px;">
+        <div class="method-card sel" onclick="swm('binance',this)"><div class="method-ico">🔶</div><div class="method-nm">Binance</div><div class="method-sub">Crypto</div></div>
+        <div class="method-card" onclick="swm('bkash',this)"><div class="method-ico">📱</div><div class="method-nm">bKash</div><div class="method-sub">Mobile</div></div>
+        <div class="method-card" onclick="swm('rocket',this)"><div class="method-ico">🚀</div><div class="method-nm">Rocket</div><div class="method-sub">Banking</div></div>
+        <div class="method-card" onclick="swm('nagad',this)"><div class="method-ico">🟠</div><div class="method-nm">Nagad</div><div class="method-sub">Banking</div></div>
+        <div class="method-card" onclick="swm('upay',this)"><div class="method-ico">💜</div><div class="method-nm">Upay</div><div class="method-sub">Wallet</div></div>
       </div>
       
-      <!-- Nagad Form -->
-      <div class="mform" id="form-nagad">
-        <div style="background:rgba(255,165,0,0.05);border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid rgba(255,165,0,0.15)">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%23F5821F'/%3E%3Cpath fill='%23FFFFFF' d='M12 16h24v16H12z'/%3E%3Ctext x='14' y='28' font-family='Arial' font-size='12' fill='%23F5821F' font-weight='bold'%3ENagad%3C/text%3E%3C/svg%3E" style="width:40px;height:40px;"/>
-            <div><div style="font-family:'Cinzel',serif;font-size:16px;color:#fff">Nagad</div><div style="font-size:10px;color:rgba(255,165,0,0.4)">Mobile Banking</div></div>
-          </div>
-          <div class="igrp">
-            <label class="ilbl">Nagad Number</label>
-            <div class="iwrap"><span class="ico">🟠</span><input type="tel" id="wdNagadNum" placeholder="+880 1XXXXXXXXX"/></div>
-          </div>
-          <div class="igrp">
-            <label class="ilbl">Amount $</label>
-            <div class="iwrap"><span class="ico">💵</span><input type="number" id="wdNagadAmt" placeholder="Min $1.67"/></div>
-          </div>
-        </div>
-        <div class="notice warn" style="margin-bottom:16px">⏱️ Your withdrawal is being processed. It will be verified by admin.</div>
-        <button class="btn-sub" onclick="submitWithdraw('Nagad')">Withdraw via Nagad</button>
-      </div>
-      
-      <!-- Binance Form -->
-      <div class="mform" id="form-binance">
-        <div style="background:rgba(240,185,11,0.05);border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid rgba(240,185,11,0.15)">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-            <svg class="bnb-logo-svg" viewBox="0 0 126.61 126.61" xmlns="http://www.w3.org/2000/svg" style="width:40px;height:40px">
+      <!-- Withdraw Forms -->
+      <div class="mform active" id="form-binance">
+        <div style="background:rgba(240,185,11,0.04); border:1px solid rgba(240,185,11,0.12); border-radius:12px; padding:14px 16px; margin-bottom:14px;">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+            <svg class="bnb-logo-svg" viewBox="0 0 126.61 126.61" xmlns="http://www.w3.org/2000/svg" style="width:32px;height:32px;">
               <polygon points="38.73 53.2 63.3 28.58 87.89 53.2 102.07 39 63.3 0.19 24.56 39" fill="#F0B90B"/>
               <rect x="15.4" y="53.78" width="20" height="20" transform="translate(-31.1 34.4) rotate(-45)" fill="#F0B90B"/>
               <polygon points="38.73 73.4 63.3 98.02 87.89 73.4 102.15 87.61 63.3 126.42 24.48 87.64" fill="#F0B90B"/>
               <rect x="91.21" y="53.78" width="20" height="20" transform="translate(-14.1 92.2) rotate(-45)" fill="#F0B90B"/>
               <polygon points="63.3 41.54 78.83 57.09 63.3 72.62 47.77 57.09" fill="#F0B90B"/>
             </svg>
-            <div><div style="font-family:'Cinzel',serif;font-size:16px;color:#f0b90b">Binance</div><div style="font-size:10px;color:rgba(240,185,11,0.4)">Crypto Exchange</div></div>
+            <div><div style="font-family:'Cinzel',serif; font-size:14px; color:#f0b90b;">Binance</div><div style="font-size:9px; color:rgba(255,255,255,0.3);">Crypto Exchange</div></div>
           </div>
           <div class="igrp">
             <label class="ilbl">Binance ID</label>
-            <div class="iwrap"><span class="ico">🔶</span><input type="text" id="wdBinanceId" placeholder="Your Binance ID"/></div>
+            <div class="iwrap"><span class="ico">🔶</span><input type="text" id="wdBinanceId" placeholder="Your Binance ID" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:11px 14px 11px 38px; color:#fff;"/></div>
           </div>
-          <div class="igrp">
+          <div class="igrp" style="margin-bottom:0;">
             <label class="ilbl">Amount (USDT)</label>
-            <div class="iwrap"><span class="ico">💵</span><input type="number" id="wdBinanceAmt" placeholder="Min 50 USDT"/></div>
+            <div class="iwrap"><span class="ico">💵</span><input type="number" id="wdBinanceAmt" placeholder="Min 50 USDT" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:11px 14px 11px 38px; color:#fff;"/></div>
           </div>
         </div>
-        <div class="notice warn" style="margin-bottom:16px">⏱️ Your withdrawal is being processed. It will be verified by admin.</div>
-        <button class="btn-sub" onclick="submitWithdraw('Binance')">Withdraw via Binance</button>
+        
+        <!-- Quick Amounts -->
+        <div class="quick-amounts" style="margin-bottom:12px;">
+          <div class="qa-btn" onclick="document.getElementById('wdBinanceAmt').value='50'">$50</div>
+          <div class="qa-btn" onclick="document.getElementById('wdBinanceAmt').value='100'">$100</div>
+          <div class="qa-btn" onclick="document.getElementById('wdBinanceAmt').value='500'">$500</div>
+          <div class="qa-btn" onclick="document.getElementById('wdBinanceAmt').value='1000'">$1,000</div>
+        </div>
+        
+        <!-- Withdrawal Summary -->
+        <div class="withdraw-summary">
+          <div class="ws-row"><span class="ws-label">Exchange Rate</span><span class="ws-value">1 USD = 120 BDT</span></div>
+          <div class="ws-row"><span class="ws-label">Withdrawal Fee</span><span class="ws-value negative">0%</span></div>
+          <div class="ws-row ws-total"><span class="ws-label">You will receive (BDT)</span><span class="ws-value gold" id="wdReceiveAmount">11,850.00</span></div>
+        </div>
+        
+        <div class="notice warn" style="margin-bottom:14px; font-size:11px; padding:10px; border-radius:8px;">⏱️ Your withdrawal request will be verified by admin.</div>
+        <button class="btn-glow-submit" onclick="submitWithdraw('Binance')">💸 Request Withdraw</button>
+      </div>
+      
+      <!-- bKash Form -->
+      <div class="mform" id="form-bkash">
+        <div style="background:rgba(226,19,110,0.04); border:1px solid rgba(226,19,110,0.12); border-radius:12px; padding:14px 16px; margin-bottom:14px;">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%23E2136E'/%3E%3Cpath fill='%23FFFFFF' d='M12 16h24v16H12z'/%3E%3Ctext x='14' y='28' font-family='Arial' font-size='12' fill='%23E2136E' font-weight='bold'%3EbKash%3C/text%3E%3C/svg%3E" style="width:32px;height:32px;"/>
+            <div><div style="font-family:'Cinzel',serif; font-size:14px; color:#fff;">bKash</div><div style="font-size:9px; color:rgba(255,255,255,0.3);">Personal Wallet</div></div>
+          </div>
+          <div class="igrp">
+            <label class="ilbl">bKash Number</label>
+            <div class="iwrap"><span class="ico">📱</span><input type="tel" id="wdBkashNum" placeholder="+880 1XXXXXXXXX" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:11px 14px 11px 38px; color:#fff;"/></div>
+          </div>
+          <div class="igrp" style="margin-bottom:0;">
+            <label class="ilbl">Amount $</label>
+            <div class="iwrap"><span class="ico">💵</span><input type="number" id="wdBkashAmt" placeholder="Min $1.67" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:11px 14px 11px 38px; color:#fff;"/></div>
+          </div>
+        </div>
+        <div class="quick-amounts" style="margin-bottom:12px;">
+          <div class="qa-btn" onclick="document.getElementById('wdBkashAmt').value='1.67'">$1.67</div>
+          <div class="qa-btn" onclick="document.getElementById('wdBkashAmt').value='4.17'">$4.17</div>
+          <div class="qa-btn" onclick="document.getElementById('wdBkashAmt').value='8.33'">$8.33</div>
+          <div class="qa-btn" onclick="document.getElementById('wdBkashAmt').value='41.67'">$41.67</div>
+        </div>
+        <div class="withdraw-summary">
+          <div class="ws-row"><span class="ws-label">Exchange Rate</span><span class="ws-value">1 USD = 120 BDT</span></div>
+          <div class="ws-row"><span class="ws-label">Withdrawal Fee</span><span class="ws-value negative">0%</span></div>
+          <div class="ws-row ws-total"><span class="ws-label">You will receive (BDT)</span><span class="ws-value gold" id="wdReceiveAmountBkash">11,850.00</span></div>
+        </div>
+        <div class="notice warn" style="margin-bottom:14px; font-size:11px; padding:10px; border-radius:8px;">⏱️ Your withdrawal request will be verified by admin.</div>
+        <button class="btn-glow-submit" onclick="submitWithdraw('bKash')">💸 Request Withdraw</button>
+      </div>
+      
+      <!-- Nagad Form -->
+      <div class="mform" id="form-nagad">
+        <div style="background:rgba(245,130,31,0.04); border:1px solid rgba(245,130,31,0.12); border-radius:12px; padding:14px 16px; margin-bottom:14px;">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%23F5821F'/%3E%3Cpath fill='%23FFFFFF' d='M12 16h24v16H12z'/%3E%3Ctext x='14' y='28' font-family='Arial' font-size='12' fill='%23F5821F' font-weight='bold'%3ENagad%3C/text%3E%3C/svg%3E" style="width:32px;height:32px;"/>
+            <div><div style="font-family:'Cinzel',serif; font-size:14px; color:#fff;">Nagad</div><div style="font-size:9px; color:rgba(255,255,255,0.3);">Mobile Banking</div></div>
+          </div>
+          <div class="igrp">
+            <label class="ilbl">Nagad Number</label>
+            <div class="iwrap"><span class="ico">🟠</span><input type="tel" id="wdNagadNum" placeholder="+880 1XXXXXXXXX" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:11px 14px 11px 38px; color:#fff;"/></div>
+          </div>
+          <div class="igrp" style="margin-bottom:0;">
+            <label class="ilbl">Amount $</label>
+            <div class="iwrap"><span class="ico">💵</span><input type="number" id="wdNagadAmt" placeholder="Min $1.67" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:11px 14px 11px 38px; color:#fff;"/></div>
+          </div>
+        </div>
+        <div class="quick-amounts" style="margin-bottom:12px;">
+          <div class="qa-btn" onclick="document.getElementById('wdNagadAmt').value='1.67'">$1.67</div>
+          <div class="qa-btn" onclick="document.getElementById('wdNagadAmt').value='4.17'">$4.17</div>
+          <div class="qa-btn" onclick="document.getElementById('wdNagadAmt').value='8.33'">$8.33</div>
+          <div class="qa-btn" onclick="document.getElementById('wdNagadAmt').value='41.67'">$41.67</div>
+        </div>
+        <div class="withdraw-summary">
+          <div class="ws-row"><span class="ws-label">Exchange Rate</span><span class="ws-value">1 USD = 120 BDT</span></div>
+          <div class="ws-row"><span class="ws-label">Withdrawal Fee</span><span class="ws-value negative">0%</span></div>
+          <div class="ws-row ws-total"><span class="ws-label">You will receive (BDT)</span><span class="ws-value gold" id="wdReceiveAmountNagad">11,850.00</span></div>
+        </div>
+        <div class="notice warn" style="margin-bottom:14px; font-size:11px; padding:10px; border-radius:8px;">⏱️ Your withdrawal request will be verified by admin.</div>
+        <button class="btn-glow-submit" onclick="submitWithdraw('Nagad')">💸 Request Withdraw</button>
       </div>
       
       <!-- Upay Form -->
       <div class="mform" id="form-upay">
-        <div style="background:rgba(155,89,182,0.05);border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid rgba(155,89,182,0.15)">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%239B59B6'/%3E%3Cpath fill='%23FFFFFF' d='M12 16h24v16H12z'/%3E%3Ctext x='14' y='28' font-family='Arial' font-size='12' fill='%239B59B6' font-weight='bold'%3EUpay%3C/text%3E%3C/svg%3E" style="width:40px;height:40px;"/>
-            <div><div style="font-family:'Cinzel',serif;font-size:16px;color:#9b59b6">Upay</div><div style="font-size:10px;color:rgba(155,89,182,0.4)">Digital Wallet</div></div>
+        <div style="background:rgba(155,89,182,0.04); border:1px solid rgba(155,89,182,0.12); border-radius:12px; padding:14px 16px; margin-bottom:14px;">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%239B59B6'/%3E%3Cpath fill='%23FFFFFF' d='M12 16h24v16H12z'/%3E%3Ctext x='14' y='28' font-family='Arial' font-size='12' fill='%239B59B6' font-weight='bold'%3EUpay%3C/text%3E%3C/svg%3E" style="width:32px;height:32px;"/>
+            <div><div style="font-family:'Cinzel',serif; font-size:14px; color:#9b59b6;">Upay</div><div style="font-size:9px; color:rgba(255,255,255,0.3);">Digital Wallet</div></div>
           </div>
           <div class="igrp">
             <label class="ilbl">Upay Number</label>
-            <div class="iwrap"><span class="ico">💜</span><input type="tel" id="wdUpayNum" placeholder="+880 1XXXXXXXXX"/></div>
+            <div class="iwrap"><span class="ico">💜</span><input type="tel" id="wdUpayNum" placeholder="+880 1XXXXXXXXX" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:11px 14px 11px 38px; color:#fff;"/></div>
           </div>
-          <div class="igrp">
+          <div class="igrp" style="margin-bottom:0;">
             <label class="ilbl">Amount $</label>
-            <div class="iwrap"><span class="ico">💵</span><input type="number" id="wdUpayAmt" placeholder="Min $1.67"/></div>
+            <div class="iwrap"><span class="ico">💵</span><input type="number" id="wdUpayAmt" placeholder="Min $1.67" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:11px 14px 11px 38px; color:#fff;"/></div>
           </div>
         </div>
-        <div class="notice warn" style="margin-bottom:16px">⏱️ Your withdrawal is being processed. It will be verified by admin.</div>
-        <button class="btn-sub" onclick="submitWithdraw('Upay')">Withdraw via Upay</button>
+        <div class="quick-amounts" style="margin-bottom:12px;">
+          <div class="qa-btn" onclick="document.getElementById('wdUpayAmt').value='1.67'">$1.67</div>
+          <div class="qa-btn" onclick="document.getElementById('wdUpayAmt').value='4.17'">$4.17</div>
+          <div class="qa-btn" onclick="document.getElementById('wdUpayAmt').value='8.33'">$8.33</div>
+          <div class="qa-btn" onclick="document.getElementById('wdUpayAmt').value='41.67'">$41.67</div>
+        </div>
+        <div class="withdraw-summary">
+          <div class="ws-row"><span class="ws-label">Exchange Rate</span><span class="ws-value">1 USD = 120 BDT</span></div>
+          <div class="ws-row"><span class="ws-label">Withdrawal Fee</span><span class="ws-value negative">0%</span></div>
+          <div class="ws-row ws-total"><span class="ws-label">You will receive (BDT)</span><span class="ws-value gold" id="wdReceiveAmountUpay">11,850.00</span></div>
+        </div>
+        <div class="notice warn" style="margin-bottom:14px; font-size:11px; padding:10px; border-radius:8px;">⏱️ Your withdrawal request will be verified by admin.</div>
+        <button class="btn-glow-submit" onclick="submitWithdraw('Upay')">💸 Request Withdraw</button>
       </div>
       
       <!-- Rocket Form -->
       <div class="mform" id="form-rocket">
-        <div style="background:rgba(46,204,113,0.05);border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid rgba(46,204,113,0.15)">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%232ECC71'/%3E%3Cpath fill='%23FFFFFF' d='M12 16h24v16H12z'/%3E%3Ctext x='14' y='28' font-family='Arial' font-size='12' fill='%232ECC71' font-weight='bold'%3ERocket%3C/text%3E%3C/svg%3E" style="width:40px;height:40px;"/>
-            <div><div style="font-family:'Cinzel',serif;font-size:16px;color:#2ecc71">Rocket</div><div style="font-size:10px;color:rgba(46,204,113,0.4)">Fast Transfer</div></div>
+        <div style="background:rgba(46,204,113,0.04); border:1px solid rgba(46,204,113,0.12); border-radius:12px; padding:14px 16px; margin-bottom:14px;">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%232ECC71'/%3E%3Cpath fill='%23FFFFFF' d='M12 16h24v16H12z'/%3E%3Ctext x='14' y='28' font-family='Arial' font-size='12' fill='%232ECC71' font-weight='bold'%3ERocket%3C/text%3E%3C/svg%3E" style="width:32px;height:32px;"/>
+            <div><div style="font-family:'Cinzel',serif; font-size:14px; color:#2ecc71;">Rocket</div><div style="font-size:9px; color:rgba(255,255,255,0.3);">Fast Transfer</div></div>
           </div>
           <div class="igrp">
             <label class="ilbl">Rocket Number</label>
-            <div class="iwrap"><span class="ico">🚀</span><input type="tel" id="wdRocketNum" placeholder="+880 1XXXXXXXXX"/></div>
+            <div class="iwrap"><span class="ico">🚀</span><input type="tel" id="wdRocketNum" placeholder="+880 1XXXXXXXXX" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:11px 14px 11px 38px; color:#fff;"/></div>
           </div>
-          <div class="igrp">
+          <div class="igrp" style="margin-bottom:0;">
             <label class="ilbl">Amount $</label>
-            <div class="iwrap"><span class="ico">💵</span><input type="number" id="wdRocketAmt" placeholder="Min $1.67"/></div>
+            <div class="iwrap"><span class="ico">💵</span><input type="number" id="wdRocketAmt" placeholder="Min $1.67" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:11px 14px 11px 38px; color:#fff;"/></div>
           </div>
         </div>
-        <div class="notice warn" style="margin-bottom:16px">⏱️ Your withdrawal is being processed. It will be verified by admin.</div>
-        <button class="btn-sub" onclick="submitWithdraw('Rocket')">Withdraw via Rocket</button>
+        <div class="quick-amounts" style="margin-bottom:12px;">
+          <div class="qa-btn" onclick="document.getElementById('wdRocketAmt').value='1.67'">$1.67</div>
+          <div class="qa-btn" onclick="document.getElementById('wdRocketAmt').value='4.17'">$4.17</div>
+          <div class="qa-btn" onclick="document.getElementById('wdRocketAmt').value='8.33'">$8.33</div>
+          <div class="qa-btn" onclick="document.getElementById('wdRocketAmt').value='41.67'">$41.67</div>
+        </div>
+        <div class="withdraw-summary">
+          <div class="ws-row"><span class="ws-label">Exchange Rate</span><span class="ws-value">1 USD = 120 BDT</span></div>
+          <div class="ws-row"><span class="ws-label">Withdrawal Fee</span><span class="ws-value negative">0%</span></div>
+          <div class="ws-row ws-total"><span class="ws-label">You will receive (BDT)</span><span class="ws-value gold" id="wdReceiveAmountRocket">11,850.00</span></div>
+        </div>
+        <div class="notice warn" style="margin-bottom:14px; font-size:11px; padding:10px; border-radius:8px;">⏱️ Your withdrawal request will be verified by admin.</div>
+        <button class="btn-glow-submit" onclick="submitWithdraw('Rocket')">💸 Request Withdraw</button>
       </div>
       
-      <div id="noMethMsg" style="text-align:center;padding:12px 0;color:rgba(201,168,76,0.3);font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;">↑ Select a payment method above</div>
+      <div id="noMethMsg" style="text-align:center; padding:16px 0; color:rgba(255,255,255,0.15); font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px;">↑ Select a payment method above</div>
+      
+      <!-- Need Help -->
+      <div class="need-help">
+        Need help? <span class="help-link" onclick="closeModal('withdraw'); openSupport()">Contact Support</span>
+      </div>
     </div>
   </div>
 </div>
@@ -1682,7 +2106,7 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   <div class="admin-pw-box">
     <div style="font-size:32px;margin-bottom:10px">🔐</div>
     <div class="apw-title">ADMIN ACCESS</div>
-    <div class="apw-sub">9x consecutive clicks on Profile Icon</div>
+    <div class="apw-sub">4x Click anywhere to open</div>
     <input type="password" class="apw-input" id="apwInput" placeholder="• • • • • •" maxlength="10" onkeydown="if(event.key==='Enter')checkAdminPw()"/>
     <div class="apw-error" id="apwError">❌ Wrong Password!</div>
     <div class="apw-btns">
@@ -1932,141 +2356,67 @@ document.querySelectorAll('.modal-ov').forEach(el => { el.addEventListener('clic
 window.swm = function(m, card) { document.querySelectorAll('.method-card').forEach(c => c.classList.remove('sel')); card.classList.add('sel'); document.querySelectorAll('.mform').forEach(f => f.classList.remove('active')); document.getElementById('noMethMsg').style.display = 'none'; document.getElementById('form-' + m).classList.add('active'); };
 window.copyTxt = function(t, btn) { navigator.clipboard.writeText(t).then(() => { btn.textContent = '✅ Copied!'; setTimeout(() => btn.textContent = '📋 Copy', 2000); }); };
 window.checkWithdraw = function() { if (window._realBal <= 0) { toast('❌ Balance নেই! Deposit করুন।', true); setTimeout(() => openDepositSSModal(), 600); return; } openModal('withdraw'); };
+
+// Deposit Method Switcher
+function swmDeposit(method, card) {
+  document.querySelectorAll('.deposit-ss-modal .method-card').forEach(c => c.classList.remove('sel'));
+  card.classList.add('sel');
+  const infoDiv = document.getElementById('depositMethodInfo');
+  if (method === 'binance') {
+    infoDiv.innerHTML = `
+      <div class="bnb-card" style="margin-bottom:0; padding:12px; border-color: rgba(240,185,11,0.3);">
+        <div class="bnb-logo-row" style="margin-bottom:6px;">
+          <svg class="bnb-logo-svg" viewBox="0 0 126.61 126.61" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:28px;">
+            <polygon points="38.73 53.2 63.3 28.58 87.89 53.2 102.07 39 63.3 0.19 24.56 39" fill="#F0B90B"/>
+            <rect x="15.4" y="53.78" width="20" height="20" transform="translate(-31.1 34.4) rotate(-45)" fill="#F0B90B"/>
+            <polygon points="38.73 73.4 63.3 98.02 87.89 73.4 102.15 87.61 63.3 126.42 24.48 87.64" fill="#F0B90B"/>
+            <rect x="91.21" y="53.78" width="20" height="20" transform="translate(-14.1 92.2) rotate(-45)" fill="#F0B90B"/>
+            <polygon points="63.3 41.54 78.83 57.09 63.3 72.62 47.77 57.09" fill="#F0B90B"/>
+          </svg>
+          <div><div class="bnb-name" style="font-size:13px;">BINANCE</div></div>
+        </div>
+        <div class="bnb-field" style="margin-bottom:0; padding:8px 12px;">
+          <div class="bnb-field-key">Binance ID</div>
+          <div class="bnb-field-val" style="font-size:13px;">894307667 <button class="bnb-copy" onclick="copyTxt('894307667',this)">📋 Copy</button></div>
+        </div>
+      </div>
+    `;
+  } else if (method === 'bkash') {
+    infoDiv.innerHTML = `
+      <div style="background:rgba(226,19,110,0.04); border:1px solid rgba(226,19,110,0.12); border-radius:12px; padding:12px 16px;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%23E2136E'/%3E%3Cpath fill='%23FFFFFF' d='M12 16h24v16H12z'/%3E%3Ctext x='14' y='28' font-family='Arial' font-size='12' fill='%23E2136E' font-weight='bold'%3EbKash%3C/text%3E%3C/svg%3E" style="width:28px;height:28px;"/>
+          <div><div style="font-family:'Cinzel',serif; font-size:13px; color:#fff;">bKash</div></div>
+        </div>
+        <div class="bnb-field" style="margin-bottom:0; padding:8px 12px; border-color:rgba(226,19,110,0.2);">
+          <div class="bnb-field-key">bKash Number</div>
+          <div class="bnb-field-val" style="font-size:13px;">017XXXXXXX <button class="bnb-copy" onclick="copyTxt('017XXXXXXX',this)">📋 Copy</button></div>
+        </div>
+      </div>
+    `;
+  } else if (method === 'nagad') {
+    infoDiv.innerHTML = `
+      <div style="background:rgba(245,130,31,0.04); border:1px solid rgba(245,130,31,0.12); border-radius:12px; padding:12px 16px;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%23F5821F'/%3E%3Cpath fill='%23FFFFFF' d='M12 16h24v16H12z'/%3E%3Ctext x='14' y='28' font-family='Arial' font-size='12' fill='%23F5821F' font-weight='bold'%3ENagad%3C/text%3E%3C/svg%3E" style="width:28px;height:28px;"/>
+          <div><div style="font-family:'Cinzel',serif; font-size:13px; color:#fff;">Nagad</div></div>
+        </div>
+        <div class="bnb-field" style="margin-bottom:0; padding:8px 12px; border-color:rgba(245,130,31,0.2);">
+          <div class="bnb-field-key">Nagad Number</div>
+          <div class="bnb-field-val" style="font-size:13px;">017XXXXXXX <button class="bnb-copy" onclick="copyTxt('017XXXXXXX',this)">📋 Copy</button></div>
+        </div>
+      </div>
+    `;
+  }
+}
+
 window.toggleDemo = function() { window._isDemo = document.getElementById('demoTog').checked; document.getElementById('demoBadgeAv').style.display = window._isDemo ? 'inline-block' : 'none'; document.getElementById('demoBalAv').style.display = window._isDemo ? 'flex' : 'none'; if (window._isDemo && window._demoBal <= 0) window._demoBal = 83.33; updateBals(); };
 window.saveProfileName = async function() { const nm = document.getElementById('profNameInp').value.trim(); if (!nm) { toast('❌ Name দিন', true); return; } if (!window._curUser || !window._db) return; try { await window._update(window._ref(window._db, 'users/' + window._curUser.uid), { name: nm }); document.getElementById('profName').textContent = nm; document.getElementById('uName').textContent = nm.split(' ')[0]; toast('✅ Name updated!', false); } catch(e) { console.error(e); toast('❌ Error updating name', true); } };
 window.uploadAvatar = function(inp) { const file = inp.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = async function(e) { const data = e.target.result; document.getElementById('profAvatar').innerHTML = `<img src="${data}" style="width:88px;height:88px;border-radius:50%;object-fit:cover"/>`; document.getElementById('uAvWrap').innerHTML = `<img src="${data}" class="u-avatar"/>`; if (window._curUser && window._db) { try { await window._update(window._ref(window._db, 'users/' + window._curUser.uid), { photoURL: data }); toast('✅ Photo updated!', false); } catch(e) { console.error(e); toast('❌ Error updating photo', true); } } }; reader.readAsDataURL(file); };
 
-// ============================================================
-// 🔥 NEW ADMIN TRIGGER SYSTEM: 9 consecutive clicks on Profile icon
-// ============================================================
-// Variables to track profile icon clicks
-let profileClickCount = 0;
-let profileClickTimer = null;
-
-// Function to handle profile icon clicks (called from the bottom nav)
-function handleProfileIconClick() {
-    // Only proceed if user is logged in
-    if (!window._curUser) return;
-    
-    // Increment click counter
-    profileClickCount++;
-    
-    // Clear previous timer
-    clearTimeout(profileClickTimer);
-    
-    // Set a new timer that will reset the counter after 2.5 seconds
-    profileClickTimer = setTimeout(() => {
-        profileClickCount = 0;
-    }, 2500); // 2.5 second timeout between clicks
-    
-    // If we've reached 9 consecutive clicks, open the admin panel
-    if (profileClickCount >= 9) {
-        // Reset counter
-        profileClickCount = 0;
-        clearTimeout(profileClickTimer);
-        
-        // Open admin password modal
-        document.getElementById('apwInput').value = '';
-        document.getElementById('apwError').style.display = 'none';
-        document.getElementById('adminPwModal').classList.add('open');
-        setTimeout(() => document.getElementById('apwInput').focus(), 200);
-        
-        // Visual feedback
-        toast('🔐 Admin access triggered!', false);
-    } else {
-        // Show subtle feedback for clicks (optional - helps user know they're clicking)
-        if (profileClickCount >= 5) {
-            const remaining = 9 - profileClickCount;
-            // Only show toast for the last few clicks to avoid spam
-            if (profileClickCount >= 7) {
-                toast(`${remaining} more click${remaining > 1 ? 's' : ''} to admin`, false);
-            }
-        }
-    }
-}
-
-// ============================================================
-// 🔥 IMPORTANT: REMOVED OLD 4-CLICK GLOBAL TRIGGER
-// The old document click listener that opened admin panel has been removed.
-// The new system only triggers via the Profile icon handler above.
-// ============================================================
-// OLD CODE REMOVED: No more global click listener for admin access.
-
-// Admin password check remains unchanged
-window.checkAdminPw = function() {
-    if (document.getElementById('apwInput').value === '308580') {
-        document.getElementById('adminPwModal').classList.remove('open');
-        showPage('adminPage');
-        if (window.loadWithdrawalRequests) loadWithdrawalRequests();
-        if (window.loadDepositRequests) loadDepositRequests();
-        if (window.loadAdminUsers) loadAdminUsers();
-        if (window.loadAdminMessages) loadAdminMessages();
-        if (window.loadAdminLeaderboard) loadAdminLeaderboard();
-        if (window.loadSupportMessages) loadSupportMessages();
-        if (window.loadAnnouncementSettings) loadAnnouncementSettings();
-        document.getElementById('aiName').value = aiName;
-        document.getElementById('aiWelcome').value = aiWelcome;
-        document.getElementById('aiMode').value = aiMode;
-        document.getElementById('adminAvMult').value = 15;
-        document.getElementById('avAdminStatus').innerHTML = 'Current: Random (5x-12x range)';
-        window._avForcedMult = null;
-        updateBannedUsersList();
-    } else {
-        document.getElementById('apwError').style.display = 'block';
-        document.getElementById('apwInput').value = '';
-    }
-};
-
-// ============================================================
-// 🔧 MODIFIED: navTo function to handle profile navigation
-// We need to attach the click handler to the profile nav item
-// ============================================================
-// Store original navTo function reference
-const originalNavTo = window.navTo;
-
-// Override navTo to add profile click tracking
-window.navTo = function(tab) {
-    document.querySelectorAll('.bn-item').forEach(b => b.classList.remove('active'));
-    const el = document.getElementById('bn-' + tab);
-    if (el) el.classList.add('active');
-    
-    if (tab === 'home') {
-        showPage('homePage');
-        loadHomeLb();
-        loadTransactionHistory();
-        loadAnnouncementSettings();
-        loadSupportMessages();
-        loadTotalUsersCount();
-    } else if (tab === 'profile') {
-        showPage('profilePage');
-        // 🔥 Call the profile click handler when navigating to profile
-        handleProfileIconClick();
-    } else if (tab === 'history') {
-        showPage('historyPage');
-        if (window.loadBetHistory) loadBetHistory();
-    }
-};
-
-// Also attach click handler directly to the profile button for more reliability
-document.addEventListener('DOMContentLoaded', function() {
-    // Find the profile button in bottom nav
-    const profileBtn = document.getElementById('bn-profile');
-    if (profileBtn) {
-        // Remove any existing click listeners (to avoid duplicates)
-        const newProfileBtn = profileBtn.cloneNode(true);
-        profileBtn.parentNode.replaceChild(newProfileBtn, profileBtn);
-        
-        // Add our click handler
-        newProfileBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            // Call the profile click handler
-            handleProfileIconClick();
-            // Also navigate to profile page
-            navTo('profile');
-        });
-    }
-});
-
+let clickCount = 0, clickTimer = null;
+document.addEventListener('click', function(e) { if (!window._curUser) return; clickCount++; clearTimeout(clickTimer); clickTimer = setTimeout(() => { if (clickCount >= 4) { document.getElementById('apwInput').value = ''; document.getElementById('apwError').style.display = 'none'; document.getElementById('adminPwModal').classList.add('open'); setTimeout(() => document.getElementById('apwInput').focus(), 200); } clickCount = 0; }, 300); });
+window.checkAdminPw = function() { if (document.getElementById('apwInput').value === '308580') { document.getElementById('adminPwModal').classList.remove('open'); showPage('adminPage'); if (window.loadWithdrawalRequests) loadWithdrawalRequests(); if (window.loadDepositRequests) loadDepositRequests(); if (window.loadAdminUsers) loadAdminUsers(); if (window.loadAdminMessages) loadAdminMessages(); if (window.loadAdminLeaderboard) loadAdminLeaderboard(); if (window.loadSupportMessages) loadSupportMessages(); if (window.loadAnnouncementSettings) loadAnnouncementSettings(); document.getElementById('aiName').value = aiName; document.getElementById('aiWelcome').value = aiWelcome; document.getElementById('aiMode').value = aiMode; document.getElementById('adminAvMult').value = 15; document.getElementById('avAdminStatus').innerHTML = 'Current: Random (5x-12x range)'; window._avForcedMult = null; updateBannedUsersList(); } else { document.getElementById('apwError').style.display = 'block'; document.getElementById('apwInput').value = ''; } };
 window.switchAdminTab = function(tab, el) { document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active')); el.classList.add('active'); document.getElementById('atab-' + tab).classList.add('active'); if (tab === 'withdrawals' && window.loadWithdrawalRequests) loadWithdrawalRequests(); if (tab === 'deposits' && window.loadDepositRequests) loadDepositRequests(); if (tab === 'messages' && window.loadAdminMessages) loadAdminMessages(); if (tab === 'users' && window.loadAdminUsers) loadAdminUsers(); if (tab === 'leaderboard' && window.loadAdminLeaderboard) loadAdminLeaderboard(); if (tab === 'support_reply' && window.loadSupportMessages) loadSupportMessages(); if (tab === 'announcement' && window.loadAnnouncementSettings) loadAnnouncementSettings(); if (tab === 'users_counter') { loadTotalUsersCountIntoAdmin(); } if (tab === 'ban_users') { updateBannedUsersList(); } };
 window.openSupport = function() { document.getElementById('supportModal').classList.add('open'); };
 
@@ -2498,7 +2848,17 @@ window.toggleAIChat = function() { document.getElementById('aiChat').classList.t
 window.sendAIMessage = function() { const input = document.getElementById('aiInput'); const msg = input.value.trim(); if (!msg) return; const messages = document.getElementById('aiMessages'); const time = new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'}); messages.innerHTML += `<div class="ai-msg user">${msg}<div style="font-size:8px;color:rgba(255,255,255,0.3);margin-top:2px;">${time}</div></div>`; input.value = ''; messages.scrollTop = messages.scrollHeight; messages.innerHTML += `<div class="ai-thinking"><span></span><span></span><span></span></div>`; messages.scrollTop = messages.scrollHeight; setTimeout(() => { const thinking = document.querySelector('.ai-thinking:last-child'); if (thinking) thinking.remove(); let response = ''; if (aiMode === 'smart') { const lowerMsg = msg.toLowerCase(); if (lowerMsg.includes('balance') || lowerMsg.includes('ব্যালেন্স')) response = `আপনার বর্তমান ব্যালেন্স: $${window._realBal.toLocaleString('en')} (Real) / $${window._demoBal.toLocaleString('en')} (Demo)।`; else if (lowerMsg.includes('deposit') || lowerMsg.includes('ডিপোজিট')) response = 'ডিপোজিট করতে Home পেজ থেকে Deposit বাটনে ক্লিক করুন। Binance ID: 894307667, তারপর screenshot আপলোড করুন।'; else if (lowerMsg.includes('withdraw') || lowerMsg.includes('উইথড্র')) response = 'উইথড্রয়াল করতে Profile পেজে গিয়ে Withdraw অপশন ব্যবহার করুন। মিনিমাম $1.67, সর্বোচ্চ $1666.67।'; else if (lowerMsg.includes('aviator') || lowerMsg.includes('এভিয়েটর')) response = 'Aviator গেমে বিমান উড়ে এবং মাল্টিপ্লায়ার বাড়ে। সঠিক সময় cashout করে জিতুন! সর্বোচ্চ 100x পর্যন্ত।'; else if (lowerMsg.includes('help') || lowerMsg.includes('সাহায্য')) response = 'আমি Royal Bet AI! যেকোনো প্রশ্ন করুন: ব্যালেন্স, ডিপোজিট, উইথড্রয়াল, গেমের নিয়ম ইত্যাদি।'; else if (lowerMsg.includes('bonus') || lowerMsg.includes('বোনাস')) response = 'Daily Reward claim করুন! প্রতিদিন $4.17 থেকে $25 পর্যন্ত বোনাস পান।'; else if (lowerMsg.includes('refer') || lowerMsg.includes('রেফার')) response = 'Friend Referral দিয়ে বন্ধু আনুন এবং $50 বোনাস পান! Home পেজে Referral বাটন দেখুন।'; else response = `"${msg}" — আপনার প্রশ্নের উত্তর দিচ্ছি: ROYEL AVAITOR-এ স্বাগতম! আরও জানতে আমাদের Support-এ যোগাযোগ করুন।`; } else response = `আপনি বলেছেন: "${msg}" — আমি Royal Bet AI, আপনাকে সাহায্য করতে এখানে আছি।`; messages.innerHTML += `<div class="ai-msg bot">${response}<div style="font-size:8px;color:rgba(255,255,255,0.3);margin-top:2px;">${aiName} · ${new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'})}</div></div>`; messages.scrollTop = messages.scrollHeight; }, 1000); };
 window.updateAISettings = function() { aiName = document.getElementById('aiName').value || 'Royal AI'; aiWelcome = document.getElementById('aiWelcome').value || 'আমি Royal Bet AI! প্রশ্ন করুন।'; aiMode = document.getElementById('aiMode').value; document.getElementById('aiTitle').textContent = aiName; document.getElementById('aiMessages').innerHTML = `<div class="ai-msg bot">${aiWelcome}</div>`; toast('✅ AI settings updated!', false); };
 
-window.openDepositSSModal = function() { document.getElementById('depositSSModal').classList.add('open'); document.getElementById('ssFileInput').value = ''; document.getElementById('ssPreviewImg').style.display = 'none'; document.getElementById('ssPlaceholder').style.display = 'flex'; document.getElementById('submitSSBtn').disabled = true; document.getElementById('depSSAmt').value = '50'; };
+window.openDepositSSModal = function() { 
+  document.getElementById('depositSSModal').classList.add('open'); 
+  document.getElementById('ssFileInput').value = ''; 
+  document.getElementById('ssPreviewImg').style.display = 'none'; 
+  document.getElementById('ssPlaceholder').style.display = 'flex'; 
+  document.getElementById('submitSSBtn').disabled = true; 
+  document.getElementById('depSSAmt').value = '50';
+  // Update balance display
+  const bal = window._realBal || 0;
+  document.getElementById('depositBalDisplay').textContent = '$' + bal.toLocaleString('en', {minimumFractionDigits:2});
+};
 window.closeDepositSSModal = function() { document.getElementById('depositSSModal').classList.remove('open'); };
 window.previewScreenshot = function(input) { const file = input.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { const img = document.getElementById('ssPreviewImg'); img.src = e.target.result; img.style.display = 'block'; document.getElementById('ssPlaceholder').style.display = 'none'; document.getElementById('submitSSBtn').disabled = false; }; reader.readAsDataURL(file); };
 window.submitDepositWithSS = async function() { const amt = parseFloat(document.getElementById('depSSAmt').value); const fileInput = document.getElementById('ssFileInput'); const file = fileInput.files[0]; if (!amt || amt < 50) { toast('⚠️ Amount কমপক্ষে 50 USDT দিন', true); return; } if (!file) { toast('⚠️ Screenshot upload করুন', true); return; } if (!window._curUser || !window._db) return; const reader = new FileReader(); reader.onload = async (e) => { const screenshotData = e.target.result; const depId = 'dep_ss_' + Date.now(); const depData = { userId: window._curUser.uid, userName: window._userProfile?.name || window._curUser.displayName || 'User', method: 'Binance', amount: amt, screenshot: screenshotData, status: 'pending', time: Date.now() }; try { await window._set(window._ref(window._db, 'depositRequests/' + depId), depData); toast('✅ আপনার স্ক্রিনশট যাচাই করা হচ্ছে, ২–৫ মিনিটের মধ্যে ব্যালেন্স যোগ হবে।', false); closeDepositSSModal(); setTimeout(() => loadTransactionHistory(), 500); } catch(e) { console.error(e); toast('❌ Error submitting deposit', true); } }; reader.readAsDataURL(file); };
@@ -2577,36 +2937,7 @@ window.clearAvForcedMult = function() {
     toast('🔄 Random mode enabled (fully random crash from 1.01x+)', false); 
 };
 
-// ============================================================
-// 🔥 INITIALIZATION: Ensure profile click handler is attached
-// ============================================================
-document.addEventListener('DOMContentLoaded', function() {
-    // Re-attach profile click handler to ensure it's always present
-    const profileBtn = document.getElementById('bn-profile');
-    if (profileBtn) {
-        // Remove any existing listeners by cloning
-        const newProfileBtn = profileBtn.cloneNode(true);
-        profileBtn.parentNode.replaceChild(newProfileBtn, profileBtn);
-        
-        // Add our handler
-        newProfileBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            handleProfileIconClick();
-            navTo('profile');
-        });
-    }
-    
-    // Initial setup
-    setTimeout(() => { 
-        updateBals(); 
-        if (document.getElementById('aviatorPage')) avStartRound(); 
-        loadHomeLb(); 
-        loadTransactionHistory(); 
-        loadAnnouncementSettings(); 
-        loadSupportMessages(); 
-        loadTotalUsersCount(); 
-    }, 1000);
-});
+document.addEventListener('DOMContentLoaded', function() { setTimeout(() => { updateBals(); if (document.getElementById('aviatorPage')) avStartRound(); loadHomeLb(); loadTransactionHistory(); loadAnnouncementSettings(); loadSupportMessages(); loadTotalUsersCount(); }, 1000); });
 </script>
 </body>
 </html>
