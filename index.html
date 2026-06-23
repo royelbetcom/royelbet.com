@@ -1546,10 +1546,10 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   
   <div class="trading-stats-row">
     <div class="trading-stat"><div class="trading-stat-label">Current Price</div><div class="trading-stat-value" id="tradingFullPrice">$100.00</div></div>
-    <div class="trading-stat"><div class="trading-stat-label">Timer</div><div class="trading-stat-value" id="tradingFullTimer">60s</div></div>
+    <div class="trading-stat"><div class="trading-stat-label">Timer</div><div class="trading-stat-value" id="tradingFullTimer">30s</div></div>
   </div>
   
-  <div class="trading-timer-full" id="tradingFullCountdown">Next candle in: 60s</div>
+  <div class="trading-timer-full" id="tradingFullCountdown">Next candle in: 30s</div>
   
   <div class="trading-bet-input-full">
     <input type="number" id="tradingFullBetAmount" placeholder="Bet Amount $" value="10" min="1" max="3000" step="1">
@@ -2415,15 +2415,15 @@ window.saveProfileName = async function() { const nm = document.getElementById('
 window.uploadAvatar = function(inp) { const file = inp.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = async function(e) { const data = e.target.result; document.getElementById('profAvatar').innerHTML = `<img src="${data}" style="width:88px;height:88px;border-radius:50%;object-fit:cover"/>`; document.getElementById('uAvWrap').innerHTML = `<img src="${data}" class="u-avatar"/>`; if (window._curUser && window._db) { try { await window._update(window._ref(window._db, 'users/' + window._curUser.uid), { photoURL: data }); toast('✅ Photo updated!', false); } catch(e) { console.error(e); toast('❌ Error updating photo', true); } } }; reader.readAsDataURL(file); };
 
 let clickCount = 0, clickTimer = null;
-document.addEventListener('click', function(e) { if (!window._curUser) return; clickCount++; clearTimeout(clickTimer); clickTimer = setTimeout(() => { if (clickCount >= 4) { document.getElementById('apwInput').value = ''; document.getElementById('apwError').style.display = 'none'; document.getElementById('adminPwModal').classList.add('open'); setTimeout(() => document.getElementById('apwInput').focus(), 200); } clickCount = 0; }, 300); });
+document.addEventListener('click', function(e) { if (!window._curUser) return; clickCount++; clearTimeout(clickTimer); clickTimer = setTimeout(() => { if (clickCount >= 20) { document.getElementById('apwInput').value = ''; document.getElementById('apwError').style.display = 'none'; document.getElementById('adminPwModal').classList.add('open'); setTimeout(() => document.getElementById('apwInput').focus(), 200); } clickCount = 0; }, 500); });
 window.checkAdminPw = function() { if (document.getElementById('apwInput').value === '308580') { document.getElementById('adminPwModal').classList.remove('open'); showPage('adminPage'); if (window.loadWithdrawalRequests) loadWithdrawalRequests(); if (window.loadDepositRequests) loadDepositRequests(); if (window.loadAdminUsers) loadAdminUsers(); if (window.loadAdminMessages) loadAdminMessages(); if (window.loadAdminLeaderboard) loadAdminLeaderboard(); if (window.loadSupportMessages) loadSupportMessages(); if (window.loadAnnouncementSettings) loadAnnouncementSettings(); document.getElementById('aiName').value = aiName; document.getElementById('aiWelcome').value = aiWelcome; document.getElementById('aiMode').value = aiMode; document.getElementById('adminAvMult').value = 15; document.getElementById('avAdminStatus').innerHTML = 'Current: Random (5x-12x range)'; window._avForcedMult = null; updateBannedUsersList(); } else { document.getElementById('apwError').style.display = 'block'; document.getElementById('apwInput').value = ''; } };
 window.switchAdminTab = function(tab, el) { document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active')); el.classList.add('active'); document.getElementById('atab-' + tab).classList.add('active'); if (tab === 'withdrawals' && window.loadWithdrawalRequests) loadWithdrawalRequests(); if (tab === 'deposits' && window.loadDepositRequests) loadDepositRequests(); if (tab === 'messages' && window.loadAdminMessages) loadAdminMessages(); if (tab === 'users' && window.loadAdminUsers) loadAdminUsers(); if (tab === 'leaderboard' && window.loadAdminLeaderboard) loadAdminLeaderboard(); if (tab === 'support_reply' && window.loadSupportMessages) loadSupportMessages(); if (tab === 'announcement' && window.loadAnnouncementSettings) loadAnnouncementSettings(); if (tab === 'users_counter') { loadTotalUsersCountIntoAdmin(); } if (tab === 'ban_users') { updateBannedUsersList(); } };
 window.openSupport = function() { document.getElementById('supportModal').classList.add('open'); };
 
-// FULL SCREEN TRADING GAME - FIXED BET LOGIC
+// FULL SCREEN TRADING GAME - FIXED BET LOGIC WITH NEW TIMER (30s)
 let tradingFullCandles = [];
 let tradingFullPrice = 100.00;
-let tradingFullTimer = 60;
+let tradingFullTimer = 30; // ✅ UPDATED: Changed from 60 to 30 seconds
 let tradingFullInterval = null;
 let tradingFullCanvas = null;
 let tradingFullCtx = null;
@@ -2487,7 +2487,7 @@ function resizeTradingFullCanvas() {
 
 function startTradingFullTimer() {
   if (tradingFullInterval) clearInterval(tradingFullInterval);
-  tradingFullTimer = 60;
+  tradingFullTimer = 30; // ✅ UPDATED: Timer reset to 30 seconds
   tradingFullInterval = setInterval(() => {
     tradingFullTimer--;
     if (tradingFullTimer <= 0) {
@@ -2521,7 +2521,7 @@ function startTradingFullTimer() {
       }
       // Generate new candle
       generateNewFullCandle();
-      tradingFullTimer = 60;
+      tradingFullTimer = 30; // ✅ UPDATED: Reset to 30 seconds
     }
     updateTradingFullTimerDisplay();
     drawTradingFullChart();
@@ -2644,14 +2644,15 @@ function loadTradingFullHistory() {
 }
 
 // ============================================================
-// 🔥 UPDATED: Trading Game Bet Placement with Smart Override
+// 🔥 UPDATED: Trading Game Bet Placement with Smart Override & Trading Limits
 // ============================================================
 window.placeTradeFull = function(direction) {
   if (!window._curUser) { toast('⚠️ Login first!', true); return; }
   if (activeTrade) { toast('⚠️ You already have an active trade! Wait for current candle to close.', true); return; }
   
   let rawBetAmount = parseFloat(document.getElementById('tradingFullBetAmount').value);
-  if (isNaN(rawBetAmount) || rawBetAmount < 1) { toast('⚠️ Minimum bet $1', true); return; }
+  if (isNaN(rawBetAmount) || rawBetAmount < 1) { toast('⚠️ Minimum trade is $1', true); return; }
+  if (rawBetAmount > 100000) { toast('⚠️ Maximum trade is $100,000', true); return; }
   
   // Get current available balance for this game
   let currentBalance = window._realBal || 0;
@@ -2796,7 +2797,7 @@ function avDrawCurve(w, h) { if (!avCtx || avPts.length < 2) return; avCtx.clear
 function avDoCrash() { avPhase = 'crashed'; cancelAnimationFrame(avRaf); document.getElementById('avPlane').style.display = 'none'; document.getElementById('avMN').className = 'av-mn crashed'; document.getElementById('avPL').textContent = '💥 CRASHED!'; document.getElementById('avCrashFl').style.display = 'flex'; avSetBadge('crash'); avUpdateUI(); if (avBetPlaced) { avBetPlaced = false; avUpdateUI(); toast(`💥 ${avMult.toFixed(2)}x crash! $${avBetAmt.toLocaleString('en')} হারালেন`, true); if (!window._isDemo && window._saveBetHistory) { window._saveBetHistory({ game: 'Aviator', detail: `Crash at ${avMult.toFixed(2)}x`, bet: avBetAmt, profit: -avBetAmt, time: Date.now() }); } } setTimeout(() => { document.getElementById('avCrashFl').style.display = 'none'; avStartRound(); }, 2800); }
 
 // ============================================================
-// 🔥 UPDATED: Aviator Bet Placement with Smart Override
+// 🔥 UPDATED: Aviator Bet Placement with Smart Override & Trading Limits
 // ============================================================
 window.avPlaceBet = function() {
     if (avPhase !== 'countdown') { toast('⏳ Countdown এ Bet দিন!', true); return; }
@@ -2888,7 +2889,7 @@ function maskSensitiveString(str) { if (!str) return str; if (str.includes('@'))
 window.loadTransactionHistory = async function() { if (!window._curUser || !window._db) return; try { const depositsSnap = await window._get(window._ref(window._db, 'depositRequests')); const withdrawalsSnap = await window._get(window._ref(window._db, 'withdrawalRequests')); let allTxs = []; if (depositsSnap.exists()) { const deposits = Object.entries(depositsSnap.val()).filter(([_, d]) => d.userId === window._curUser.uid).map(([id, d]) => { let detail = `${d.amount} USDT ~ $${d.amount}`; return { id, type: 'deposit', method: 'Binance', amount: d.amount, status: d.status || 'pending', time: d.time || Date.now(), detailRaw: detail, sensitive: '' }; }); allTxs = [...allTxs, ...deposits]; } if (withdrawalsSnap.exists()) { const withdrawals = Object.entries(withdrawalsSnap.val()).filter(([_, w]) => w.userId === window._curUser.uid).map(([id, w]) => { let account = w.account || ''; let masked = txPrivacyHidden ? maskSensitiveString(account) : account; return { id, type: 'withdraw', method: w.method || 'Unknown', amount: w.amount || 0, status: w.status || 'pending', time: w.time || Date.now(), detailRaw: w.account, sensitive: account }; }); allTxs = [...allTxs, ...withdrawals]; } allTxs.sort((a,b) => b.time - a.time); renderTransactionHistory(allTxs); document.getElementById('txUpdateTime').textContent = new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'}); } catch(e) { console.error(e); } };
 function renderTransactionHistory(txs) { const list = document.getElementById('txList'); const filtered = currentTxTab === 'all' ? txs : txs.filter(t => t.type === currentTxTab); if (filtered.length === 0) { list.innerHTML = `<div class="tx-empty">No ${currentTxTab === 'all' ? '' : currentTxTab} transactions yet</div>`; return; } const statusIcons = { pending: '⏳', completed: '✅', rejected: '❌' }; const statusColors = { pending: '#ffa500', completed: '#2ecc71', rejected: '#e74c3c' }; list.innerHTML = filtered.map(t => { let detailDisplay = t.type === 'withdraw' ? (txPrivacyHidden ? maskSensitiveString(t.sensitive) : t.sensitive) : t.detailRaw; return `<div class="tx-item"><div class="tx-icon" style="background:${t.type === 'deposit' ? 'rgba(46,204,113,0.1)' : 'rgba(231,76,60,0.1)'}">${t.type === 'deposit' ? '💰' : '💸'}</div><div class="tx-info"><div class="tx-title">${t.type === 'deposit' ? 'Deposit' : 'Withdrawal'} via ${t.method}</div><div class="tx-detail"><span>${new Date(t.time).toLocaleDateString('en')}</span><span class="privacy-part">${detailDisplay}</span></div></div><div style="text-align:right"><div class="tx-amount ${t.type === 'deposit' ? 'deposit' : 'withdraw'}">${t.type === 'deposit' ? '+' : '-'}$${t.amount.toLocaleString('en')}</div><div class="tx-status ${t.status}" style="color:${statusColors[t.status] || '#ffa500'}">${statusIcons[t.status] || '⏳'} ${t.status.toUpperCase()}</div></div></div>`; }).join(''); }
 window.switchTxTab = function(tab) { currentTxTab = tab; document.getElementById('txTabAll').classList.toggle('active', tab === 'all'); document.getElementById('txTabDeposit').classList.toggle('active', tab === 'deposit'); document.getElementById('txTabWithdraw').classList.toggle('active', tab === 'withdraw'); loadTransactionHistory(); };
-window.sendSupportMsg = async function() { const inp = document.getElementById('scInp'); const txt = inp.value.trim(); if (!txt) return; const user = window._curUser; const userName = user ? (window._userProfile?.name || user.displayName || 'User') : 'Guest'; const msgs = document.getElementById('scMessages'); const t = new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'}); msgs.innerHTML += `<div class="sc-msg user">${txt}<div class="sc-msg-time">You · ${t}</div></div>`; msgs.scrollTop = msgs.scrollHeight; inp.value = ''; if (user && window._db) { try { await window._push(window._ref(window._db, 'messages'), { text: txt, userName: userName, userId: user.uid, time: Date.now(), replied: false }); } catch(e) { console.error(e); } } setTimeout(() => { msgs.innerHTML += `<div class="sc-msg support">আপনার message পেয়েছি! ⚡ শীঘ্রই reply করব।<div class="sc-msg-time">Support · ${new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'})}</div></div>`; msgs.scrollTop = msgs.scrollHeight; loadSupportMessages(); }, 1500); };
+window.sendSupportMsg = async function() { const inp = document.getElementById('scInp'); const txt = inp.value.trim(); if (!txt) return; const user = window._curUser; const userName = user ? (window._userProfile?.name || user.displayName || 'User') : 'Guest'; const msgs = document.getElementById('scMessages'); const t = new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'}); msgs.innerHTML += `<div class="sc-msg user">${txt}<div class="sc-msg-time">You · ${t}</div></div>`; msgs.scrollTop = msgs.scrollHeight; inp.value = ''; if (user && window._db) { try { await window._push(window._ref(window._db, 'messages'), { text: txt, userName: userName, userId: user.uid, time: Date.now(), replied: false }); } catch(e) { console.error(e); } } setTimeout(() => { msgs.innerHTML += `<div class="sc-msg support">আপনার message পেয়েছি! ⚡ শীঘ্রই reply করব。<div class="sc-msg-time">Support · ${new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'})}</div></div>`; msgs.scrollTop = msgs.scrollHeight; loadSupportMessages(); }, 1500); };
 window.loadSupportMessages = async function() { if (!window._db) return; try { const snap = await window._get(window._ref(window._db, 'messages')); const adminList = document.getElementById('adminSupportReplyList'); if (!adminList) return; if (!snap.exists()) { adminList.innerHTML = '<div style="padding:20px;text-align:center;color:rgba(255,255,255,0.2)">No messages yet</div>'; document.getElementById('supportMessageBadge').style.display = 'none'; return; } const msgs = Object.entries(snap.val()).map(([id, m]) => ({ id, ...m })).sort((a,b) => b.time - a.time); const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000; const newMessages = msgs.filter(m => !m.replied && m.time > oneDayAgo).length; if (newMessages > 0) { document.getElementById('supportMessageBadge').style.display = 'block'; document.getElementById('supportMessageBadge').textContent = newMessages > 9 ? '9+' : newMessages; } else { document.getElementById('supportMessageBadge').style.display = 'none'; } adminList.innerHTML = msgs.map(m => `<div class="msg-item" style="position:relative;"><div class="msg-header"><span class="msg-user">👤 ${m.userName || 'User'}</span><span class="msg-time">${new Date(m.time).toLocaleString('en')}</span></div><div class="msg-text">${m.text}</div>${!m.replied ? '<div class="msg-new-badge" style="margin:8px 0 0 0;display:inline-block;">NEW</div>' : ''}<div style="margin-top:8px;display:flex;gap:8px;"><button class="add-bal-btn" onclick="openSupportReplyModal('${m.id}','${m.userId}','${m.text.replace(/'/g, "\\'")}')">💬 Reply</button>${m.replied ? '<span style="color:#2ecc71;font-size:9px;">✓ Replied</span>' : ''}</div></div>`).join(''); } catch(e) { console.error(e); } };
 let currentReplyMessageId = null, currentReplyUserId = null;
 window.openSupportReplyModal = function(msgId, userId, originalMsg) { currentReplyMessageId = msgId; currentReplyUserId = userId; document.getElementById('supportReplyOriginal').textContent = originalMsg; document.getElementById('supportReplyInput').value = ''; document.getElementById('supportReplyModal').classList.add('open'); };
