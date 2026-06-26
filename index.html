@@ -1393,6 +1393,32 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   background: linear-gradient(90deg, transparent, rgba(201,168,76,0.2), transparent);
   margin: 16px 0;
 }
+/* Preset Bet Buttons */
+.preset-bet-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 16px 10px;
+  justify-content: center;
+}
+.preset-bet-btn {
+  background: rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 6px;
+  padding: 6px 12px;
+  color: rgba(255,255,255,0.7);
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.preset-bet-btn:hover {
+  background: rgba(201,168,76,0.25);
+  border-color: var(--gl);
+  color: var(--gl);
+  transform: scale(1.05);
+}
 </style>
 </head>
 <body>
@@ -1553,6 +1579,17 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   
   <div class="trading-bet-input-full">
     <input type="number" id="tradingFullBetAmount" placeholder="Bet Amount $" value="10" min="1" max="100000" step="1">
+  </div>
+  
+  <!-- Preset Bet Buttons -->
+  <div class="preset-bet-buttons">
+    <button class="preset-bet-btn" onclick="document.getElementById('tradingFullBetAmount').value='1'">$1</button>
+    <button class="preset-bet-btn" onclick="document.getElementById('tradingFullBetAmount').value='5'">$5</button>
+    <button class="preset-bet-btn" onclick="document.getElementById('tradingFullBetAmount').value='10'">$10</button>
+    <button class="preset-bet-btn" onclick="document.getElementById('tradingFullBetAmount').value='500'">$500</button>
+    <button class="preset-bet-btn" onclick="document.getElementById('tradingFullBetAmount').value='1000'">$1,000</button>
+    <button class="preset-bet-btn" onclick="document.getElementById('tradingFullBetAmount').value='2000'">$2,000</button>
+    <button class="preset-bet-btn" onclick="document.getElementById('tradingFullBetAmount').value='3000'">$3,000</button>
   </div>
   
   <div class="trading-controls">
@@ -2410,7 +2447,7 @@ window.switchAdminTab = function(tab, el) { document.querySelectorAll('.admin-ta
 window.openSupport = function() { document.getElementById('supportModal').classList.add('open'); };
 
 // ============================================================
-// FULL SCREEN TRADING GAME - MULTI TRADE SYSTEM
+// FULL SCREEN TRADING GAME - OPTIMIZED MULTI TRADE SYSTEM
 // ============================================================
 let tradingFullCandles = [];
 let tradingFullPrice = 100.00;
@@ -2423,15 +2460,22 @@ let tradingFullHistory = [];
 let tradingFullPattern = [];
 let tradingDemoBalance = 10000;
 
-// 🔥 NEW: Array to store multiple active trades
-let activeTrades = []; // Each trade: { id, amount, direction, entryPrice, useDemo, timer, placedAt }
-
-let tradeLabels = [];
+// Array to store multiple active trades
+let activeTrades = [];
 let tradeIdCounter = 0;
+let isTradingInitialized = false;
+
+// Frame rate optimization - use requestAnimationFrame for chart rendering
+let chartRenderRequested = false;
+let lastChartRender = 0;
+const CHART_RENDER_INTERVAL = 100; // ms between chart renders
 
 const BANGLADESHI_NAMES_FULL = ['Rahim', 'Karim', 'Sumon', 'Jahid', 'Shakib', 'Mushfiq', 'Tamim', 'Liton', 'Mustafiz', 'Taskin', 'Sabbir', 'Nasir', 'Imrul', 'Mominul', 'Mehedi'];
 
 function initTradingFull() {
+  if (isTradingInitialized) return;
+  isTradingInitialized = true;
+  
   tradingFullCanvas = document.getElementById('tradingFullCanvas');
   if (tradingFullCanvas) {
     tradingFullCtx = tradingFullCanvas.getContext('2d');
@@ -2443,7 +2487,10 @@ function initTradingFull() {
   tradingFullPattern = [];
   activeTrades = [];
   tradeLabels = [];
-  for (let i = 0; i < 40; i++) {
+  
+  // Generate initial candles efficiently
+  const initialCandles = 40;
+  for (let i = 0; i < initialCandles; i++) {
     let direction = getPatternBasedDirectionFull();
     let changePercent = (Math.random() * 1.0 + 0.2) / 100;
     let open = tradingFullPrice;
@@ -2485,65 +2532,80 @@ function startTradingFullTimer() {
   tradingFullInterval = setInterval(() => {
     tradingFullTimer--;
     if (tradingFullTimer <= 0) {
-      // 🔥 NEW: Evaluate ALL active trades at candle close
       evaluateAllTrades();
-      
       generateNewFullCandle();
       tradingFullTimer = 30;
     }
     updateTradingFullTimerDisplay();
-    drawTradingFullChart();
+    // Throttle chart rendering
+    requestChartRender();
   }, 1000);
 }
 
-// 🔥 NEW: Evaluate all active trades
+// Throttle chart rendering
+function requestChartRender() {
+  if (!chartRenderRequested) {
+    chartRenderRequested = true;
+    requestAnimationFrame(() => {
+      chartRenderRequested = false;
+      drawTradingFullChart();
+    });
+  }
+}
+
 function evaluateAllTrades() {
   if (activeTrades.length === 0) return;
   
   const lastCandle = tradingFullCandles[tradingFullCandles.length - 1];
   const tradesToRemove = [];
+  let historyBatch = [];
   
   activeTrades.forEach((trade, index) => {
     const isWin = (trade.direction === lastCandle.direction);
     let profitAmount = 0;
     
     if (isWin) {
-      profitAmount = trade.amount * 0.85; // 85% profit on winning trades
+      profitAmount = trade.amount * 0.85;
       if (trade.useDemo) {
         tradingDemoBalance += trade.amount + profitAmount;
       } else {
         window._realBal += trade.amount + profitAmount;
         window._writeBalance(window._realBal);
       }
-      toast(`🎉 Trade #${trade.id} won! +$${(trade.amount + profitAmount).toFixed(2)}`, false);
-    } else {
-      toast(`❌ Trade #${trade.id} lost! -$${trade.amount.toFixed(2)}`, true);
     }
     
-    // Record trade history
-    tradingFullHistory.unshift({ 
+    historyBatch.push({
       id: trade.id,
-      direction: trade.direction, 
-      amount: trade.amount, 
-      win: isWin, 
+      direction: trade.direction,
+      amount: trade.amount,
+      win: isWin,
       profit: isWin ? profitAmount : -trade.amount,
-      time: Date.now() 
+      time: Date.now()
     });
-    
-    if (window._saveBetHistory) {
-      window._saveBetHistory({
-        game: 'Trading',
-        detail: `Trade #${trade.id} ${trade.direction.toUpperCase()}`,
-        bet: trade.amount,
-        profit: isWin ? profitAmount : -trade.amount,
-        time: Date.now()
-      });
-    }
     
     tradesToRemove.push(index);
   });
   
-  // Remove all evaluated trades (sorted descending to avoid index issues)
+  // Batch update history
+  if (historyBatch.length > 0) {
+    tradingFullHistory = historyBatch.concat(tradingFullHistory);
+    if (tradingFullHistory.length > 50) tradingFullHistory = tradingFullHistory.slice(0, 50);
+    
+    // Batch save bet history
+    if (window._saveBetHistory) {
+      historyBatch.forEach(h => {
+        window._saveBetHistory({
+          game: 'Trading',
+          detail: `Trade #${h.id} ${h.direction.toUpperCase()}`,
+          bet: h.amount,
+          profit: h.profit,
+          time: h.time
+        });
+      });
+    }
+  }
+  
+  // Remove all evaluated trades
   tradesToRemove.sort((a, b) => b - a).forEach(idx => {
     activeTrades.splice(idx, 1);
   });
@@ -2558,13 +2620,11 @@ function updateTradingFullTimerDisplay() {
   const timerEl = document.getElementById('tradingFullTimer');
   const countdownEl = document.getElementById('tradingFullCountdown');
   if (timerEl) timerEl.textContent = tradingFullTimer + 's';
-  if (countdownEl) countdownEl.textContent = `Next candle in: ${tradingFullTimer}s`;
-  
-  // Also update trade count if active trades exist
-  if (activeTrades.length > 0) {
-    const countdownEl = document.getElementById('tradingFullCountdown');
-    if (countdownEl) {
+  if (countdownEl) {
+    if (activeTrades.length > 0) {
       countdownEl.textContent = `Next candle in: ${tradingFullTimer}s (${activeTrades.length} active trade${activeTrades.length > 1 ? 's' : ''})`;
+    } else {
+      countdownEl.textContent = `Next candle in: ${tradingFullTimer}s`;
     }
   }
 }
@@ -2581,7 +2641,6 @@ function generateNewFullCandle() {
   if (tradingFullCandles.length > 50) tradingFullCandles.shift();
   tradingFullPrice = close;
   updateTradingFullUI();
-  drawTradingFullChart();
 }
 
 function updateTradingFullUI() {
@@ -2593,56 +2652,72 @@ function updateTradingFullUI() {
 
 function drawTradingFullChart() {
   if (!tradingFullCtx || !tradingFullCanvas || tradingFullCandles.length === 0) return;
+  
   const w = tradingFullCanvas.width;
   const h = tradingFullCanvas.height;
   tradingFullCtx.clearRect(0, 0, w, h);
+  
   if (tradingFullCandles.length < 2) return;
+  
+  // Pre-calculate min/max for performance
   const allPrices = tradingFullCandles.flatMap(c => [c.high, c.low]);
   const minPrice = Math.min(...allPrices) * 0.998;
   const maxPrice = Math.max(...allPrices) * 1.002;
   const priceRange = maxPrice - minPrice;
   const candleWidth = Math.max(3, (w / tradingFullCandles.length) * 0.7);
-  const spacing = (w / tradingFullCandles.length);
-  for (let i = 0; i < tradingFullCandles.length; i++) {
-    const candle = tradingFullCandles[i];
+  const spacing = w / tradingFullCandles.length;
+  
+  // Batch draw candles for performance
+  const candles = tradingFullCandles;
+  const ctx = tradingFullCtx;
+  
+  for (let i = 0; i < candles.length; i++) {
+    const candle = candles[i];
     const x = i * spacing + (spacing - candleWidth) / 2;
     const openY = h - ((candle.open - minPrice) / priceRange) * h;
     const closeY = h - ((candle.close - minPrice) / priceRange) * h;
     const highY = h - ((candle.high - minPrice) / priceRange) * h;
     const lowY = h - ((candle.low - minPrice) / priceRange) * h;
     const isGreen = candle.close >= candle.open;
-    tradingFullCtx.fillStyle = isGreen ? '#2ecc71' : '#e74c3c';
-    tradingFullCtx.fillRect(x, Math.min(openY, closeY), candleWidth, Math.abs(closeY - openY));
-    tradingFullCtx.strokeStyle = isGreen ? '#2ecc71' : '#e74c3c';
-    tradingFullCtx.lineWidth = 1;
-    tradingFullCtx.beginPath();
-    tradingFullCtx.moveTo(x + candleWidth / 2, highY);
-    tradingFullCtx.lineTo(x + candleWidth / 2, lowY);
-    tradingFullCtx.stroke();
+    
+    ctx.fillStyle = isGreen ? '#2ecc71' : '#e74c3c';
+    ctx.fillRect(x, Math.min(openY, closeY), candleWidth, Math.abs(closeY - openY));
+    ctx.strokeStyle = isGreen ? '#2ecc71' : '#e74c3c';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(x + candleWidth / 2, highY);
+    ctx.lineTo(x + candleWidth / 2, lowY);
+    ctx.stroke();
   }
+  
+  // Update trade labels
   const container = document.getElementById('tradingChartContainer');
   if (container) {
-    document.querySelectorAll('.trade-label').forEach(l => l.remove());
-    // Show all active trades as labels
+    // Remove old labels efficiently
+    const oldLabels = container.querySelectorAll('.trade-label');
+    oldLabels.forEach(l => l.remove());
+    
     if (activeTrades.length > 0) {
       const labelContainer = document.createElement('div');
-      labelContainer.style.position = 'absolute';
-      labelContainer.style.bottom = '10px';
-      labelContainer.style.left = '10px';
-      labelContainer.style.display = 'flex';
-      labelContainer.style.flexDirection = 'column';
-      labelContainer.style.gap = '4px';
-      labelContainer.style.zIndex = '20';
+      labelContainer.style.cssText = 'position:absolute;bottom:10px;left:10px;display:flex;flex-direction:column;gap:4px;z-index:20;';
       
-      activeTrades.forEach((trade, index) => {
+      // Limit displayed trades to avoid clutter
+      const displayTrades = activeTrades.slice(0, 8);
+      displayTrades.forEach((trade) => {
         const label = document.createElement('div');
         label.className = `trade-label ${trade.direction === 'up' ? 'buy' : 'sell'}`;
         label.textContent = `#${trade.id} $${trade.amount} ${trade.direction === 'up' ? 'BUY ▲' : 'SELL ▼'}`;
-        label.style.position = 'relative';
-        label.style.display = 'inline-block';
-        label.style.margin = '0';
+        label.style.cssText = 'position:relative;display:inline-block;margin:0;';
         labelContainer.appendChild(label);
       });
+      
+      if (activeTrades.length > 8) {
+        const moreLabel = document.createElement('div');
+        moreLabel.className = 'trade-label';
+        moreLabel.textContent = `+${activeTrades.length - 8} more...`;
+        moreLabel.style.cssText = 'position:relative;display:inline-block;margin:0;color:rgba(255,255,255,0.5);border-left:3px solid #888;';
+        labelContainer.appendChild(moreLabel);
+      }
       
       container.appendChild(labelContainer);
     }
@@ -2689,7 +2764,7 @@ function loadTradingFullHistory() {
 }
 
 // ============================================================
-// 🔥 UPDATED: Multi Trade System - Place multiple trades
+// 🔥 OPTIMIZED: Multi Trade System with Preset Bet Buttons
 // ============================================================
 window.placeTradeFull = function(direction) {
   if (!window._curUser) { toast('⚠️ Login first!', true); return; }
@@ -2703,7 +2778,6 @@ window.placeTradeFull = function(direction) {
   let currentBalance = window._realBal || 0;
   let betAmount = calculateSmartBet(rawBetAmount, currentBalance);
   
-  // Safety cap - don't exceed game-specific max
   if (betAmount > 3000) betAmount = 3000;
   if (betAmount <= 0) { toast('⚠️ Invalid bet amount', true); return; }
   
@@ -2719,7 +2793,7 @@ window.placeTradeFull = function(direction) {
     toast(`💎 SMART BET: $${rawBetAmount.toFixed(2)} → $${betAmount.toFixed(2)} (Full Balance)`, false);
   }
   
-  // Deduct bet amount immediately
+  // Deduct bet amount
   if (useDemo) {
     tradingDemoBalance -= betAmount;
   } else {
@@ -2727,7 +2801,7 @@ window.placeTradeFull = function(direction) {
     window._writeBalance(window._realBal);
   }
   
-  // 🔥 NEW: Create and store trade with unique ID
+  // Create and store trade with unique ID
   tradeIdCounter++;
   const newTrade = {
     id: tradeIdCounter,
@@ -2741,10 +2815,9 @@ window.placeTradeFull = function(direction) {
   activeTrades.push(newTrade);
   
   updateTradingFullUI();
-  drawTradingFullChart();
+  requestChartRender();
   toast(`✅ Trade #${newTrade.id} ${direction === 'up' ? 'BUY' : 'SELL'} placed! $${betAmount.toFixed(2)} deducted.`, false);
   
-  // Update countdown to show active trades
   const countdownEl = document.getElementById('tradingFullCountdown');
   if (countdownEl) {
     countdownEl.textContent = `Next candle in: ${tradingFullTimer}s (${activeTrades.length} active trade${activeTrades.length > 1 ? 's' : ''})`;
@@ -2755,8 +2828,9 @@ window.openTradingScreen = function() {
   const tradingScreen = document.getElementById('tradingGameScreen');
   if (tradingScreen) {
     tradingScreen.classList.add('active');
-    if (!tradingFullCandles.length) initTradingFull();
-    else {
+    if (!isTradingInitialized) {
+      initTradingFull();
+    } else {
       drawTradingFullChart();
       updateTradingFullUI();
     }
@@ -2862,7 +2936,7 @@ function avSetBadge(p) { const b = document.getElementById('avPhBadge'); b.class
 const AV_NAMES = ['Rahim_X','Karim99','Sumon★','NightKing','BetKing88','GoldRush','Lucky7','SpeedBet','TigerBet','AcePlayer','RoyalFly','DiamondX','StormBet','PhoenixUp','NightHawk','PlatinumK','IronFist','CobraKing','MaxBet99','UltraFly']; let avUsedNames = new Set();
 function avBuildLB(showUser = false) { if (avUsedNames.size > AV_NAMES.length - 5) avUsedNames.clear(); const avail = AV_NAMES.filter(n => !avUsedNames.has(n)); const entries = []; const used = new Set(); while (entries.length < 15 && avail.length > entries.length) { const i = Math.floor(Math.random() * avail.length); const n = avail[i]; if (!used.has(n)) { used.add(n); avUsedNames.add(n); const m = parseFloat((1.01 + Math.random() * 10).toFixed(2)); const b = Math.floor(1.67 + Math.random() * 1665); entries.push({ n, m, b, isUser: false }); } } if (showUser && avBetPlaced && window._curUser) { const userName = (window._userProfile?.name || window._curUser.displayName || 'You').split(' ')[0]; entries.unshift({ n: '⭐ ' + userName, m: avMult || 1.00, b: avBetAmt, isUser: true }); } entries.sort((a,b) => b.m - a.m); document.getElementById('avLbBody').innerHTML = entries.map((e,i) => { let rc = '', rl = '#' + (i+1); if (i===0) { rc='g'; rl='🥇'; } else if (i===1) { rc='s'; rl='🥈'; } else if (i===2) { rc='b'; rl='🥉'; } return `<div class="lb-row ${e.isUser ? 'you' : ''}"><div class="lb-rank ${rc}">${rl}</div><div class="lb-name">${e.n}</div><div class="lb-mult">${e.m.toFixed(2)}x</div><div class="lb-bet">$${e.b.toLocaleString('en')}</div></div>`; }).join(''); }
 
-// AI, Support, Deposit, Withdrawal functions
+// AI, Support, Deposit, Withdrawal functions (unchanged)
 let aiName = 'Royal AI', aiWelcome = 'আমি Royal Bet AI! প্রশ্ন করুন।', aiMode = 'smart';
 window.toggleAIChat = function() { document.getElementById('aiChat').classList.toggle('open'); };
 window.sendAIMessage = function() { const input = document.getElementById('aiInput'); const msg = input.value.trim(); if (!msg) return; const messages = document.getElementById('aiMessages'); const time = new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'}); messages.innerHTML += `<div class="ai-msg user">${msg}<div style="font-size:8px;color:rgba(255,255,255,0.3);margin-top:2px;">${time}</div></div>`; input.value = ''; messages.scrollTop = messages.scrollHeight; messages.innerHTML += `<div class="ai-thinking"><span></span><span></span><span></span></div>`; messages.scrollTop = messages.scrollHeight; setTimeout(() => { const thinking = document.querySelector('.ai-thinking:last-child'); if (thinking) thinking.remove(); let response = ''; if (aiMode === 'smart') { const lowerMsg = msg.toLowerCase(); if (lowerMsg.includes('balance') || lowerMsg.includes('ব্যালেন্স')) response = `আপনার বর্তমান ব্যালেন্স: $${window._realBal.toLocaleString('en')} (Real) / $${window._demoBal.toLocaleString('en')} (Demo)।`; else if (lowerMsg.includes('deposit') || lowerMsg.includes('ডিপোজিট')) response = 'ডিপোজিট করতে Home পেজ থেকে Deposit বাটনে ক্লিক করুন। Binance ID: 894307667, তারপর screenshot আপলোড করুন।'; else if (lowerMsg.includes('withdraw') || lowerMsg.includes('উইথড্র')) response = 'উইথড্রয়াল করতে Profile পেজে গিয়ে Withdraw অপশন ব্যবহার করুন। মিনিমাম $1.67, সর্বোচ্চ $1666.67।'; else if (lowerMsg.includes('aviator') || lowerMsg.includes('এভিয়েটর')) response = 'Aviator গেমে বিমান উড়ে এবং মাল্টিপ্লায়ার বাড়ে। সঠিক সময় cashout করে জিতুন! সর্বোচ্চ 100x পর্যন্ত।'; else if (lowerMsg.includes('help') || lowerMsg.includes('সাহায্য')) response = 'আমি Royal Bet AI! যেকোনো প্রশ্ন করুন: ব্যালেন্স, ডিপোজিট, উইথড্রয়াল, গেমের নিয়ম ইত্যাদি।'; else if (lowerMsg.includes('bonus') || lowerMsg.includes('বোনাস')) response = 'Daily Reward claim করুন! প্রতিদিন $4.17 থেকে $25 পর্যন্ত বোনাস পান।'; else if (lowerMsg.includes('refer') || lowerMsg.includes('রেফার')) response = 'Friend Referral দিয়ে বন্ধু আনুন এবং $50 বোনাস পান! Home পেজে Referral বাটন দেখুন।'; else response = `"${msg}" — আপনার প্রশ্নের উত্তর দিচ্ছি: ROYEL AVAITOR-এ স্বাগতম! আরও জানতে আমাদের Support-এ যোগাযোগ করুন।`; } else response = `আপনি বলেছেন: "${msg}" — আমি Royal Bet AI, আপনাকে সাহায্য করতে এখানে আছি।`; messages.innerHTML += `<div class="ai-msg bot">${response}<div style="font-size:8px;color:rgba(255,255,255,0.3);margin-top:2px;">${aiName} · ${new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'})}</div></div>`; messages.scrollTop = messages.scrollHeight; }, 1000); };
