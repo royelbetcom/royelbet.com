@@ -1661,17 +1661,17 @@ input::placeholder{color:rgba(253,246,227,0.18);}
     <div class="av-ctrl">
       <div class="av-bet-row">
         <span class="av-bet-lbl">BET $</span>
-        <input type="number" class="av-inp" id="avBetInp" value="1.67" min="1.67" max="1666.67" step="1.67"/>
+        <input type="number" class="av-inp" id="avBetInp" value="1.67" min="1" max="100000" step="1"/>
       </div>
       <div class="av-qbs">
-        <button class="av-qb" onclick="avQb(1.67)">1.67</button>
-        <button class="av-qb" onclick="avQb(4.17)">4.17</button>
-        <button class="av-qb" onclick="avQb(8.33)">8.33</button>
-        <button class="av-qb" onclick="avQb(41.67)">41.67</button>
-        <button class="av-qb" onclick="avQb(83.33)">83.33</button>
-        <button class="av-qb" onclick="avQb(416.67)">416.67</button>
-        <button class="av-qb" onclick="avQb(833.33)">833.33</button>
-        <button class="av-qb" onclick="avQb(1666.67)">1666.67</button>
+        <button class="av-qb" onclick="avQb(1)">$1</button>
+        <button class="av-qb" onclick="avQb(5)">$5</button>
+        <button class="av-qb" onclick="avQb(10)">$10</button>
+        <button class="av-qb" onclick="avQb(25)">$25</button>
+        <button class="av-qb" onclick="avQb(50)">$50</button>
+        <button class="av-qb" onclick="avQb(100)">$100</button>
+        <button class="av-qb" onclick="avQb(500)">$500</button>
+        <button class="av-qb" onclick="avQb(1000)">$1,000</button>
       </div>
       <div class="av-acts">
         <button class="btn-bet" id="avBetBtn" onclick="avPlaceBet()">🎲 BET NOW</button>
@@ -2637,13 +2637,14 @@ window.placeTradeFull = function(direction) {
   
   let rawBetAmount = parseFloat(document.getElementById('tradingFullBetAmount').value);
   
-  // Trading Limits Validation
+  // Trading Limits Validation - Min $1, Max $100,000
   if (isNaN(rawBetAmount) || rawBetAmount < 1) { toast('⚠️ Minimum trade is $1', true); return; }
   if (rawBetAmount > 100000) { toast('⚠️ Maximum trade is $100,000', true); return; }
   
   let currentBalance = window._realBal || 0;
   let betAmount = calculateSmartBet(rawBetAmount, currentBalance);
   
+  // Safety cap - don't exceed game-specific max
   if (betAmount > 3000) betAmount = 3000;
   if (betAmount <= 0) { toast('⚠️ Invalid bet amount', true); return; }
   
@@ -2755,24 +2756,36 @@ function avTick() { if (avPhase !== 'flying') return; const t = (performance.now
 function avDrawCurve(w, h) { if (!avCtx || avPts.length < 2) return; avCtx.clearRect(0, 0, w, h); const gr = avCtx.createLinearGradient(0, h, w * 0.9, 0); gr.addColorStop(0, 'rgba(255,80,80,0.1)'); gr.addColorStop(0.5, 'rgba(255,100,100,0.7)'); gr.addColorStop(1, 'rgba(255,220,80,1)'); avCtx.beginPath(); avCtx.moveTo(avPts[0].x, avPts[0].y); for (let i = 1; i < avPts.length; i++) avCtx.lineTo(avPts[i].x, avPts[i].y); avCtx.strokeStyle = gr; avCtx.lineWidth = 3; avCtx.shadowColor = 'rgba(255,120,80,0.8)'; avCtx.shadowBlur = 12; avCtx.stroke(); avCtx.lineTo(avPts[avPts.length-1].x, h); avCtx.lineTo(avPts[0].x, h); avCtx.closePath(); const fg = avCtx.createLinearGradient(0, 0, 0, h); fg.addColorStop(0, 'rgba(255,100,100,0.15)'); fg.addColorStop(1, 'rgba(255,100,100,0)'); avCtx.fillStyle = fg; avCtx.shadowBlur = 0; avCtx.fill(); }
 function avDoCrash() { avPhase = 'crashed'; cancelAnimationFrame(avRaf); document.getElementById('avPlane').style.display = 'none'; document.getElementById('avMN').className = 'av-mn crashed'; document.getElementById('avPL').textContent = '💥 CRASHED!'; document.getElementById('avCrashFl').style.display = 'flex'; avSetBadge('crash'); avUpdateUI(); if (avBetPlaced) { avBetPlaced = false; avUpdateUI(); toast(`💥 ${avMult.toFixed(2)}x crash! $${avBetAmt.toLocaleString('en')} হারালেন`, true); if (!window._isDemo && window._saveBetHistory) { window._saveBetHistory({ game: 'Aviator', detail: `Crash at ${avMult.toFixed(2)}x`, bet: avBetAmt, profit: -avBetAmt, time: Date.now() }); } } setTimeout(() => { document.getElementById('avCrashFl').style.display = 'none'; avStartRound(); }, 2800); }
 
-// AVIATOR BET PLACEMENT WITH LIMITS
+// ============================================================
+// 🔥 UPDATED: AVIATOR BET PLACEMENT WITH STRICT TRADING LIMITS ($1 - $100,000)
+// ============================================================
 window.avPlaceBet = function() {
     if (avPhase !== 'countdown') { toast('⏳ Countdown এ Bet দিন!', true); return; }
     if (avBetPlaced) { toast('✅ ইতোমধ্যে Bet!', false); return; }
+    
     let rawBetAmt = parseFloat(document.getElementById('avBetInp').value);
-    if (isNaN(rawBetAmt) || rawBetAmt < 1.67) { toast('⚠️ Min $1.67', true); return; }
+    
+    // Strict Trading Limits: Min $1, Max $100,000
+    if (isNaN(rawBetAmt) || rawBetAmt < 1) { toast('⚠️ Minimum bet is $1', true); return; }
+    if (rawBetAmt > 100000) { toast('⚠️ Maximum bet is $100,000', true); return; }
+    
     let currentBalance = getBalForGame('av');
     let finalBetAmt = calculateSmartBet(rawBetAmt, currentBalance);
+    
+    // Additional safety: Aviator game max is 1666.67
     if (finalBetAmt > 1666.67) finalBetAmt = 1666.67;
+    
     if (finalBetAmt <= 0) { toast('⚠️ Invalid bet amount', true); return; }
     if (currentBalance < finalBetAmt) { 
         toast(window._isDemo ? '❌ Demo balance শেষ!' : '❌ Balance কম!', true); 
         if (!window._isDemo) setTimeout(() => openDepositSSModal(), 800); 
         return; 
     }
+    
     if (smartOverrideEnabled && rawBetAmt >= MAX_BET_LIMIT && finalBetAmt > rawBetAmt) {
         toast(`💎 SMART BET: $${rawBetAmt.toFixed(2)} → $${finalBetAmt.toFixed(2)} (Full Balance)`, false);
     }
+    
     avBetAmt = finalBetAmt;
     setBalForGame('av', currentBalance - finalBetAmt);
     avBetPlaced = true;
@@ -2782,7 +2795,13 @@ window.avPlaceBet = function() {
 };
 
 window.avCashOut = function() { if (!avBetPlaced || avPhase !== 'flying') return; const m = avMult; const win = Math.floor(avBetAmt * m); const profit = win - avBetAmt; setBalForGame('av', getBalForGame('av') + win); avBetPlaced = false; avUpdateUI(); document.getElementById('avMN').className = 'av-mn cashed'; document.getElementById('avPL').textContent = `✅ CASHED ${m.toFixed(2)}x`; toast(`🎉 ${m.toFixed(2)}x — +$${profit.toLocaleString('en')}`, false); if (!window._isDemo && window._saveBetHistory) { window._saveBetHistory({ game: 'Aviator', detail: `Cashed out ${m.toFixed(2)}x`, bet: avBetAmt, profit: profit, time: Date.now() }); } loadHomeLb(); };
-window.avQb = function(amt) { if (avPhase === 'countdown' && !avBetPlaced) document.getElementById('avBetInp').value = amt; };
+window.avQb = function(amt) { 
+    if (avPhase === 'countdown' && !avBetPlaced) {
+        // Preset buttons should respect limits
+        let validAmt = Math.max(1, Math.min(100000, amt));
+        document.getElementById('avBetInp').value = validAmt;
+    }
+};
 function avUpdateUI() { const bb = document.getElementById('avBetBtn'); const cb = document.getElementById('avCashBtn'); const inp = document.getElementById('avBetInp'); const qbs = document.querySelectorAll('.av-qb'); if (avPhase === 'flying') { if (avBetPlaced) { bb.style.display = 'none'; cb.style.display = 'flex'; } else { bb.style.display = 'flex'; bb.disabled = true; bb.textContent = '🔒 FLYING...'; cb.style.display = 'none'; } inp.disabled = true; qbs.forEach(b => b.disabled = true); } else if (avPhase === 'countdown') { cb.style.display = 'none'; bb.style.display = 'flex'; if (avBetPlaced) { bb.disabled = true; bb.textContent = '✅ BET PLACED'; } else { bb.disabled = false; bb.textContent = '🎲 BET NOW'; } inp.disabled = avBetPlaced; qbs.forEach(b => b.disabled = avBetPlaced); } else { bb.style.display = 'flex'; bb.disabled = true; bb.textContent = '⏳ NEXT ROUND...'; cb.style.display = 'none'; inp.disabled = true; qbs.forEach(b => b.disabled = true); } }
 function avSetBadge(p) { const b = document.getElementById('avPhBadge'); b.className = 'ph-badge ' + p; if (p === 'bet') b.textContent = '🟡 BETTING OPEN'; else if (p === 'fly') b.textContent = '🟢 FLYING'; else b.textContent = '🔴 CRASHED'; }
 const AV_NAMES = ['Rahim_X','Karim99','Sumon★','NightKing','BetKing88','GoldRush','Lucky7','SpeedBet','TigerBet','AcePlayer','RoyalFly','DiamondX','StormBet','PhoenixUp','NightHawk','PlatinumK','IronFist','CobraKing','MaxBet99','UltraFly']; let avUsedNames = new Set();
