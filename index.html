@@ -9,7 +9,7 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--gold:#c9a84c;--gl:#f0d060;--gd:#8a6a1f;--cream:#fdf6e3;--green:#27ae60;--red:#e74c3c;}
-body{font-family:'Lato',sans-serif;background:#061509;min-height:100vh;overflow-x:hidden;user-select:none;-webkit-user-select:none;}
+body{font-family:'Lato',sans-serif;background:#061509;min-height:100vh;overflow-x:hidden;}
 .felt-bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,#1a5c30 0%,#0d3b1e 45%,#061509 100%);}
 .suits-bg{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;}
 .suit{position:absolute;font-size:3rem;opacity:0.04;animation:floatS 15s ease-in-out infinite;user-select:none;}
@@ -44,289 +44,6 @@ body{font-family:'Lato',sans-serif;background:#061509;min-height:100vh;overflow-
 @keyframes slideUp{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-100%)}}
 @keyframes candleRise{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 @keyframes tradeLabelPop{0%{transform:scale(0.8);opacity:0}100%{transform:scale(1);opacity:1}}
-@keyframes progressPulse{0%{transform:scale(1);opacity:0.8}50%{transform:scale(1.05);opacity:1}100%{transform:scale(1);opacity:0.8}}
-
-/* ---- HIDDEN ADMIN SYSTEM ---- */
-.admin-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  background: rgba(0,0,0,0.92);
-  backdrop-filter: blur(8px);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.admin-overlay.active {
-  display: flex;
-  opacity: 1;
-}
-.admin-login-box {
-  background: linear-gradient(160deg, #0a0a0a, #1a1a1a);
-  border: 2px solid rgba(201,168,76,0.3);
-  border-radius: 20px;
-  padding: 32px 28px;
-  width: 94%;
-  max-width: 400px;
-  text-align: center;
-  position: relative;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 40px rgba(201,168,76,0.05);
-  animation: cardIn 0.4s ease;
-}
-.admin-login-box .admin-icon {
-  font-size: 48px;
-  margin-bottom: 8px;
-}
-.admin-login-box h2 {
-  font-family: 'Cinzel', serif;
-  font-size: 20px;
-  font-weight: 900;
-  color: #f0d060;
-  letter-spacing: 4px;
-  margin-bottom: 4px;
-}
-.admin-login-box .sub {
-  font-size: 12px;
-  color: rgba(255,255,255,0.3);
-  letter-spacing: 2px;
-  margin-bottom: 24px;
-}
-.admin-login-box input {
-  width: 100%;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(201,168,76,0.2);
-  border-radius: 12px;
-  padding: 14px 16px;
-  color: #fff;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 20px;
-  letter-spacing: 6px;
-  text-align: center;
-  outline: none;
-  margin-bottom: 12px;
-  transition: all 0.3s;
-}
-.admin-login-box input:focus {
-  border-color: #f0d060;
-  box-shadow: 0 0 25px rgba(201,168,76,0.08);
-}
-.admin-login-box .login-error {
-  color: #e74c3c;
-  font-size: 12px;
-  font-family: 'Cinzel', serif;
-  min-height: 24px;
-  margin-bottom: 8px;
-}
-.admin-login-box .admin-btn {
-  width: 100%;
-  padding: 14px;
-  background: linear-gradient(135deg, #8a6a1f, #c9a84c);
-  border: none;
-  border-radius: 12px;
-  color: #0d0500;
-  font-family: 'Cinzel', serif;
-  font-size: 14px;
-  font-weight: 900;
-  letter-spacing: 3px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-.admin-login-box .admin-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(201,168,76,0.3);
-}
-.admin-login-box .admin-close-btn {
-  position: absolute;
-  top: 14px;
-  right: 18px;
-  background: none;
-  border: none;
-  color: rgba(255,255,255,0.2);
-  font-size: 22px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.admin-login-box .admin-close-btn:hover {
-  color: rgba(255,255,255,0.6);
-}
-/* Admin Panel Dashboard */
-.admin-dashboard {
-  position: fixed;
-  inset: 0;
-  z-index: 99998;
-  background: #0a0a0a;
-  display: none;
-  flex-direction: column;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  overflow-y: auto;
-}
-.admin-dashboard.active {
-  display: flex;
-  opacity: 1;
-}
-.admin-dash-header {
-  background: linear-gradient(135deg, #1a0a00, #2d1500);
-  padding: 16px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 2px solid rgba(201,168,76,0.2);
-  flex-shrink: 0;
-}
-.admin-dash-header .dash-title {
-  font-family: 'Cinzel', serif;
-  font-size: 18px;
-  font-weight: 900;
-  color: #f0d060;
-  letter-spacing: 3px;
-}
-.admin-dash-header .dash-actions {
-  display: flex;
-  gap: 12px;
-}
-.admin-dash-header .dash-actions button {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 8px;
-  padding: 8px 16px;
-  color: rgba(255,255,255,0.6);
-  font-family: 'Cinzel', serif;
-  font-size: 11px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.admin-dash-header .dash-actions button:hover {
-  background: rgba(255,255,255,0.12);
-  color: #fff;
-}
-.admin-dash-header .dash-actions .logout-btn-dash {
-  background: rgba(231,76,60,0.15);
-  border-color: rgba(231,76,60,0.2);
-  color: #e74c3c;
-}
-.admin-dash-header .dash-actions .logout-btn-dash:hover {
-  background: rgba(231,76,60,0.25);
-  border-color: rgba(231,76,60,0.4);
-}
-.admin-dash-body {
-  padding: 24px;
-  flex: 1;
-}
-.admin-dash-body .section-title {
-  font-family: 'Cinzel', serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.3);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-bottom: 16px;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  padding-bottom: 10px;
-}
-.admin-dash-body .controls-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 14px;
-  margin-bottom: 24px;
-}
-.admin-dash-body .control-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 12px;
-  padding: 18px 16px;
-  text-align: center;
-  transition: all 0.2s;
-}
-.admin-dash-body .control-card:hover {
-  background: rgba(255,255,255,0.06);
-  border-color: rgba(201,168,76,0.2);
-}
-.admin-dash-body .control-card .ctrl-icon {
-  font-size: 28px;
-  margin-bottom: 6px;
-}
-.admin-dash-body .control-card .ctrl-label {
-  font-family: 'Cinzel', serif;
-  font-size: 10px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.5);
-  letter-spacing: 2px;
-}
-.admin-dash-body .control-card .ctrl-badge {
-  background: rgba(201,168,76,0.15);
-  border: 1px solid rgba(201,168,76,0.2);
-  border-radius: 20px;
-  padding: 2px 10px;
-  font-size: 8px;
-  color: #f0d060;
-  margin-top: 4px;
-  display: inline-block;
-}
-.admin-dash-body .status-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-  font-size: 13px;
-  color: rgba(255,255,255,0.5);
-}
-.admin-dash-body .status-row .label { color: rgba(255,255,255,0.3); }
-.admin-dash-body .status-row .value { font-family: 'Cinzel', serif; font-weight: 700; color: #f0d060; }
-
-/* Progress indicator for long press */
-.hold-progress {
-  position: fixed;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 99999;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 8px;
-}
-.hold-progress.active {
-  display: flex;
-}
-.hold-progress .progress-ring {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: rgba(0,0,0,0.8);
-  border: 3px solid rgba(201,168,76,0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  backdrop-filter: blur(4px);
-}
-.hold-progress .progress-ring .progress-fill {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 3px solid transparent;
-  border-top-color: #f0d060;
-  animation: spin 1.5s linear infinite;
-  clip-path: inset(0 0 0 0);
-}
-.hold-progress .progress-ring .progress-text {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 16px;
-  font-weight: 700;
-  color: #f0d060;
-  z-index: 2;
-}
-.hold-progress .progress-label {
-  font-family: 'Cinzel', serif;
-  font-size: 10px;
-  color: rgba(255,255,255,0.3);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
 
 .ai-assistant{position:fixed;bottom:80px;right:16px;z-index:999;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#8a6a1f,#c9a84c);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 20px rgba(201,168,76,0.5);animation:quantum 3s infinite;transition:all 0.3s;}
 .ai-assistant:hover{transform:scale(1.1);}
@@ -2421,7 +2138,7 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   </div>
 </div>
 
-<!-- ADMIN PW MODAL (OLD SYSTEM - KEPT FOR COMPATIBILITY) -->
+<!-- ADMIN PW MODAL -->
 <div class="admin-pw-modal" id="adminPwModal">
   <div class="admin-pw-box">
     <div style="font-size:32px;margin-bottom:10px">🔐</div>
@@ -2436,81 +2153,7 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   </div>
 </div>
 
-<!-- ============================================================ -->
-<!-- 🔥 NEW HIDDEN ADMIN SYSTEM - Long Press Trigger               -->
-<!-- ============================================================ -->
-
-<!-- Admin Login Overlay (Triggered by Long Press) -->
-<div class="admin-overlay" id="adminOverlay">
-  <div class="admin-login-box">
-    <button class="admin-close-btn" onclick="closeAdminOverlay()">✕</button>
-    <div class="admin-icon">🔐</div>
-    <h2>ADMIN LOGIN</h2>
-    <div class="sub">Enter the admin password</div>
-    <input type="password" id="adminLoginPassword" placeholder="••••••" maxlength="20" autocomplete="off" onkeydown="if(event.key==='Enter')adminLogin()"/>
-    <div class="login-error" id="adminLoginError"></div>
-    <button class="admin-btn" onclick="adminLogin()">🔓 UNLOCK</button>
-  </div>
-</div>
-
-<!-- Admin Dashboard Panel -->
-<div class="admin-dashboard" id="adminDashboard">
-  <div class="admin-dash-header">
-    <div class="dash-title">🛡️ ADMIN PANEL</div>
-    <div class="dash-actions">
-      <button onclick="closeAdminDashboard()">✕ Close</button>
-      <button class="logout-btn-dash" onclick="logoutAdmin()">🚪 Logout</button>
-    </div>
-  </div>
-  <div class="admin-dash-body">
-    <div class="section-title">📋 Quick Controls</div>
-    <div class="controls-grid">
-      <div class="control-card">
-        <div class="ctrl-icon">👥</div>
-        <div class="ctrl-label">Users</div>
-        <div class="ctrl-badge" id="dashUserCount">0</div>
-      </div>
-      <div class="control-card">
-        <div class="ctrl-icon">💰</div>
-        <div class="ctrl-label">Total Balance</div>
-        <div class="ctrl-badge" id="dashTotalBal">$0</div>
-      </div>
-      <div class="control-card">
-        <div class="ctrl-icon">📊</div>
-        <div class="ctrl-label">Total Bets</div>
-        <div class="ctrl-badge" id="dashTotalBets">0</div>
-      </div>
-      <div class="control-card">
-        <div class="ctrl-icon">💬</div>
-        <div class="ctrl-label">Messages</div>
-        <div class="ctrl-badge" id="dashTotalMsgs">0</div>
-      </div>
-    </div>
-    
-    <div class="section-title">📌 System Status</div>
-    <div class="status-row"><span class="label">Server Status</span><span class="value" style="color:#2ecc71;">● Online</span></div>
-    <div class="status-row"><span class="label">Database</span><span class="value" style="color:#2ecc71;">● Connected</span></div>
-    <div class="status-row"><span class="label">Admin Session</span><span class="value" style="color:#f0d060;">● Active</span></div>
-    <div class="status-row"><span class="label">Last Login</span><span class="value" id="dashLastLogin">Just now</span></div>
-    
-    <div style="margin-top:20px; padding:16px; background:rgba(255,255,255,0.02); border-radius:12px; border:1px solid rgba(255,255,255,0.04);">
-      <div style="font-family:'Cinzel',serif; font-size:10px; color:rgba(255,255,255,0.2); letter-spacing:2px; text-align:center;">
-        ⚡ Full admin controls available in the main Admin Panel (click the 4x click menu)
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Progress Indicator for Long Press -->
-<div class="hold-progress" id="holdProgress">
-  <div class="progress-ring">
-    <div class="progress-fill" id="progressFill"></div>
-    <div class="progress-text" id="progressText">5</div>
-  </div>
-  <div class="progress-label">Hold to unlock admin</div>
-</div>
-
-<!-- ADMIN PAGE (existing) -->
+<!-- ADMIN PAGE -->
 <div class="page" id="adminPage">
   <div class="admin-wrap">
     <div class="admin-topbar">
@@ -2797,171 +2440,9 @@ window.toggleDemo = function() { window._isDemo = document.getElementById('demoT
 window.saveProfileName = async function() { const nm = document.getElementById('profNameInp').value.trim(); if (!nm) { toast('❌ Name দিন', true); return; } if (!window._curUser || !window._db) return; try { await window._update(window._ref(window._db, 'users/' + window._curUser.uid), { name: nm }); document.getElementById('profName').textContent = nm; document.getElementById('uName').textContent = nm.split(' ')[0]; toast('✅ Name updated!', false); } catch(e) { console.error(e); toast('❌ Error updating name', true); } };
 window.uploadAvatar = function(inp) { const file = inp.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = async function(e) { const data = e.target.result; document.getElementById('profAvatar').innerHTML = `<img src="${data}" style="width:88px;height:88px;border-radius:50%;object-fit:cover"/>`; document.getElementById('uAvWrap').innerHTML = `<img src="${data}" class="u-avatar"/>`; if (window._curUser && window._db) { try { await window._update(window._ref(window._db, 'users/' + window._curUser.uid), { photoURL: data }); toast('✅ Photo updated!', false); } catch(e) { console.error(e); toast('❌ Error updating photo', true); } } }; reader.readAsDataURL(file); };
 
-// ---- NEW HIDDEN ADMIN SYSTEM - Long Press Trigger ----
-const ADMIN_PASSWORD = "12345";
-let holdStartTime = 0;
-let holdTimer = null;
-let isHolding = false;
-let holdInterval = null;
-
-function startHoldProgress() {
-  if (isHolding) return;
-  isHolding = true;
-  holdStartTime = Date.now();
-  const progressEl = document.getElementById('holdProgress');
-  const textEl = document.getElementById('progressText');
-  progressEl.classList.add('active');
-  let elapsed = 0;
-  const totalDuration = 5000; // 5 seconds
-  
-  if (holdInterval) clearInterval(holdInterval);
-  holdInterval = setInterval(() => {
-    elapsed = Date.now() - holdStartTime;
-    const remaining = Math.max(0, Math.ceil((totalDuration - elapsed) / 1000));
-    textEl.textContent = remaining;
-    // Update progress ring visual
-    const fillEl = document.getElementById('progressFill');
-    const progress = Math.min(1, elapsed / totalDuration);
-    const degrees = progress * 360;
-    fillEl.style.clipPath = `inset(0 ${100 - progress * 100}% 0 0)`;
-    if (elapsed >= totalDuration) {
-      clearInterval(holdInterval);
-      holdInterval = null;
-      progressEl.classList.remove('active');
-      isHolding = false;
-      // Trigger admin login
-      openAdminOverlay();
-    }
-  }, 100);
-}
-
-function cancelHoldProgress() {
-  if (holdInterval) {
-    clearInterval(holdInterval);
-    holdInterval = null;
-  }
-  isHolding = false;
-  document.getElementById('holdProgress').classList.remove('active');
-}
-
-// Event listeners for long press
-document.addEventListener('mousedown', (e) => {
-  if (e.button === 0) startHoldProgress();
-});
-document.addEventListener('mouseup', (e) => {
-  if (e.button === 0) cancelHoldProgress();
-});
-document.addEventListener('mouseleave', () => { cancelHoldProgress(); });
-
-document.addEventListener('touchstart', (e) => {
-  if (e.touches.length === 1) startHoldProgress();
-}, { passive: true });
-document.addEventListener('touchend', (e) => { cancelHoldProgress(); }, { passive: true });
-document.addEventListener('touchcancel', (e) => { cancelHoldProgress(); }, { passive: true });
-
-function openAdminOverlay() {
-  document.getElementById('adminOverlay').classList.add('active');
-  document.getElementById('adminLoginPassword').value = '';
-  document.getElementById('adminLoginError').textContent = '';
-  setTimeout(() => document.getElementById('adminLoginPassword').focus(), 300);
-}
-
-function closeAdminOverlay() {
-  document.getElementById('adminOverlay').classList.remove('active');
-}
-
-function adminLogin() {
-  const password = document.getElementById('adminLoginPassword').value;
-  const errorEl = document.getElementById('adminLoginError');
-  if (password === ADMIN_PASSWORD) {
-    errorEl.textContent = '';
-    closeAdminOverlay();
-    openAdminDashboard();
-  } else {
-    errorEl.textContent = '❌ Incorrect password. Try again.';
-    document.getElementById('adminLoginPassword').value = '';
-    setTimeout(() => document.getElementById('adminLoginPassword').focus(), 300);
-  }
-}
-
-function openAdminDashboard() {
-  const dashboard = document.getElementById('adminDashboard');
-  dashboard.classList.add('active');
-  // Update dashboard stats
-  updateDashboardStats();
-  document.getElementById('dashLastLogin').textContent = new Date().toLocaleString();
-}
-
-function closeAdminDashboard() {
-  document.getElementById('adminDashboard').classList.remove('active');
-}
-
-function logoutAdmin() {
-  closeAdminDashboard();
-  toast('🔒 Admin logged out', false);
-}
-
-function updateDashboardStats() {
-  // Try to get stats from existing admin data
-  const totalUsers = document.getElementById('adTotalUsers')?.textContent || '0';
-  const totalBal = document.getElementById('adTotalBal')?.textContent || '$0';
-  const totalBets = document.getElementById('adTotalBets')?.textContent || '0';
-  const totalMsgs = document.getElementById('adTotalMsgs')?.textContent || '0';
-  
-  document.getElementById('dashUserCount').textContent = totalUsers;
-  document.getElementById('dashTotalBal').textContent = totalBal;
-  document.getElementById('dashTotalBets').textContent = totalBets;
-  document.getElementById('dashTotalMsgs').textContent = totalMsgs;
-}
-
-// ---- End of Hidden Admin System ----
-
-// Keep old click-triggered admin for compatibility
 let clickCount = 0, clickTimer = null;
-document.addEventListener('click', function(e) { 
-  // Only trigger if not already in overlay/dashboard and user is logged in
-  if (!window._curUser) return;
-  if (document.getElementById('adminOverlay').classList.contains('active')) return;
-  if (document.getElementById('adminDashboard').classList.contains('active')) return;
-  
-  clickCount++; 
-  clearTimeout(clickTimer); 
-  clickTimer = setTimeout(() => { 
-    if (clickCount >= 4) { 
-      // Open the old admin password modal as fallback
-      document.getElementById('apwInput').value = ''; 
-      document.getElementById('apwError').style.display = 'none'; 
-      document.getElementById('adminPwModal').classList.add('open'); 
-      setTimeout(() => document.getElementById('apwInput').focus(), 200); 
-    } 
-    clickCount = 0; 
-  }, 500); 
-});
-
-window.checkAdminPw = function() { 
-  if (document.getElementById('apwInput').value === '308580') { 
-    document.getElementById('adminPwModal').classList.remove('open'); 
-    showPage('adminPage'); 
-    if (window.loadWithdrawalRequests) loadWithdrawalRequests(); 
-    if (window.loadDepositRequests) loadDepositRequests(); 
-    if (window.loadAdminUsers) loadAdminUsers(); 
-    if (window.loadAdminMessages) loadAdminMessages(); 
-    if (window.loadAdminLeaderboard) loadAdminLeaderboard(); 
-    if (window.loadSupportMessages) loadSupportMessages(); 
-    if (window.loadAnnouncementSettings) loadAnnouncementSettings(); 
-    document.getElementById('aiName').value = aiName; 
-    document.getElementById('aiWelcome').value = aiWelcome; 
-    document.getElementById('aiMode').value = aiMode; 
-    document.getElementById('adminAvMult').value = 15; 
-    document.getElementById('avAdminStatus').innerHTML = 'Current: Random (5x-12x range)'; 
-    window._avForcedMult = null; 
-    updateBannedUsersList(); 
-  } else { 
-    document.getElementById('apwError').style.display = 'block'; 
-    document.getElementById('apwInput').value = ''; 
-  } 
-};
-
+document.addEventListener('click', function(e) { if (!window._curUser) return; clickCount++; clearTimeout(clickTimer); clickTimer = setTimeout(() => { if (clickCount >= 20) { document.getElementById('apwInput').value = ''; document.getElementById('apwError').style.display = 'none'; document.getElementById('adminPwModal').classList.add('open'); setTimeout(() => document.getElementById('apwInput').focus(), 200); } clickCount = 0; }, 500); });
+window.checkAdminPw = function() { if (document.getElementById('apwInput').value === '308580') { document.getElementById('adminPwModal').classList.remove('open'); showPage('adminPage'); if (window.loadWithdrawalRequests) loadWithdrawalRequests(); if (window.loadDepositRequests) loadDepositRequests(); if (window.loadAdminUsers) loadAdminUsers(); if (window.loadAdminMessages) loadAdminMessages(); if (window.loadAdminLeaderboard) loadAdminLeaderboard(); if (window.loadSupportMessages) loadSupportMessages(); if (window.loadAnnouncementSettings) loadAnnouncementSettings(); document.getElementById('aiName').value = aiName; document.getElementById('aiWelcome').value = aiWelcome; document.getElementById('aiMode').value = aiMode; document.getElementById('adminAvMult').value = 15; document.getElementById('avAdminStatus').innerHTML = 'Current: Random (5x-12x range)'; window._avForcedMult = null; updateBannedUsersList(); } else { document.getElementById('apwError').style.display = 'block'; document.getElementById('apwInput').value = ''; } };
 window.switchAdminTab = function(tab, el) { document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active')); el.classList.add('active'); document.getElementById('atab-' + tab).classList.add('active'); if (tab === 'withdrawals' && window.loadWithdrawalRequests) loadWithdrawalRequests(); if (tab === 'deposits' && window.loadDepositRequests) loadDepositRequests(); if (tab === 'messages' && window.loadAdminMessages) loadAdminMessages(); if (tab === 'users' && window.loadAdminUsers) loadAdminUsers(); if (tab === 'leaderboard' && window.loadAdminLeaderboard) loadAdminLeaderboard(); if (tab === 'support_reply' && window.loadSupportMessages) loadSupportMessages(); if (tab === 'announcement' && window.loadAnnouncementSettings) loadAnnouncementSettings(); if (tab === 'users_counter') { loadTotalUsersCountIntoAdmin(); } if (tab === 'ban_users') { updateBannedUsersList(); } };
 window.openSupport = function() { document.getElementById('supportModal').classList.add('open'); };
 
@@ -3550,3 +3031,21 @@ document.addEventListener('DOMContentLoaded', function() { setTimeout(() => { up
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
