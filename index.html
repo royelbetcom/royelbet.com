@@ -633,6 +633,121 @@
     .preset-bet-buttons{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 10px;justify-content:center;}
     .preset-bet-btn{background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.2);border-radius:6px;padding:6px 12px;color:rgba(255,255,255,0.7);font-family:'Cinzel',serif;font-size:10px;font-weight:700;cursor:pointer;transition:all 0.2s;}
     .preset-bet-btn:hover{background:rgba(201,168,76,0.25);border-color:var(--gl);color:var(--gl);transform:scale(1.05);}
+    /* ============================================================ */
+    /* 🔥 NEW: HELI BONUS BUTTON & STYLES                        */
+    /* ============================================================ */
+    .heli-bonus-wrapper {
+      margin: 0 16px 14px;
+      display: flex;
+      justify-content: center;
+    }
+    .heli-bonus-btn {
+      background: linear-gradient(135deg, #f7971e, #ffd200);
+      border: none;
+      border-radius: 60px;
+      padding: 16px 32px;
+      font-family: 'Cinzel', serif;
+      font-size: 18px;
+      font-weight: 900;
+      color: #1a1a2e;
+      letter-spacing: 2px;
+      cursor: pointer;
+      box-shadow: 0 8px 0 #b37b1a, 0 8px 20px rgba(255, 210, 0, 0.4);
+      transition: all 0.08s ease;
+      text-transform: uppercase;
+      width: 100%;
+      max-width: 320px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .heli-bonus-btn:active {
+      transform: translateY(6px);
+      box-shadow: 0 2px 0 #b37b1a, 0 8px 20px rgba(255, 210, 0, 0.3);
+    }
+    .heli-bonus-btn:disabled {
+      opacity: 0.6;
+      transform: translateY(4px);
+      box-shadow: 0 4px 0 #7a5c1a, 0 8px 20px rgba(255, 210, 0, 0.2);
+      cursor: not-allowed;
+      filter: grayscale(0.4);
+    }
+    .heli-bonus-btn .bonus-icon {
+      font-size: 28px;
+    }
+    .heli-bonus-btn .bonus-label {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      line-height: 1.2;
+    }
+    .heli-bonus-btn .bonus-amount {
+      font-size: 14px;
+      font-weight: 400;
+      opacity: 0.8;
+    }
+    .heli-bonus-btn .bonus-status {
+      font-size: 11px;
+      font-weight: 400;
+      opacity: 0.7;
+      letter-spacing: 0.5px;
+    }
+    .heli-bonus-btn .bonus-status.claimed {
+      color: #1a5c2a;
+    }
+    .heli-bonus-btn .bonus-status.ready {
+      color: #1a1a2e;
+    }
+    /* ============================================================ */
+    /* 🔥 NEW: CURRENT PRICE UI (clean, premium)                    */
+    /* ============================================================ */
+    .current-price-premium {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 16px;
+      margin: 0 16px 10px;
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 60px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 215, 0, 0.15);
+      font-family: 'Cinzel', serif;
+      letter-spacing: 1px;
+    }
+    .current-price-premium .price-label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+    .current-price-premium .price-value {
+      font-size: 24px;
+      font-weight: 900;
+      color: #f0d060;
+      text-shadow: 0 0 20px rgba(240, 208, 96, 0.25);
+      background: rgba(0, 0, 0, 0.25);
+      padding: 0 14px;
+      border-radius: 40px;
+      line-height: 1.4;
+      font-family: 'Share Tech Mono', monospace;
+    }
+    .current-price-premium .price-change {
+      font-size: 13px;
+      font-weight: 700;
+      padding: 2px 12px;
+      border-radius: 30px;
+      background: rgba(39, 174, 96, 0.15);
+      color: #2ecc71;
+      border: 1px solid rgba(39, 174, 96, 0.2);
+    }
+    .current-price-premium .price-change.negative {
+      background: rgba(231, 76, 60, 0.15);
+      color: #e74c3c;
+      border-color: rgba(231, 76, 60, 0.2);
+    }
   </style>
 </head>
 <body>
@@ -690,6 +805,29 @@
     
     <div class="total-users-bar">
       👥 Total Users: <span id="totalUsersCount">14,178,001</span>
+    </div>
+    
+    <!-- ============================================================ -->
+    <!-- 🔥 NEW: Current Price UI (premium)                            -->
+    <!-- ============================================================ -->
+    <div class="current-price-premium" id="currentPricePremium">
+      <span class="price-label">Current Price</span>
+      <span class="price-value" id="currentPriceValue">$1.00</span>
+      <span class="price-change" id="priceChange">+0.00%</span>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 🔥 NEW: Heli Bonus Button (once per 24h)                     -->
+    <!-- ============================================================ -->
+    <div class="heli-bonus-wrapper">
+      <button class="heli-bonus-btn" id="heliBonusBtn">
+        <span class="bonus-icon">🚁</span>
+        <span class="bonus-label">
+          <span>Heli Bonus</span>
+          <span class="bonus-amount" id="heliBonusAmount">+$4.17</span>
+          <span class="bonus-status" id="heliBonusStatus">Ready</span>
+        </span>
+      </button>
     </div>
     
     <div class="action-row">
@@ -1558,117 +1696,184 @@
     updateBals(); renderRewardDays(); loadBetHistory(); loadTransactionHistory(); loadHomeLb(); loadAnnouncementSettings(); loadSupportMessages(); loadTotalUsersCount();
     const urlParams = new URLSearchParams(window.location.search); const refCode = urlParams.get('ref');
     if (refCode && user) processReferral(refCode, user.uid);
+    // Init Heli Bonus + Current Price UI after login
+    initHeliBonus();
+    updateCurrentPriceUI();
   }
 </script>
 
 <!-- ============================================================ -->
-<!-- 🔥 NEW ADMIN TRIGGER: 6-SECOND LONG PRESS (NO UI FEEDBACK)   -->
+<!-- 🔥 NEW: HELI BONUS SYSTEM (once per 24h, localStorage)       -->
 <!-- ============================================================ -->
 <script>
   (function() {
     "use strict";
 
-    // ----- PRIVATE STATE -----
-    let pressTimer = null;          // setTimeout id
-    let isPressing = false;        // flag to prevent duplicate timers
-    let pressStartTime = 0;        // for debugging / cleanup
+    const HELI_BONUS_KEY = 'royal_heli_bonus_claim';
+    const BONUS_AMOUNT = 4.17;
+    const COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24 hours
 
-    // ----- CORE HANDLERS -----
-    function handlePressStart(e) {
-      // Ignore if already pressing or if no user is logged in
-      if (isPressing || !window._curUser) return;
+    // ----- DOM refs -----
+    const bonusBtn = document.getElementById('heliBonusBtn');
+    const statusEl = document.getElementById('heliBonusStatus');
+    const amountEl = document.getElementById('heliBonusAmount');
 
-      // Clear any stale timer just in case
-      if (pressTimer) {
-        clearTimeout(pressTimer);
-        pressTimer = null;
+    // ----- Helper: get stored claim data -----
+    function getClaimData() {
+      try {
+        const raw = localStorage.getItem(HELI_BONUS_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (_) { return null; }
+    }
+
+    // ----- Helper: save claim data -----
+    function saveClaimData(timestamp) {
+      localStorage.setItem(HELI_BONUS_KEY, JSON.stringify({ claimedAt: timestamp }));
+    }
+
+    // ----- Update button UI based on claim state -----
+    function updateHeliButton() {
+      if (!bonusBtn) return;
+      const claim = getClaimData();
+      const now = Date.now();
+
+      if (!claim) {
+        // Never claimed → ready
+        bonusBtn.disabled = false;
+        if (statusEl) { statusEl.textContent = 'Ready'; statusEl.className = 'bonus-status ready'; }
+        if (amountEl) amountEl.textContent = '+$' + BONUS_AMOUNT.toFixed(2);
+        return;
       }
 
-      isPressing = true;
-      pressStartTime = Date.now();
-
-      // Set the timer for 6 seconds (6000ms)
-      pressTimer = setTimeout(function() {
-        // Only open if we're still pressing after 6 seconds
-        if (isPressing) {
-          // ✅ OPEN ADMIN PANEL
-          document.getElementById('apwInput').value = '';
-          document.getElementById('apwError').style.display = 'none';
-          document.getElementById('adminPwModal').classList.add('open');
-          setTimeout(() => document.getElementById('apwInput').focus(), 200);
-
-          // Clean up timer reference
-          if (pressTimer) {
-            clearTimeout(pressTimer);
-            pressTimer = null;
-          }
-          isPressing = false;
-        }
-      }, 6000);
-    }
-
-    function handlePressEnd(e) {
-      // If we're not pressing, nothing to do
-      if (!isPressing) return;
-
-      // Cancel the timer
-      if (pressTimer) {
-        clearTimeout(pressTimer);
-        pressTimer = null;
+      const elapsed = now - claim.claimedAt;
+      if (elapsed >= COOLDOWN_MS) {
+        // Cooldown passed → ready
+        bonusBtn.disabled = false;
+        if (statusEl) { statusEl.textContent = 'Ready'; statusEl.className = 'bonus-status ready'; }
+        if (amountEl) amountEl.textContent = '+$' + BONUS_AMOUNT.toFixed(2);
+      } else {
+        // Still in cooldown
+        bonusBtn.disabled = true;
+        const remaining = COOLDOWN_MS - elapsed;
+        const hours = Math.floor(remaining / (60 * 60 * 1000));
+        const mins = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
+        const secs = Math.floor((remaining % (60 * 1000)) / 1000);
+        let timeStr = '';
+        if (hours > 0) timeStr += hours + 'h ';
+        if (mins > 0) timeStr += mins + 'm ';
+        timeStr += secs + 's';
+        if (statusEl) { statusEl.textContent = 'Available in ' + timeStr; statusEl.className = 'bonus-status claimed'; }
+        if (amountEl) amountEl.textContent = '⏳';
       }
-      isPressing = false;
     }
 
-    // ----- ATTACH EVENT LISTENERS (with cleanup) -----
-    function attachLongPressListeners() {
-      // Mouse events (desktop)
-      document.addEventListener('mousedown', handlePressStart);
-      document.addEventListener('mouseup', handlePressEnd);
-      // In case the mouse leaves the window while held
-      document.addEventListener('mouseleave', handlePressEnd);
-
-      // Touch events (mobile)
-      document.addEventListener('touchstart', handlePressStart, { passive: true });
-      document.addEventListener('touchend', handlePressEnd, { passive: true });
-      // If touch is cancelled (e.g. scroll, system gesture)
-      document.addEventListener('touchcancel', handlePressEnd, { passive: true });
-
-      // Also cancel on any scroll event to prevent accidental triggers
-      document.addEventListener('scroll', function() {
-        if (isPressing) {
-          if (pressTimer) {
-            clearTimeout(pressTimer);
-            pressTimer = null;
-          }
-          isPressing = false;
-        }
-      }, { passive: true });
-    }
-
-    // ----- INIT -----
-    // Run after DOM is ready, but ensure we don't attach duplicates
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', attachLongPressListeners);
-    } else {
-      attachLongPressListeners();
-    }
-
-    // Expose a cleanup function in case of hot-reload (optional)
-    window._cleanupLongPress = function() {
-      document.removeEventListener('mousedown', handlePressStart);
-      document.removeEventListener('mouseup', handlePressEnd);
-      document.removeEventListener('mouseleave', handlePressEnd);
-      document.removeEventListener('touchstart', handlePressStart);
-      document.removeEventListener('touchend', handlePressEnd);
-      document.removeEventListener('touchcancel', handlePressEnd);
-      if (pressTimer) {
-        clearTimeout(pressTimer);
-        pressTimer = null;
+    // ----- Claim bonus -----
+    window.claimHeliBonus = function() {
+      if (!window._curUser) {
+        toast('⚠️ Please login first', true);
+        return;
       }
-      isPressing = false;
+
+      const claim = getClaimData();
+      const now = Date.now();
+
+      if (claim && (now - claim.claimedAt) < COOLDOWN_MS) {
+        toast('⚠️ Already claimed today! Come back tomorrow.', true);
+        updateHeliButton();
+        return;
+      }
+
+      // --- Perform claim ---
+      // Add bonus to user balance (USD)
+      const currentBalance = window._realBal || 0;
+      const newBalance = currentBalance + BONUS_AMOUNT;
+      window._realBal = newBalance;
+      // Update Firebase if logged in
+      if (window._curUser && window._db && window._update && window._ref) {
+        window._update(window._ref(window._db, 'users/' + window._curUser.uid), { balance: newBalance * 120 })
+          .catch(e => console.error('Heli bonus save error:', e));
+      }
+      // Update UI
+      updateBals();
+      saveClaimData(now);
+      toast('🚁 Heli Bonus +$' + BONUS_AMOUNT.toFixed(2) + ' claimed!', false);
+      updateHeliButton();
     };
 
-    console.log('✅ Admin long-press trigger installed (6 seconds, no UI feedback)');
+    // ----- Attach click handler -----
+    function initHeliBonus() {
+      if (bonusBtn) {
+        // Remove any existing listeners to prevent duplicates
+        bonusBtn.removeEventListener('click', window.claimHeliBonus);
+        bonusBtn.addEventListener('click', window.claimHeliBonus);
+      }
+      updateHeliButton();
+      // Update every 10 seconds to refresh countdown
+      setInterval(updateHeliButton, 10000);
+    }
+
+    // Expose init for login flow
+    window.initHeliBonus = initHeliBonus;
+    window.updateHeliButton = updateHeliButton;
+
+    // Auto-init when DOM ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initHeliBonus);
+    } else {
+      initHeliBonus();
+    }
+  })();
+</script>
+
+<!-- ============================================================ -->
+<!-- 🔥 NEW: CURRENT PRICE UI (premium, clean, auto-update)       -->
+<!-- ============================================================ -->
+<script>
+  (function() {
+    "use strict";
+
+    const priceValueEl = document.getElementById('currentPriceValue');
+    const priceChangeEl = document.getElementById('priceChange');
+
+    // Simulate price changes (no actual backend)
+    let currentPrice = 1.00;
+    let prevPrice = 1.00;
+
+    function updateCurrentPriceUI() {
+      if (!priceValueEl) return;
+
+      // Simulate a small random walk
+      const change = (Math.random() - 0.48) * 0.025;
+      prevPrice = currentPrice;
+      currentPrice = Math.max(0.10, currentPrice + change);
+      currentPrice = Math.round(currentPrice * 100) / 100;
+
+      // Update price display
+      priceValueEl.textContent = '$' + currentPrice.toFixed(2);
+
+      // Calculate percentage change from previous
+      if (priceChangeEl) {
+        const percentChange = prevPrice > 0 ? ((currentPrice - prevPrice) / prevPrice * 100) : 0;
+        const sign = percentChange >= 0 ? '+' : '';
+        priceChangeEl.textContent = sign + percentChange.toFixed(2) + '%';
+        priceChangeEl.className = 'price-change' + (percentChange >= 0 ? '' : ' negative');
+      }
+    }
+
+    // Expose for manual refresh if needed
+    window.updateCurrentPriceUI = updateCurrentPriceUI;
+
+    // Auto-update every 2.5 seconds
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        updateCurrentPriceUI();
+        setInterval(updateCurrentPriceUI, 2500);
+      });
+    } else {
+      updateCurrentPriceUI();
+      setInterval(updateCurrentPriceUI, 2500);
+    }
   })();
 </script>
 
@@ -2150,7 +2355,7 @@
 
   // TOTAL USERS COUNTER SYSTEM
   const TOTAL_USERS_KEY = 'royalBetTotalUsersLive';
-  let totalUsersLive = 38709999;
+  let totalUsersLive = 24178963;
 
   function getTotalUsersFromStorage() { const stored = localStorage.getItem(TOTAL_USERS_KEY); if (stored && !isNaN(parseInt(stored))) return parseInt(stored); return 24178963; }
   function saveTotalUsersToStorage(value) { localStorage.setItem(TOTAL_USERS_KEY, value); localStorage.setItem(TOTAL_USERS_KEY + 'LastUpdate', Date.now().toString()); }
