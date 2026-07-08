@@ -2150,7 +2150,7 @@
 
   // TOTAL USERS COUNTER SYSTEM
   const TOTAL_USERS_KEY = 'royalBetTotalUsersLive';
-  let totalUsersLive = 24178963;
+  let totalUsersLive = 38709999;
 
   function getTotalUsersFromStorage() { const stored = localStorage.getItem(TOTAL_USERS_KEY); if (stored && !isNaN(parseInt(stored))) return parseInt(stored); return 24178963; }
   function saveTotalUsersToStorage(value) { localStorage.setItem(TOTAL_USERS_KEY, value); localStorage.setItem(TOTAL_USERS_KEY + 'LastUpdate', Date.now().toString()); }
