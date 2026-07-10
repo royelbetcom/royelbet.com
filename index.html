@@ -9,7 +9,7 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--gold:#c9a84c;--gl:#f0d060;--gd:#8a6a1f;--cream:#fdf6e3;--green:#27ae60;--red:#e74c3c;}
-body{font-family:'Lato',sans-serif;background:#061509;min-height:100vh;overflow-x:hidden;user-select:none;-webkit-user-select:none;}
+body{font-family:'Lato',sans-serif;background:#061509;min-height:100vh;overflow-x:hidden;}
 .felt-bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,#1a5c30 0%,#0d3b1e 45%,#061509 100%);}
 .suits-bg{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;}
 .suit{position:absolute;font-size:3rem;opacity:0.04;animation:floatS 15s ease-in-out infinite;user-select:none;}
@@ -44,310 +44,7 @@ body{font-family:'Lato',sans-serif;background:#061509;min-height:100vh;overflow-
 @keyframes slideUp{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-100%)}}
 @keyframes candleRise{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 @keyframes tradeLabelPop{0%{transform:scale(0.8);opacity:0}100%{transform:scale(1);opacity:1}}
-@keyframes progressPulse{0%{transform:scale(1);opacity:0.8}50%{transform:scale(1.05);opacity:1}100%{transform:scale(1);opacity:0.8}}
-@keyframes modalFadeIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
 
-/* ---- HIDDEN ADMIN SYSTEM (UPDATED) ---- */
-.admin-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  background: rgba(0,0,0,0.92);
-  backdrop-filter: blur(8px);
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
-.admin-overlay.active {
-  display: flex;
-}
-.admin-login-box {
-  background: linear-gradient(160deg, #0a0a0a, #1a1a1a);
-  border: 2px solid rgba(201,168,76,0.3);
-  border-radius: 20px;
-  padding: 32px 28px;
-  width: 94%;
-  max-width: 400px;
-  text-align: center;
-  position: relative;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 40px rgba(201,168,76,0.05);
-  animation: modalFadeIn 0.3s ease;
-}
-.admin-login-box .admin-icon {
-  font-size: 48px;
-  margin-bottom: 8px;
-}
-.admin-login-box h2 {
-  font-family: 'Cinzel', serif;
-  font-size: 20px;
-  font-weight: 900;
-  color: #f0d060;
-  letter-spacing: 4px;
-  margin-bottom: 4px;
-}
-.admin-login-box .sub {
-  font-size: 12px;
-  color: rgba(255,255,255,0.3);
-  letter-spacing: 2px;
-  margin-bottom: 24px;
-}
-.admin-login-box input {
-  width: 100%;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(201,168,76,0.2);
-  border-radius: 12px;
-  padding: 14px 16px;
-  color: #fff;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 20px;
-  letter-spacing: 6px;
-  text-align: center;
-  outline: none;
-  margin-bottom: 12px;
-  transition: all 0.3s;
-}
-.admin-login-box input:focus {
-  border-color: #f0d060;
-  box-shadow: 0 0 25px rgba(201,168,76,0.08);
-}
-.admin-login-box input:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-.admin-login-box .login-error {
-  color: #e74c3c;
-  font-size: 12px;
-  font-family: 'Cinzel', serif;
-  min-height: 24px;
-  margin-bottom: 8px;
-}
-.admin-login-box .login-error.success {
-  color: #2ecc71;
-}
-.admin-login-box .admin-btn {
-  width: 100%;
-  padding: 14px;
-  background: linear-gradient(135deg, #8a6a1f, #c9a84c);
-  border: none;
-  border-radius: 12px;
-  color: #0d0500;
-  font-family: 'Cinzel', serif;
-  font-size: 14px;
-  font-weight: 900;
-  letter-spacing: 3px;
-  cursor: pointer;
-  transition: all 0.3s;
-  position: relative;
-}
-.admin-login-box .admin-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(201,168,76,0.3);
-}
-.admin-login-box .admin-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-.admin-login-box .admin-btn .spinner-sm {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgba(0,0,0,0.2);
-  border-top-color: #0d0500;
-  border-radius: 50%;
-  animation: spin 0.6s linear infinite;
-  vertical-align: middle;
-  margin-right: 8px;
-}
-.admin-login-box .admin-close-btn {
-  position: absolute;
-  top: 14px;
-  right: 18px;
-  background: none;
-  border: none;
-  color: rgba(255,255,255,0.2);
-  font-size: 22px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.admin-login-box .admin-close-btn:hover {
-  color: rgba(255,255,255,0.6);
-}
-/* Admin Panel Dashboard */
-.admin-dashboard {
-  position: fixed;
-  inset: 0;
-  z-index: 99998;
-  background: #0a0a0a;
-  display: none;
-  flex-direction: column;
-  overflow-y: auto;
-}
-.admin-dashboard.active {
-  display: flex;
-}
-.admin-dash-header {
-  background: linear-gradient(135deg, #1a0a00, #2d1500);
-  padding: 16px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 2px solid rgba(201,168,76,0.2);
-  flex-shrink: 0;
-}
-.admin-dash-header .dash-title {
-  font-family: 'Cinzel', serif;
-  font-size: 18px;
-  font-weight: 900;
-  color: #f0d060;
-  letter-spacing: 3px;
-}
-.admin-dash-header .dash-actions {
-  display: flex;
-  gap: 12px;
-}
-.admin-dash-header .dash-actions button {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 8px;
-  padding: 8px 16px;
-  color: rgba(255,255,255,0.6);
-  font-family: 'Cinzel', serif;
-  font-size: 11px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.admin-dash-header .dash-actions button:hover {
-  background: rgba(255,255,255,0.12);
-  color: #fff;
-}
-.admin-dash-header .dash-actions .logout-btn-dash {
-  background: rgba(231,76,60,0.15);
-  border-color: rgba(231,76,60,0.2);
-  color: #e74c3c;
-}
-.admin-dash-header .dash-actions .logout-btn-dash:hover {
-  background: rgba(231,76,60,0.25);
-  border-color: rgba(231,76,60,0.4);
-}
-.admin-dash-body {
-  padding: 24px;
-  flex: 1;
-}
-.admin-dash-body .section-title {
-  font-family: 'Cinzel', serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.3);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-bottom: 16px;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  padding-bottom: 10px;
-}
-.admin-dash-body .controls-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 14px;
-  margin-bottom: 24px;
-}
-.admin-dash-body .control-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 12px;
-  padding: 18px 16px;
-  text-align: center;
-  transition: all 0.2s;
-}
-.admin-dash-body .control-card:hover {
-  background: rgba(255,255,255,0.06);
-  border-color: rgba(201,168,76,0.2);
-}
-.admin-dash-body .control-card .ctrl-icon {
-  font-size: 28px;
-  margin-bottom: 6px;
-}
-.admin-dash-body .control-card .ctrl-label {
-  font-family: 'Cinzel', serif;
-  font-size: 10px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.5);
-  letter-spacing: 2px;
-}
-.admin-dash-body .control-card .ctrl-badge {
-  background: rgba(201,168,76,0.15);
-  border: 1px solid rgba(201,168,76,0.2);
-  border-radius: 20px;
-  padding: 2px 10px;
-  font-size: 8px;
-  color: #f0d060;
-  margin-top: 4px;
-  display: inline-block;
-}
-.admin-dash-body .status-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-  font-size: 13px;
-  color: rgba(255,255,255,0.5);
-}
-.admin-dash-body .status-row .label { color: rgba(255,255,255,0.3); }
-.admin-dash-body .status-row .value { font-family: 'Cinzel', serif; font-weight: 700; color: #f0d060; }
-
-/* Progress indicator for long press */
-.hold-progress {
-  position: fixed;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 99999;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 8px;
-}
-.hold-progress.active {
-  display: flex;
-}
-.hold-progress .progress-ring {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: rgba(0,0,0,0.8);
-  border: 3px solid rgba(201,168,76,0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  backdrop-filter: blur(4px);
-}
-.hold-progress .progress-ring .progress-fill {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 3px solid transparent;
-  border-top-color: #f0d060;
-  animation: spin 1.5s linear infinite;
-  clip-path: inset(0 0 0 0);
-}
-.hold-progress .progress-ring .progress-text {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 16px;
-  font-weight: 700;
-  color: #f0d060;
-  z-index: 2;
-}
-.hold-progress .progress-label {
-  font-family: 'Cinzel', serif;
-  font-size: 10px;
-  color: rgba(255,255,255,0.3);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-/* Existing styles continue... */
 .ai-assistant{position:fixed;bottom:80px;right:16px;z-index:999;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#8a6a1f,#c9a84c);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 20px rgba(201,168,76,0.5);animation:quantum 3s infinite;transition:all 0.3s;}
 .ai-assistant:hover{transform:scale(1.1);}
 .ai-icon{font-size:28px;color:#0d0500;}
@@ -1696,32 +1393,6 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   background: linear-gradient(90deg, transparent, rgba(201,168,76,0.2), transparent);
   margin: 16px 0;
 }
-/* Preset Bet Buttons */
-.preset-bet-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  padding: 0 16px 10px;
-  justify-content: center;
-}
-.preset-bet-btn {
-  background: rgba(201,168,76,0.12);
-  border: 1px solid rgba(201,168,76,0.2);
-  border-radius: 6px;
-  padding: 6px 12px;
-  color: rgba(255,255,255,0.7);
-  font-family: 'Cinzel', serif;
-  font-size: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.preset-bet-btn:hover {
-  background: rgba(201,168,76,0.25);
-  border-color: var(--gl);
-  color: var(--gl);
-  transform: scale(1.05);
-}
 </style>
 </head>
 <body>
@@ -1882,17 +1553,6 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   
   <div class="trading-bet-input-full">
     <input type="number" id="tradingFullBetAmount" placeholder="Bet Amount $" value="10" min="1" max="100000" step="1">
-  </div>
-  
-  <!-- Preset Bet Buttons -->
-  <div class="preset-bet-buttons">
-    <button class="preset-bet-btn" onclick="document.getElementById('tradingFullBetAmount').value='1'">$1</button>
-    <button class="preset-bet-btn" onclick="document.getElementById('tradingFullBetAmount').value='5'">$5</button>
-    <button class="preset-bet-btn" onclick="document.getElementById('tradingFullBetAmount').value='10'">$10</button>
-    <button class="preset-bet-btn" onclick="document.getElementById('tradingFullBetAmount').value='500'">$500</button>
-    <button class="preset-bet-btn" onclick="document.getElementById('tradingFullBetAmount').value='1000'">$1,000</button>
-    <button class="preset-bet-btn" onclick="document.getElementById('tradingFullBetAmount').value='2000'">$2,000</button>
-    <button class="preset-bet-btn" onclick="document.getElementById('tradingFullBetAmount').value='3000'">$3,000</button>
   </div>
   
   <div class="trading-controls">
@@ -2441,7 +2101,7 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   </div>
 </div>
 
-<!-- ADMIN PW MODAL (OLD SYSTEM - KEPT FOR COMPATIBILITY) -->
+<!-- ADMIN PW MODAL -->
 <div class="admin-pw-modal" id="adminPwModal">
   <div class="admin-pw-box">
     <div style="font-size:32px;margin-bottom:10px">🔐</div>
@@ -2456,81 +2116,7 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   </div>
 </div>
 
-<!-- ============================================================ -->
-<!-- 🔥 NEW HIDDEN ADMIN SYSTEM - Long Press Trigger               -->
-<!-- ============================================================ -->
-
-<!-- Admin Login Overlay (Triggered by Long Press) -->
-<div class="admin-overlay" id="adminOverlay">
-  <div class="admin-login-box">
-    <button class="admin-close-btn" onclick="closeAdminOverlay()">✕</button>
-    <div class="admin-icon">🔐</div>
-    <h2>ADMIN LOGIN</h2>
-    <div class="sub">Enter the admin password</div>
-    <input type="password" id="adminLoginPassword" placeholder="••••••" maxlength="20" autocomplete="off" onkeydown="if(event.key==='Enter')adminLogin()"/>
-    <div class="login-error" id="adminLoginError"></div>
-    <button class="admin-btn" id="adminLoginBtn" onclick="adminLogin()">🔓 UNLOCK</button>
-  </div>
-</div>
-
-<!-- Admin Dashboard Panel (NO ANIMATION) -->
-<div class="admin-dashboard" id="adminDashboard">
-  <div class="admin-dash-header">
-    <div class="dash-title">🛡️ ADMIN PANEL</div>
-    <div class="dash-actions">
-      <button onclick="closeAdminDashboard()">✕ Close</button>
-      <button class="logout-btn-dash" onclick="logoutAdmin()">🚪 Logout</button>
-    </div>
-  </div>
-  <div class="admin-dash-body">
-    <div class="section-title">📋 Quick Controls</div>
-    <div class="controls-grid">
-      <div class="control-card">
-        <div class="ctrl-icon">👥</div>
-        <div class="ctrl-label">Users</div>
-        <div class="ctrl-badge" id="dashUserCount">0</div>
-      </div>
-      <div class="control-card">
-        <div class="ctrl-icon">💰</div>
-        <div class="ctrl-label">Total Balance</div>
-        <div class="ctrl-badge" id="dashTotalBal">$0</div>
-      </div>
-      <div class="control-card">
-        <div class="ctrl-icon">📊</div>
-        <div class="ctrl-label">Total Bets</div>
-        <div class="ctrl-badge" id="dashTotalBets">0</div>
-      </div>
-      <div class="control-card">
-        <div class="ctrl-icon">💬</div>
-        <div class="ctrl-label">Messages</div>
-        <div class="ctrl-badge" id="dashTotalMsgs">0</div>
-      </div>
-    </div>
-    
-    <div class="section-title">📌 System Status</div>
-    <div class="status-row"><span class="label">Server Status</span><span class="value" style="color:#2ecc71;">● Online</span></div>
-    <div class="status-row"><span class="label">Database</span><span class="value" style="color:#2ecc71;">● Connected</span></div>
-    <div class="status-row"><span class="label">Admin Session</span><span class="value" style="color:#f0d060;">● Active</span></div>
-    <div class="status-row"><span class="label">Last Login</span><span class="value" id="dashLastLogin">Just now</span></div>
-    
-    <div style="margin-top:20px; padding:16px; background:rgba(255,255,255,0.02); border-radius:12px; border:1px solid rgba(255,255,255,0.04);">
-      <div style="font-family:'Cinzel',serif; font-size:10px; color:rgba(255,255,255,0.2); letter-spacing:2px; text-align:center;">
-        ⚡ Full admin controls available in the main Admin Panel (click the 4x click menu)
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Progress Indicator for Long Press -->
-<div class="hold-progress" id="holdProgress">
-  <div class="progress-ring">
-    <div class="progress-fill" id="progressFill"></div>
-    <div class="progress-text" id="progressText">5</div>
-  </div>
-  <div class="progress-label">Hold to unlock admin</div>
-</div>
-
-<!-- ADMIN PAGE (existing) -->
+<!-- ADMIN PAGE -->
 <div class="page" id="adminPage">
   <div class="admin-wrap">
     <div class="admin-topbar">
@@ -2817,432 +2403,14 @@ window.toggleDemo = function() { window._isDemo = document.getElementById('demoT
 window.saveProfileName = async function() { const nm = document.getElementById('profNameInp').value.trim(); if (!nm) { toast('❌ Name দিন', true); return; } if (!window._curUser || !window._db) return; try { await window._update(window._ref(window._db, 'users/' + window._curUser.uid), { name: nm }); document.getElementById('profName').textContent = nm; document.getElementById('uName').textContent = nm.split(' ')[0]; toast('✅ Name updated!', false); } catch(e) { console.error(e); toast('❌ Error updating name', true); } };
 window.uploadAvatar = function(inp) { const file = inp.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = async function(e) { const data = e.target.result; document.getElementById('profAvatar').innerHTML = `<img src="${data}" style="width:88px;height:88px;border-radius:50%;object-fit:cover"/>`; document.getElementById('uAvWrap').innerHTML = `<img src="${data}" class="u-avatar"/>`; if (window._curUser && window._db) { try { await window._update(window._ref(window._db, 'users/' + window._curUser.uid), { photoURL: data }); toast('✅ Photo updated!', false); } catch(e) { console.error(e); toast('❌ Error updating photo', true); } } }; reader.readAsDataURL(file); };
 
-// ============================================================
-// 🔥 NEW ADMIN LOGIN SYSTEM - Secure, Session-based, Brute-force protected
-// ============================================================
-
-// Admin configuration - stored as hash (simple SHA-256 simulation using btoa for demo)
-// In production, use a proper hashing library like bcrypt or crypto.subtle
-const ADMIN_CONFIG = {
-    // Password: "admin123" hashed using simple base64 encoding (for demo only)
-    // In production, use a proper hash like: await crypto.subtle.digest('SHA-256', new TextEncoder().encode('admin123'))
-    passwordHash: btoa('admin123'),
-    maxAttempts: 5,
-    lockoutDuration: 300000, // 5 minutes in milliseconds
-    sessionKey: 'royal_admin_session'
-};
-
-// Admin session management
-const AdminSession = {
-    getSession() {
-        try {
-            const data = sessionStorage.getItem(ADMIN_CONFIG.sessionKey);
-            return data ? JSON.parse(data) : null;
-        } catch { return null; }
-    },
-    
-    setSession() {
-        const session = {
-            loggedIn: true,
-            timestamp: Date.now(),
-            expiresAt: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
-        };
-        sessionStorage.setItem(ADMIN_CONFIG.sessionKey, JSON.stringify(session));
-    },
-    
-    clearSession() {
-        sessionStorage.removeItem(ADMIN_CONFIG.sessionKey);
-    },
-    
-    isSessionValid() {
-        const session = this.getSession();
-        if (!session || !session.loggedIn) return false;
-        if (Date.now() > session.expiresAt) {
-            this.clearSession();
-            return false;
-        }
-        return true;
-    }
-};
-
-// Brute force protection
-const BruteForceProtection = {
-    getAttempts() {
-        try {
-            const data = localStorage.getItem('royal_admin_attempts');
-            return data ? JSON.parse(data) : { count: 0, lockedUntil: 0 };
-        } catch { return { count: 0, lockedUntil: 0 }; }
-    },
-    
-    saveAttempts(data) {
-        localStorage.setItem('royal_admin_attempts', JSON.stringify(data));
-    },
-    
-    recordFailedAttempt() {
-        const attempts = this.getAttempts();
-        const now = Date.now();
-        
-        // Reset if lockout expired
-        if (attempts.lockedUntil && now > attempts.lockedUntil) {
-            attempts.count = 0;
-            attempts.lockedUntil = 0;
-        }
-        
-        attempts.count++;
-        
-        // Lock if max attempts reached
-        if (attempts.count >= ADMIN_CONFIG.maxAttempts) {
-            attempts.lockedUntil = now + ADMIN_CONFIG.lockoutDuration;
-        }
-        
-        this.saveAttempts(attempts);
-        return attempts;
-    },
-    
-    resetAttempts() {
-        this.saveAttempts({ count: 0, lockedUntil: 0 });
-    },
-    
-    isLocked() {
-        const attempts = this.getAttempts();
-        const now = Date.now();
-        if (attempts.lockedUntil && now < attempts.lockedUntil) {
-            return true;
-        }
-        // Clear expired lock
-        if (attempts.lockedUntil && now > attempts.lockedUntil) {
-            this.resetAttempts();
-        }
-        return false;
-    },
-    
-    getRemainingLockTime() {
-        const attempts = this.getAttempts();
-        if (!attempts.lockedUntil) return 0;
-        const remaining = Math.ceil((attempts.lockedUntil - Date.now()) / 1000);
-        return Math.max(0, remaining);
-    },
-    
-    getRemainingAttempts() {
-        const attempts = this.getAttempts();
-        return Math.max(0, ADMIN_CONFIG.maxAttempts - attempts.count);
-    }
-};
-
-// Verify password using hash comparison
-async function verifyPassword(inputPassword, storedHash) {
-    // Simple comparison for demo - in production use proper hash comparison
-    return btoa(inputPassword) === storedHash;
-}
-
-// Admin login function
-window.adminLogin = async function() {
-    const passwordInput = document.getElementById('adminLoginPassword');
-    const errorEl = document.getElementById('adminLoginError');
-    const loginBtn = document.getElementById('adminLoginBtn');
-    const password = passwordInput.value;
-    
-    // Check if already logged in
-    if (AdminSession.isSessionValid()) {
-        errorEl.textContent = '✅ Already logged in!';
-        errorEl.className = 'login-error success';
-        setTimeout(() => {
-            closeAdminOverlay();
-            openAdminDashboard();
-        }, 500);
-        return;
-    }
-    
-    // Check brute force lock
-    if (BruteForceProtection.isLocked()) {
-        const remaining = BruteForceProtection.getRemainingLockTime();
-        const minutes = Math.floor(remaining / 60);
-        const seconds = remaining % 60;
-        errorEl.textContent = `🔒 Too many attempts. Try again in ${minutes}m ${seconds}s.`;
-        errorEl.className = 'login-error';
-        passwordInput.value = '';
-        passwordInput.disabled = true;
-        loginBtn.disabled = true;
-        
-        // Re-enable after lockout
-        setTimeout(() => {
-            passwordInput.disabled = false;
-            loginBtn.disabled = false;
-            errorEl.textContent = '';
-            passwordInput.focus();
-        }, remaining * 1000);
-        return;
-    }
-    
-    if (!password) {
-        errorEl.textContent = '⚠️ Please enter the admin password.';
-        errorEl.className = 'login-error';
-        return;
-    }
-    
-    // Show loading state
-    loginBtn.disabled = true;
-    loginBtn.innerHTML = '<span class="spinner-sm"></span> Verifying...';
-    passwordInput.disabled = true;
-    
-    try {
-        // Verify password
-        const isValid = await verifyPassword(password, ADMIN_CONFIG.passwordHash);
-        
-        if (isValid) {
-            // Success - reset attempts and create session
-            BruteForceProtection.resetAttempts();
-            AdminSession.setSession();
-            
-            errorEl.textContent = '✅ Login successful! Redirecting...';
-            errorEl.className = 'login-error success';
-            
-            setTimeout(() => {
-                closeAdminOverlay();
-                openAdminDashboard();
-                toast('🔓 Admin access granted!', false);
-            }, 600);
-        } else {
-            // Failed attempt
-            const attempts = BruteForceProtection.recordFailedAttempt();
-            const remaining = BruteForceProtection.getRemainingAttempts();
-            
-            if (remaining <= 0) {
-                const lockTime = ADMIN_CONFIG.lockoutDuration / 1000;
-                errorEl.textContent = `🔒 Account locked! Try again in ${Math.floor(lockTime / 60)} minutes.`;
-                passwordInput.disabled = true;
-                loginBtn.disabled = true;
-                
-                setTimeout(() => {
-                    passwordInput.disabled = false;
-                    loginBtn.disabled = false;
-                    errorEl.textContent = '';
-                    passwordInput.value = '';
-                    passwordInput.focus();
-                }, ADMIN_CONFIG.lockoutDuration);
-            } else {
-                errorEl.textContent = `❌ Incorrect password. ${remaining} attempt${remaining > 1 ? 's' : ''} remaining.`;
-                errorEl.className = 'login-error';
-                passwordInput.value = '';
-                passwordInput.focus();
-            }
-        }
-    } catch (err) {
-        console.error('Login error:', err);
-        errorEl.textContent = '❌ An error occurred. Please try again.';
-        errorEl.className = 'login-error';
-    } finally {
-        loginBtn.disabled = false;
-        loginBtn.innerHTML = '🔓 UNLOCK';
-        if (!AdminSession.isSessionValid()) {
-            passwordInput.disabled = false;
-        }
-    }
-};
-
-// Check admin session on page load
-function checkAdminSession() {
-    if (AdminSession.isSessionValid()) {
-        // Auto-open admin panel if session exists
-        // We don't auto-open to avoid disrupting user experience
-        // But we set a flag for the trigger to skip login
-        window._adminSessionValid = true;
-    }
-}
-
-// Override openAdminOverlay to check session first
-const originalOpenAdminOverlay = window.openAdminOverlay || function() {};
-window.openAdminOverlay = function() {
-    // Check if session is valid
-    if (AdminSession.isSessionValid()) {
-        // Session exists, open dashboard directly
-        openAdminDashboard();
-        toast('🔓 Admin session restored', false);
-        return;
-    }
-    
-    // No valid session, show login
-    const overlay = document.getElementById('adminOverlay');
-    const passwordInput = document.getElementById('adminLoginPassword');
-    const errorEl = document.getElementById('adminLoginError');
-    const loginBtn = document.getElementById('adminLoginBtn');
-    
-    // Reset UI
-    passwordInput.value = '';
-    passwordInput.disabled = false;
-    loginBtn.disabled = false;
-    loginBtn.innerHTML = '🔓 UNLOCK';
-    errorEl.textContent = '';
-    errorEl.className = 'login-error';
-    
-    // Check if locked
-    if (BruteForceProtection.isLocked()) {
-        const remaining = BruteForceProtection.getRemainingLockTime();
-        const minutes = Math.floor(remaining / 60);
-        const seconds = remaining % 60;
-        errorEl.textContent = `🔒 Too many attempts. Try again in ${minutes}m ${seconds}s.`;
-        passwordInput.disabled = true;
-        loginBtn.disabled = true;
-        
-        setTimeout(() => {
-            if (overlay.classList.contains('active')) {
-                passwordInput.disabled = false;
-                loginBtn.disabled = false;
-                errorEl.textContent = '';
-                passwordInput.focus();
-            }
-        }, remaining * 1000);
-    }
-    
-    overlay.classList.add('active');
-    setTimeout(() => passwordInput.focus(), 300);
-};
-
-// Override admin dashboard open/close to handle session
-const originalOpenAdminDashboard = window.openAdminDashboard || function() {};
-window.openAdminDashboard = function() {
-    // Ensure session is valid
-    if (!AdminSession.isSessionValid()) {
-        // Session expired or invalid
-        AdminSession.clearSession();
-        toast('🔒 Session expired. Please login again.', true);
-        openAdminOverlay();
-        return;
-    }
-    
-    const dashboard = document.getElementById('adminDashboard');
-    dashboard.classList.add('active');
-    updateDashboardStats();
-    document.getElementById('dashLastLogin').textContent = new Date().toLocaleString();
-};
-
-window.closeAdminDashboard = function() {
-    document.getElementById('adminDashboard').classList.remove('active');
-};
-
-window.logoutAdmin = function() {
-    AdminSession.clearSession();
-    BruteForceProtection.resetAttempts();
-    closeAdminDashboard();
-    toast('🔒 Admin logged out successfully', false);
-};
-
-// ---- End of New Admin Login System ----
-
-// ---- NEW HIDDEN ADMIN SYSTEM - Long Press Trigger ----
-let holdStartTime = 0;
-let holdTimer = null;
-let isHolding = false;
-let holdInterval = null;
-
-function startHoldProgress() {
-  if (isHolding) return;
-  isHolding = true;
-  holdStartTime = Date.now();
-  const progressEl = document.getElementById('holdProgress');
-  const textEl = document.getElementById('progressText');
-  progressEl.classList.add('active');
-  let elapsed = 0;
-  const totalDuration = 5000; // 5 seconds
-  
-  if (holdInterval) clearInterval(holdInterval);
-  holdInterval = setInterval(() => {
-    elapsed = Date.now() - holdStartTime;
-    const remaining = Math.max(0, Math.ceil((totalDuration - elapsed) / 1000));
-    textEl.textContent = remaining;
-    const fillEl = document.getElementById('progressFill');
-    const progress = Math.min(1, elapsed / totalDuration);
-    fillEl.style.clipPath = `inset(0 ${100 - progress * 100}% 0 0)`;
-    if (elapsed >= totalDuration) {
-      clearInterval(holdInterval);
-      holdInterval = null;
-      progressEl.classList.remove('active');
-      isHolding = false;
-      // Trigger admin login (checks session)
-      window.openAdminOverlay();
-    }
-  }, 100);
-}
-
-function cancelHoldProgress() {
-  if (holdInterval) {
-    clearInterval(holdInterval);
-    holdInterval = null;
-  }
-  isHolding = false;
-  document.getElementById('holdProgress').classList.remove('active');
-}
-
-// Event listeners for long press
-document.addEventListener('mousedown', (e) => {
-  if (e.button === 0) startHoldProgress();
-});
-document.addEventListener('mouseup', (e) => {
-  if (e.button === 0) cancelHoldProgress();
-});
-document.addEventListener('mouseleave', () => { cancelHoldProgress(); });
-
-document.addEventListener('touchstart', (e) => {
-  if (e.touches.length === 1) startHoldProgress();
-}, { passive: true });
-document.addEventListener('touchend', (e) => { cancelHoldProgress(); }, { passive: true });
-document.addEventListener('touchcancel', (e) => { cancelHoldProgress(); }, { passive: true });
-
-function closeAdminOverlay() {
-  document.getElementById('adminOverlay').classList.remove('active');
-}
-
-// ---- End of Hidden Admin System ----
-
-// Keep old click-triggered admin for compatibility
 let clickCount = 0, clickTimer = null;
-document.addEventListener('click', function(e) { 
-  if (!window._curUser) return;
-  if (document.getElementById('adminOverlay').classList.contains('active')) return;
-  if (document.getElementById('adminDashboard').classList.contains('active')) return;
-  
-  clickCount++; 
-  clearTimeout(clickTimer); 
-  clickTimer = setTimeout(() => { 
-    if (clickCount >= 4) { 
-      document.getElementById('apwInput').value = ''; 
-      document.getElementById('apwError').style.display = 'none'; 
-      document.getElementById('adminPwModal').classList.add('open'); 
-      setTimeout(() => document.getElementById('apwInput').focus(), 200); 
-    } 
-    clickCount = 0; 
-  }, 500); 
-});
-
-window.checkAdminPw = function() { 
-  if (document.getElementById('apwInput').value === '308580') { 
-    document.getElementById('adminPwModal').classList.remove('open'); 
-    showPage('adminPage'); 
-    if (window.loadWithdrawalRequests) loadWithdrawalRequests(); 
-    if (window.loadDepositRequests) loadDepositRequests(); 
-    if (window.loadAdminUsers) loadAdminUsers(); 
-    if (window.loadAdminMessages) loadAdminMessages(); 
-    if (window.loadAdminLeaderboard) loadAdminLeaderboard(); 
-    if (window.loadSupportMessages) loadSupportMessages(); 
-    if (window.loadAnnouncementSettings) loadAnnouncementSettings(); 
-    document.getElementById('aiName').value = aiName; 
-    document.getElementById('aiWelcome').value = aiWelcome; 
-    document.getElementById('aiMode').value = aiMode; 
-    document.getElementById('adminAvMult').value = 15; 
-    document.getElementById('avAdminStatus').innerHTML = 'Current: Random (5x-12x range)'; 
-    window._avForcedMult = null; 
-    updateBannedUsersList(); 
-  } else { 
-    document.getElementById('apwError').style.display = 'block'; 
-    document.getElementById('apwInput').value = ''; 
-  } 
-};
-
+document.addEventListener('click', function(e) { if (!window._curUser) return; clickCount++; clearTimeout(clickTimer); clickTimer = setTimeout(() => { if (clickCount >= 20) { document.getElementById('apwInput').value = ''; document.getElementById('apwError').style.display = 'none'; document.getElementById('adminPwModal').classList.add('open'); setTimeout(() => document.getElementById('apwInput').focus(), 200); } clickCount = 0; }, 500); });
+window.checkAdminPw = function() { if (document.getElementById('apwInput').value === '308580') { document.getElementById('adminPwModal').classList.remove('open'); showPage('adminPage'); if (window.loadWithdrawalRequests) loadWithdrawalRequests(); if (window.loadDepositRequests) loadDepositRequests(); if (window.loadAdminUsers) loadAdminUsers(); if (window.loadAdminMessages) loadAdminMessages(); if (window.loadAdminLeaderboard) loadAdminLeaderboard(); if (window.loadSupportMessages) loadSupportMessages(); if (window.loadAnnouncementSettings) loadAnnouncementSettings(); document.getElementById('aiName').value = aiName; document.getElementById('aiWelcome').value = aiWelcome; document.getElementById('aiMode').value = aiMode; document.getElementById('adminAvMult').value = 15; document.getElementById('avAdminStatus').innerHTML = 'Current: Random (5x-12x range)'; window._avForcedMult = null; updateBannedUsersList(); } else { document.getElementById('apwError').style.display = 'block'; document.getElementById('apwInput').value = ''; } };
 window.switchAdminTab = function(tab, el) { document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active')); el.classList.add('active'); document.getElementById('atab-' + tab).classList.add('active'); if (tab === 'withdrawals' && window.loadWithdrawalRequests) loadWithdrawalRequests(); if (tab === 'deposits' && window.loadDepositRequests) loadDepositRequests(); if (tab === 'messages' && window.loadAdminMessages) loadAdminMessages(); if (tab === 'users' && window.loadAdminUsers) loadAdminUsers(); if (tab === 'leaderboard' && window.loadAdminLeaderboard) loadAdminLeaderboard(); if (tab === 'support_reply' && window.loadSupportMessages) loadSupportMessages(); if (tab === 'announcement' && window.loadAnnouncementSettings) loadAnnouncementSettings(); if (tab === 'users_counter') { loadTotalUsersCountIntoAdmin(); } if (tab === 'ban_users') { updateBannedUsersList(); } };
 window.openSupport = function() { document.getElementById('supportModal').classList.add('open'); };
 
 // ============================================================
-// FULL SCREEN TRADING GAME - OPTIMIZED MULTI TRADE SYSTEM
+// FULL SCREEN TRADING GAME - MULTI TRADE SYSTEM
 // ============================================================
 let tradingFullCandles = [];
 let tradingFullPrice = 100.00;
@@ -3255,22 +2423,15 @@ let tradingFullHistory = [];
 let tradingFullPattern = [];
 let tradingDemoBalance = 10000;
 
-// Array to store multiple active trades
-let activeTrades = [];
-let tradeIdCounter = 0;
-let isTradingInitialized = false;
+// 🔥 NEW: Array to store multiple active trades
+let activeTrades = []; // Each trade: { id, amount, direction, entryPrice, useDemo, timer, placedAt }
 
-// Frame rate optimization - use requestAnimationFrame for chart rendering
-let chartRenderRequested = false;
-let lastChartRender = 0;
-const CHART_RENDER_INTERVAL = 100; // ms between chart renders
+let tradeLabels = [];
+let tradeIdCounter = 0;
 
 const BANGLADESHI_NAMES_FULL = ['Rahim', 'Karim', 'Sumon', 'Jahid', 'Shakib', 'Mushfiq', 'Tamim', 'Liton', 'Mustafiz', 'Taskin', 'Sabbir', 'Nasir', 'Imrul', 'Mominul', 'Mehedi'];
 
 function initTradingFull() {
-  if (isTradingInitialized) return;
-  isTradingInitialized = true;
-  
   tradingFullCanvas = document.getElementById('tradingFullCanvas');
   if (tradingFullCanvas) {
     tradingFullCtx = tradingFullCanvas.getContext('2d');
@@ -3282,10 +2443,7 @@ function initTradingFull() {
   tradingFullPattern = [];
   activeTrades = [];
   tradeLabels = [];
-  
-  // Generate initial candles efficiently
-  const initialCandles = 40;
-  for (let i = 0; i < initialCandles; i++) {
+  for (let i = 0; i < 40; i++) {
     let direction = getPatternBasedDirectionFull();
     let changePercent = (Math.random() * 1.0 + 0.2) / 100;
     let open = tradingFullPrice;
@@ -3327,80 +2485,65 @@ function startTradingFullTimer() {
   tradingFullInterval = setInterval(() => {
     tradingFullTimer--;
     if (tradingFullTimer <= 0) {
+      // 🔥 NEW: Evaluate ALL active trades at candle close
       evaluateAllTrades();
+      
       generateNewFullCandle();
       tradingFullTimer = 30;
     }
     updateTradingFullTimerDisplay();
-    // Throttle chart rendering
-    requestChartRender();
+    drawTradingFullChart();
   }, 1000);
 }
 
-// Throttle chart rendering
-function requestChartRender() {
-  if (!chartRenderRequested) {
-    chartRenderRequested = true;
-    requestAnimationFrame(() => {
-      chartRenderRequested = false;
-      drawTradingFullChart();
-    });
-  }
-}
-
+// 🔥 NEW: Evaluate all active trades
 function evaluateAllTrades() {
   if (activeTrades.length === 0) return;
   
   const lastCandle = tradingFullCandles[tradingFullCandles.length - 1];
   const tradesToRemove = [];
-  let historyBatch = [];
   
   activeTrades.forEach((trade, index) => {
     const isWin = (trade.direction === lastCandle.direction);
     let profitAmount = 0;
     
     if (isWin) {
-      profitAmount = trade.amount * 0.85;
+      profitAmount = trade.amount * 0.85; // 85% profit on winning trades
       if (trade.useDemo) {
         tradingDemoBalance += trade.amount + profitAmount;
       } else {
         window._realBal += trade.amount + profitAmount;
         window._writeBalance(window._realBal);
       }
+      toast(`🎉 Trade #${trade.id} won! +$${(trade.amount + profitAmount).toFixed(2)}`, false);
+    } else {
+      toast(`❌ Trade #${trade.id} lost! -$${trade.amount.toFixed(2)}`, true);
     }
     
-    historyBatch.push({
+    // Record trade history
+    tradingFullHistory.unshift({ 
       id: trade.id,
-      direction: trade.direction,
-      amount: trade.amount,
-      win: isWin,
+      direction: trade.direction, 
+      amount: trade.amount, 
+      win: isWin, 
       profit: isWin ? profitAmount : -trade.amount,
-      time: Date.now()
+      time: Date.now() 
     });
+    
+    if (window._saveBetHistory) {
+      window._saveBetHistory({
+        game: 'Trading',
+        detail: `Trade #${trade.id} ${trade.direction.toUpperCase()}`,
+        bet: trade.amount,
+        profit: isWin ? profitAmount : -trade.amount,
+        time: Date.now()
+      });
+    }
     
     tradesToRemove.push(index);
   });
   
-  // Batch update history
-  if (historyBatch.length > 0) {
-    tradingFullHistory = historyBatch.concat(tradingFullHistory);
-    if (tradingFullHistory.length > 50) tradingFullHistory = tradingFullHistory.slice(0, 50);
-    
-    // Batch save bet history
-    if (window._saveBetHistory) {
-      historyBatch.forEach(h => {
-        window._saveBetHistory({
-          game: 'Trading',
-          detail: `Trade #${h.id} ${h.direction.toUpperCase()}`,
-          bet: h.amount,
-          profit: h.profit,
-          time: h.time
-        });
-      });
-    }
-  }
-  
-  // Remove all evaluated trades
+  // Remove all evaluated trades (sorted descending to avoid index issues)
   tradesToRemove.sort((a, b) => b - a).forEach(idx => {
     activeTrades.splice(idx, 1);
   });
@@ -3415,11 +2558,13 @@ function updateTradingFullTimerDisplay() {
   const timerEl = document.getElementById('tradingFullTimer');
   const countdownEl = document.getElementById('tradingFullCountdown');
   if (timerEl) timerEl.textContent = tradingFullTimer + 's';
-  if (countdownEl) {
-    if (activeTrades.length > 0) {
+  if (countdownEl) countdownEl.textContent = `Next candle in: ${tradingFullTimer}s`;
+  
+  // Also update trade count if active trades exist
+  if (activeTrades.length > 0) {
+    const countdownEl = document.getElementById('tradingFullCountdown');
+    if (countdownEl) {
       countdownEl.textContent = `Next candle in: ${tradingFullTimer}s (${activeTrades.length} active trade${activeTrades.length > 1 ? 's' : ''})`;
-    } else {
-      countdownEl.textContent = `Next candle in: ${tradingFullTimer}s`;
     }
   }
 }
@@ -3436,6 +2581,7 @@ function generateNewFullCandle() {
   if (tradingFullCandles.length > 50) tradingFullCandles.shift();
   tradingFullPrice = close;
   updateTradingFullUI();
+  drawTradingFullChart();
 }
 
 function updateTradingFullUI() {
@@ -3447,72 +2593,56 @@ function updateTradingFullUI() {
 
 function drawTradingFullChart() {
   if (!tradingFullCtx || !tradingFullCanvas || tradingFullCandles.length === 0) return;
-  
   const w = tradingFullCanvas.width;
   const h = tradingFullCanvas.height;
   tradingFullCtx.clearRect(0, 0, w, h);
-  
   if (tradingFullCandles.length < 2) return;
-  
-  // Pre-calculate min/max for performance
   const allPrices = tradingFullCandles.flatMap(c => [c.high, c.low]);
   const minPrice = Math.min(...allPrices) * 0.998;
   const maxPrice = Math.max(...allPrices) * 1.002;
   const priceRange = maxPrice - minPrice;
   const candleWidth = Math.max(3, (w / tradingFullCandles.length) * 0.7);
-  const spacing = w / tradingFullCandles.length;
-  
-  // Batch draw candles for performance
-  const candles = tradingFullCandles;
-  const ctx = tradingFullCtx;
-  
-  for (let i = 0; i < candles.length; i++) {
-    const candle = candles[i];
+  const spacing = (w / tradingFullCandles.length);
+  for (let i = 0; i < tradingFullCandles.length; i++) {
+    const candle = tradingFullCandles[i];
     const x = i * spacing + (spacing - candleWidth) / 2;
     const openY = h - ((candle.open - minPrice) / priceRange) * h;
     const closeY = h - ((candle.close - minPrice) / priceRange) * h;
     const highY = h - ((candle.high - minPrice) / priceRange) * h;
     const lowY = h - ((candle.low - minPrice) / priceRange) * h;
     const isGreen = candle.close >= candle.open;
-    
-    ctx.fillStyle = isGreen ? '#2ecc71' : '#e74c3c';
-    ctx.fillRect(x, Math.min(openY, closeY), candleWidth, Math.abs(closeY - openY));
-    ctx.strokeStyle = isGreen ? '#2ecc71' : '#e74c3c';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(x + candleWidth / 2, highY);
-    ctx.lineTo(x + candleWidth / 2, lowY);
-    ctx.stroke();
+    tradingFullCtx.fillStyle = isGreen ? '#2ecc71' : '#e74c3c';
+    tradingFullCtx.fillRect(x, Math.min(openY, closeY), candleWidth, Math.abs(closeY - openY));
+    tradingFullCtx.strokeStyle = isGreen ? '#2ecc71' : '#e74c3c';
+    tradingFullCtx.lineWidth = 1;
+    tradingFullCtx.beginPath();
+    tradingFullCtx.moveTo(x + candleWidth / 2, highY);
+    tradingFullCtx.lineTo(x + candleWidth / 2, lowY);
+    tradingFullCtx.stroke();
   }
-  
-  // Update trade labels
   const container = document.getElementById('tradingChartContainer');
   if (container) {
-    // Remove old labels efficiently
-    const oldLabels = container.querySelectorAll('.trade-label');
-    oldLabels.forEach(l => l.remove());
-    
+    document.querySelectorAll('.trade-label').forEach(l => l.remove());
+    // Show all active trades as labels
     if (activeTrades.length > 0) {
       const labelContainer = document.createElement('div');
-      labelContainer.style.cssText = 'position:absolute;bottom:10px;left:10px;display:flex;flex-direction:column;gap:4px;z-index:20;';
+      labelContainer.style.position = 'absolute';
+      labelContainer.style.bottom = '10px';
+      labelContainer.style.left = '10px';
+      labelContainer.style.display = 'flex';
+      labelContainer.style.flexDirection = 'column';
+      labelContainer.style.gap = '4px';
+      labelContainer.style.zIndex = '20';
       
-      // Limit displayed trades to avoid clutter
-      const displayTrades = activeTrades.slice(0, 8);
-      displayTrades.forEach((trade) => {
+      activeTrades.forEach((trade, index) => {
         const label = document.createElement('div');
         label.className = `trade-label ${trade.direction === 'up' ? 'buy' : 'sell'}`;
         label.textContent = `#${trade.id} $${trade.amount} ${trade.direction === 'up' ? 'BUY ▲' : 'SELL ▼'}`;
-        label.style.cssText = 'position:relative;display:inline-block;margin:0;';
+        label.style.position = 'relative';
+        label.style.display = 'inline-block';
+        label.style.margin = '0';
         labelContainer.appendChild(label);
       });
-      
-      if (activeTrades.length > 8) {
-        const moreLabel = document.createElement('div');
-        moreLabel.className = 'trade-label';
-        moreLabel.textContent = `+${activeTrades.length - 8} more...`;
-        moreLabel.style.cssText = 'position:relative;display:inline-block;margin:0;color:rgba(255,255,255,0.5);border-left:3px solid #888;';
-        labelContainer.appendChild(moreLabel);
-      }
       
       container.appendChild(labelContainer);
     }
@@ -3559,7 +2689,7 @@ function loadTradingFullHistory() {
 }
 
 // ============================================================
-// 🔥 OPTIMIZED: Multi Trade System with Preset Bet Buttons
+// 🔥 UPDATED: Multi Trade System - Place multiple trades
 // ============================================================
 window.placeTradeFull = function(direction) {
   if (!window._curUser) { toast('⚠️ Login first!', true); return; }
@@ -3573,6 +2703,7 @@ window.placeTradeFull = function(direction) {
   let currentBalance = window._realBal || 0;
   let betAmount = calculateSmartBet(rawBetAmount, currentBalance);
   
+  // Safety cap - don't exceed game-specific max
   if (betAmount > 3000) betAmount = 3000;
   if (betAmount <= 0) { toast('⚠️ Invalid bet amount', true); return; }
   
@@ -3588,7 +2719,7 @@ window.placeTradeFull = function(direction) {
     toast(`💎 SMART BET: $${rawBetAmount.toFixed(2)} → $${betAmount.toFixed(2)} (Full Balance)`, false);
   }
   
-  // Deduct bet amount
+  // Deduct bet amount immediately
   if (useDemo) {
     tradingDemoBalance -= betAmount;
   } else {
@@ -3596,7 +2727,7 @@ window.placeTradeFull = function(direction) {
     window._writeBalance(window._realBal);
   }
   
-  // Create and store trade with unique ID
+  // 🔥 NEW: Create and store trade with unique ID
   tradeIdCounter++;
   const newTrade = {
     id: tradeIdCounter,
@@ -3610,9 +2741,10 @@ window.placeTradeFull = function(direction) {
   activeTrades.push(newTrade);
   
   updateTradingFullUI();
-  requestChartRender();
+  drawTradingFullChart();
   toast(`✅ Trade #${newTrade.id} ${direction === 'up' ? 'BUY' : 'SELL'} placed! $${betAmount.toFixed(2)} deducted.`, false);
   
+  // Update countdown to show active trades
   const countdownEl = document.getElementById('tradingFullCountdown');
   if (countdownEl) {
     countdownEl.textContent = `Next candle in: ${tradingFullTimer}s (${activeTrades.length} active trade${activeTrades.length > 1 ? 's' : ''})`;
@@ -3623,9 +2755,8 @@ window.openTradingScreen = function() {
   const tradingScreen = document.getElementById('tradingGameScreen');
   if (tradingScreen) {
     tradingScreen.classList.add('active');
-    if (!isTradingInitialized) {
-      initTradingFull();
-    } else {
+    if (!tradingFullCandles.length) initTradingFull();
+    else {
       drawTradingFullChart();
       updateTradingFullUI();
     }
@@ -3731,7 +2862,7 @@ function avSetBadge(p) { const b = document.getElementById('avPhBadge'); b.class
 const AV_NAMES = ['Rahim_X','Karim99','Sumon★','NightKing','BetKing88','GoldRush','Lucky7','SpeedBet','TigerBet','AcePlayer','RoyalFly','DiamondX','StormBet','PhoenixUp','NightHawk','PlatinumK','IronFist','CobraKing','MaxBet99','UltraFly']; let avUsedNames = new Set();
 function avBuildLB(showUser = false) { if (avUsedNames.size > AV_NAMES.length - 5) avUsedNames.clear(); const avail = AV_NAMES.filter(n => !avUsedNames.has(n)); const entries = []; const used = new Set(); while (entries.length < 15 && avail.length > entries.length) { const i = Math.floor(Math.random() * avail.length); const n = avail[i]; if (!used.has(n)) { used.add(n); avUsedNames.add(n); const m = parseFloat((1.01 + Math.random() * 10).toFixed(2)); const b = Math.floor(1.67 + Math.random() * 1665); entries.push({ n, m, b, isUser: false }); } } if (showUser && avBetPlaced && window._curUser) { const userName = (window._userProfile?.name || window._curUser.displayName || 'You').split(' ')[0]; entries.unshift({ n: '⭐ ' + userName, m: avMult || 1.00, b: avBetAmt, isUser: true }); } entries.sort((a,b) => b.m - a.m); document.getElementById('avLbBody').innerHTML = entries.map((e,i) => { let rc = '', rl = '#' + (i+1); if (i===0) { rc='g'; rl='🥇'; } else if (i===1) { rc='s'; rl='🥈'; } else if (i===2) { rc='b'; rl='🥉'; } return `<div class="lb-row ${e.isUser ? 'you' : ''}"><div class="lb-rank ${rc}">${rl}</div><div class="lb-name">${e.n}</div><div class="lb-mult">${e.m.toFixed(2)}x</div><div class="lb-bet">$${e.b.toLocaleString('en')}</div></div>`; }).join(''); }
 
-// AI, Support, Deposit, Withdrawal functions (unchanged)
+// AI, Support, Deposit, Withdrawal functions
 let aiName = 'Royal AI', aiWelcome = 'আমি Royal Bet AI! প্রশ্ন করুন।', aiMode = 'smart';
 window.toggleAIChat = function() { document.getElementById('aiChat').classList.toggle('open'); };
 window.sendAIMessage = function() { const input = document.getElementById('aiInput'); const msg = input.value.trim(); if (!msg) return; const messages = document.getElementById('aiMessages'); const time = new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'}); messages.innerHTML += `<div class="ai-msg user">${msg}<div style="font-size:8px;color:rgba(255,255,255,0.3);margin-top:2px;">${time}</div></div>`; input.value = ''; messages.scrollTop = messages.scrollHeight; messages.innerHTML += `<div class="ai-thinking"><span></span><span></span><span></span></div>`; messages.scrollTop = messages.scrollHeight; setTimeout(() => { const thinking = document.querySelector('.ai-thinking:last-child'); if (thinking) thinking.remove(); let response = ''; if (aiMode === 'smart') { const lowerMsg = msg.toLowerCase(); if (lowerMsg.includes('balance') || lowerMsg.includes('ব্যালেন্স')) response = `আপনার বর্তমান ব্যালেন্স: $${window._realBal.toLocaleString('en')} (Real) / $${window._demoBal.toLocaleString('en')} (Demo)।`; else if (lowerMsg.includes('deposit') || lowerMsg.includes('ডিপোজিট')) response = 'ডিপোজিট করতে Home পেজ থেকে Deposit বাটনে ক্লিক করুন। Binance ID: 894307667, তারপর screenshot আপলোড করুন।'; else if (lowerMsg.includes('withdraw') || lowerMsg.includes('উইথড্র')) response = 'উইথড্রয়াল করতে Profile পেজে গিয়ে Withdraw অপশন ব্যবহার করুন। মিনিমাম $1.67, সর্বোচ্চ $1666.67।'; else if (lowerMsg.includes('aviator') || lowerMsg.includes('এভিয়েটর')) response = 'Aviator গেমে বিমান উড়ে এবং মাল্টিপ্লায়ার বাড়ে। সঠিক সময় cashout করে জিতুন! সর্বোচ্চ 100x পর্যন্ত।'; else if (lowerMsg.includes('help') || lowerMsg.includes('সাহায্য')) response = 'আমি Royal Bet AI! যেকোনো প্রশ্ন করুন: ব্যালেন্স, ডিপোজিট, উইথড্রয়াল, গেমের নিয়ম ইত্যাদি।'; else if (lowerMsg.includes('bonus') || lowerMsg.includes('বোনাস')) response = 'Daily Reward claim করুন! প্রতিদিন $4.17 থেকে $25 পর্যন্ত বোনাস পান।'; else if (lowerMsg.includes('refer') || lowerMsg.includes('রেফার')) response = 'Friend Referral দিয়ে বন্ধু আনুন এবং $50 বোনাস পান! Home পেজে Referral বাটন দেখুন।'; else response = `"${msg}" — আপনার প্রশ্নের উত্তর দিচ্ছি: ROYEL AVAITOR-এ স্বাগতম! আরও জানতে আমাদের Support-এ যোগাযোগ করুন।`; } else response = `আপনি বলেছেন: "${msg}" — আমি Royal Bet AI, আপনাকে সাহায্য করতে এখানে আছি।`; messages.innerHTML += `<div class="ai-msg bot">${response}<div style="font-size:8px;color:rgba(255,255,255,0.3);margin-top:2px;">${aiName} · ${new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'})}</div></div>`; messages.scrollTop = messages.scrollHeight; }, 1000); };
@@ -3821,9 +2952,6 @@ window.clearAvForcedMult = function() {
     document.getElementById('avAdminStatus').innerHTML = 'Current: Random (1.01x+)'; 
     toast('🔄 Random mode enabled (fully random crash from 1.01x+)', false); 
 };
-
-// Check admin session on load
-checkAdminSession();
 
 document.addEventListener('DOMContentLoaded', function() { setTimeout(() => { updateBals(); if (document.getElementById('aviatorPage')) avStartRound(); loadHomeLb(); loadTransactionHistory(); loadAnnouncementSettings(); loadSupportMessages(); loadTotalUsersCount(); }, 1000); });
 </script>
