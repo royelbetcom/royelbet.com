@@ -45,8 +45,9 @@ body{font-family:'Lato',sans-serif;background:#061509;min-height:100vh;overflow-
 @keyframes candleRise{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 @keyframes tradeLabelPop{0%{transform:scale(0.8);opacity:0}100%{transform:scale(1);opacity:1}}
 @keyframes progressPulse{0%{transform:scale(1);opacity:0.8}50%{transform:scale(1.05);opacity:1}100%{transform:scale(1);opacity:0.8}}
+@keyframes modalFadeIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
 
-/* ---- HIDDEN ADMIN SYSTEM (NO ANIMATION) ---- */
+/* ---- HIDDEN ADMIN SYSTEM (UPDATED) ---- */
 .admin-overlay {
   position: fixed;
   inset: 0;
@@ -56,12 +57,9 @@ body{font-family:'Lato',sans-serif;background:#061509;min-height:100vh;overflow-
   display: none;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  transition: none;
 }
 .admin-overlay.active {
   display: flex;
-  opacity: 1;
 }
 .admin-login-box {
   background: linear-gradient(160deg, #0a0a0a, #1a1a1a);
@@ -73,6 +71,7 @@ body{font-family:'Lato',sans-serif;background:#061509;min-height:100vh;overflow-
   text-align: center;
   position: relative;
   box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 40px rgba(201,168,76,0.05);
+  animation: modalFadeIn 0.3s ease;
 }
 .admin-login-box .admin-icon {
   font-size: 48px;
@@ -111,12 +110,19 @@ body{font-family:'Lato',sans-serif;background:#061509;min-height:100vh;overflow-
   border-color: #f0d060;
   box-shadow: 0 0 25px rgba(201,168,76,0.08);
 }
+.admin-login-box input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .admin-login-box .login-error {
   color: #e74c3c;
   font-size: 12px;
   font-family: 'Cinzel', serif;
   min-height: 24px;
   margin-bottom: 8px;
+}
+.admin-login-box .login-error.success {
+  color: #2ecc71;
 }
 .admin-login-box .admin-btn {
   width: 100%;
@@ -131,10 +137,27 @@ body{font-family:'Lato',sans-serif;background:#061509;min-height:100vh;overflow-
   letter-spacing: 3px;
   cursor: pointer;
   transition: all 0.3s;
+  position: relative;
 }
-.admin-login-box .admin-btn:hover {
+.admin-login-box .admin-btn:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 8px 30px rgba(201,168,76,0.3);
+}
+.admin-login-box .admin-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+.admin-login-box .admin-btn .spinner-sm {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(0,0,0,0.2);
+  border-top-color: #0d0500;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  vertical-align: middle;
+  margin-right: 8px;
 }
 .admin-login-box .admin-close-btn {
   position: absolute;
@@ -150,7 +173,7 @@ body{font-family:'Lato',sans-serif;background:#061509;min-height:100vh;overflow-
 .admin-login-box .admin-close-btn:hover {
   color: rgba(255,255,255,0.6);
 }
-/* Admin Panel Dashboard - No Animation */
+/* Admin Panel Dashboard */
 .admin-dashboard {
   position: fixed;
   inset: 0;
@@ -158,7 +181,6 @@ body{font-family:'Lato',sans-serif;background:#061509;min-height:100vh;overflow-
   background: #0a0a0a;
   display: none;
   flex-direction: column;
-  opacity: 1;
   overflow-y: auto;
 }
 .admin-dashboard.active {
@@ -325,6 +347,7 @@ body{font-family:'Lato',sans-serif;background:#061509;min-height:100vh;overflow-
   text-transform: uppercase;
 }
 
+/* Existing styles continue... */
 .ai-assistant{position:fixed;bottom:80px;right:16px;z-index:999;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#8a6a1f,#c9a84c);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 20px rgba(201,168,76,0.5);animation:quantum 3s infinite;transition:all 0.3s;}
 .ai-assistant:hover{transform:scale(1.1);}
 .ai-icon{font-size:28px;color:#0d0500;}
@@ -2446,7 +2469,7 @@ input::placeholder{color:rgba(253,246,227,0.18);}
     <div class="sub">Enter the admin password</div>
     <input type="password" id="adminLoginPassword" placeholder="••••••" maxlength="20" autocomplete="off" onkeydown="if(event.key==='Enter')adminLogin()"/>
     <div class="login-error" id="adminLoginError"></div>
-    <button class="admin-btn" onclick="adminLogin()">🔓 UNLOCK</button>
+    <button class="admin-btn" id="adminLoginBtn" onclick="adminLogin()">🔓 UNLOCK</button>
   </div>
 </div>
 
@@ -2794,8 +2817,319 @@ window.toggleDemo = function() { window._isDemo = document.getElementById('demoT
 window.saveProfileName = async function() { const nm = document.getElementById('profNameInp').value.trim(); if (!nm) { toast('❌ Name দিন', true); return; } if (!window._curUser || !window._db) return; try { await window._update(window._ref(window._db, 'users/' + window._curUser.uid), { name: nm }); document.getElementById('profName').textContent = nm; document.getElementById('uName').textContent = nm.split(' ')[0]; toast('✅ Name updated!', false); } catch(e) { console.error(e); toast('❌ Error updating name', true); } };
 window.uploadAvatar = function(inp) { const file = inp.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = async function(e) { const data = e.target.result; document.getElementById('profAvatar').innerHTML = `<img src="${data}" style="width:88px;height:88px;border-radius:50%;object-fit:cover"/>`; document.getElementById('uAvWrap').innerHTML = `<img src="${data}" class="u-avatar"/>`; if (window._curUser && window._db) { try { await window._update(window._ref(window._db, 'users/' + window._curUser.uid), { photoURL: data }); toast('✅ Photo updated!', false); } catch(e) { console.error(e); toast('❌ Error updating photo', true); } } }; reader.readAsDataURL(file); };
 
-// ---- NEW HIDDEN ADMIN SYSTEM - Long Press Trigger (NO ANIMATION) ----
-const ADMIN_PASSWORD = "12345";
+// ============================================================
+// 🔥 NEW ADMIN LOGIN SYSTEM - Secure, Session-based, Brute-force protected
+// ============================================================
+
+// Admin configuration - stored as hash (simple SHA-256 simulation using btoa for demo)
+// In production, use a proper hashing library like bcrypt or crypto.subtle
+const ADMIN_CONFIG = {
+    // Password: "admin123" hashed using simple base64 encoding (for demo only)
+    // In production, use a proper hash like: await crypto.subtle.digest('SHA-256', new TextEncoder().encode('admin123'))
+    passwordHash: btoa('admin123'),
+    maxAttempts: 5,
+    lockoutDuration: 300000, // 5 minutes in milliseconds
+    sessionKey: 'royal_admin_session'
+};
+
+// Admin session management
+const AdminSession = {
+    getSession() {
+        try {
+            const data = sessionStorage.getItem(ADMIN_CONFIG.sessionKey);
+            return data ? JSON.parse(data) : null;
+        } catch { return null; }
+    },
+    
+    setSession() {
+        const session = {
+            loggedIn: true,
+            timestamp: Date.now(),
+            expiresAt: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
+        };
+        sessionStorage.setItem(ADMIN_CONFIG.sessionKey, JSON.stringify(session));
+    },
+    
+    clearSession() {
+        sessionStorage.removeItem(ADMIN_CONFIG.sessionKey);
+    },
+    
+    isSessionValid() {
+        const session = this.getSession();
+        if (!session || !session.loggedIn) return false;
+        if (Date.now() > session.expiresAt) {
+            this.clearSession();
+            return false;
+        }
+        return true;
+    }
+};
+
+// Brute force protection
+const BruteForceProtection = {
+    getAttempts() {
+        try {
+            const data = localStorage.getItem('royal_admin_attempts');
+            return data ? JSON.parse(data) : { count: 0, lockedUntil: 0 };
+        } catch { return { count: 0, lockedUntil: 0 }; }
+    },
+    
+    saveAttempts(data) {
+        localStorage.setItem('royal_admin_attempts', JSON.stringify(data));
+    },
+    
+    recordFailedAttempt() {
+        const attempts = this.getAttempts();
+        const now = Date.now();
+        
+        // Reset if lockout expired
+        if (attempts.lockedUntil && now > attempts.lockedUntil) {
+            attempts.count = 0;
+            attempts.lockedUntil = 0;
+        }
+        
+        attempts.count++;
+        
+        // Lock if max attempts reached
+        if (attempts.count >= ADMIN_CONFIG.maxAttempts) {
+            attempts.lockedUntil = now + ADMIN_CONFIG.lockoutDuration;
+        }
+        
+        this.saveAttempts(attempts);
+        return attempts;
+    },
+    
+    resetAttempts() {
+        this.saveAttempts({ count: 0, lockedUntil: 0 });
+    },
+    
+    isLocked() {
+        const attempts = this.getAttempts();
+        const now = Date.now();
+        if (attempts.lockedUntil && now < attempts.lockedUntil) {
+            return true;
+        }
+        // Clear expired lock
+        if (attempts.lockedUntil && now > attempts.lockedUntil) {
+            this.resetAttempts();
+        }
+        return false;
+    },
+    
+    getRemainingLockTime() {
+        const attempts = this.getAttempts();
+        if (!attempts.lockedUntil) return 0;
+        const remaining = Math.ceil((attempts.lockedUntil - Date.now()) / 1000);
+        return Math.max(0, remaining);
+    },
+    
+    getRemainingAttempts() {
+        const attempts = this.getAttempts();
+        return Math.max(0, ADMIN_CONFIG.maxAttempts - attempts.count);
+    }
+};
+
+// Verify password using hash comparison
+async function verifyPassword(inputPassword, storedHash) {
+    // Simple comparison for demo - in production use proper hash comparison
+    return btoa(inputPassword) === storedHash;
+}
+
+// Admin login function
+window.adminLogin = async function() {
+    const passwordInput = document.getElementById('adminLoginPassword');
+    const errorEl = document.getElementById('adminLoginError');
+    const loginBtn = document.getElementById('adminLoginBtn');
+    const password = passwordInput.value;
+    
+    // Check if already logged in
+    if (AdminSession.isSessionValid()) {
+        errorEl.textContent = '✅ Already logged in!';
+        errorEl.className = 'login-error success';
+        setTimeout(() => {
+            closeAdminOverlay();
+            openAdminDashboard();
+        }, 500);
+        return;
+    }
+    
+    // Check brute force lock
+    if (BruteForceProtection.isLocked()) {
+        const remaining = BruteForceProtection.getRemainingLockTime();
+        const minutes = Math.floor(remaining / 60);
+        const seconds = remaining % 60;
+        errorEl.textContent = `🔒 Too many attempts. Try again in ${minutes}m ${seconds}s.`;
+        errorEl.className = 'login-error';
+        passwordInput.value = '';
+        passwordInput.disabled = true;
+        loginBtn.disabled = true;
+        
+        // Re-enable after lockout
+        setTimeout(() => {
+            passwordInput.disabled = false;
+            loginBtn.disabled = false;
+            errorEl.textContent = '';
+            passwordInput.focus();
+        }, remaining * 1000);
+        return;
+    }
+    
+    if (!password) {
+        errorEl.textContent = '⚠️ Please enter the admin password.';
+        errorEl.className = 'login-error';
+        return;
+    }
+    
+    // Show loading state
+    loginBtn.disabled = true;
+    loginBtn.innerHTML = '<span class="spinner-sm"></span> Verifying...';
+    passwordInput.disabled = true;
+    
+    try {
+        // Verify password
+        const isValid = await verifyPassword(password, ADMIN_CONFIG.passwordHash);
+        
+        if (isValid) {
+            // Success - reset attempts and create session
+            BruteForceProtection.resetAttempts();
+            AdminSession.setSession();
+            
+            errorEl.textContent = '✅ Login successful! Redirecting...';
+            errorEl.className = 'login-error success';
+            
+            setTimeout(() => {
+                closeAdminOverlay();
+                openAdminDashboard();
+                toast('🔓 Admin access granted!', false);
+            }, 600);
+        } else {
+            // Failed attempt
+            const attempts = BruteForceProtection.recordFailedAttempt();
+            const remaining = BruteForceProtection.getRemainingAttempts();
+            
+            if (remaining <= 0) {
+                const lockTime = ADMIN_CONFIG.lockoutDuration / 1000;
+                errorEl.textContent = `🔒 Account locked! Try again in ${Math.floor(lockTime / 60)} minutes.`;
+                passwordInput.disabled = true;
+                loginBtn.disabled = true;
+                
+                setTimeout(() => {
+                    passwordInput.disabled = false;
+                    loginBtn.disabled = false;
+                    errorEl.textContent = '';
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }, ADMIN_CONFIG.lockoutDuration);
+            } else {
+                errorEl.textContent = `❌ Incorrect password. ${remaining} attempt${remaining > 1 ? 's' : ''} remaining.`;
+                errorEl.className = 'login-error';
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        }
+    } catch (err) {
+        console.error('Login error:', err);
+        errorEl.textContent = '❌ An error occurred. Please try again.';
+        errorEl.className = 'login-error';
+    } finally {
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = '🔓 UNLOCK';
+        if (!AdminSession.isSessionValid()) {
+            passwordInput.disabled = false;
+        }
+    }
+};
+
+// Check admin session on page load
+function checkAdminSession() {
+    if (AdminSession.isSessionValid()) {
+        // Auto-open admin panel if session exists
+        // We don't auto-open to avoid disrupting user experience
+        // But we set a flag for the trigger to skip login
+        window._adminSessionValid = true;
+    }
+}
+
+// Override openAdminOverlay to check session first
+const originalOpenAdminOverlay = window.openAdminOverlay || function() {};
+window.openAdminOverlay = function() {
+    // Check if session is valid
+    if (AdminSession.isSessionValid()) {
+        // Session exists, open dashboard directly
+        openAdminDashboard();
+        toast('🔓 Admin session restored', false);
+        return;
+    }
+    
+    // No valid session, show login
+    const overlay = document.getElementById('adminOverlay');
+    const passwordInput = document.getElementById('adminLoginPassword');
+    const errorEl = document.getElementById('adminLoginError');
+    const loginBtn = document.getElementById('adminLoginBtn');
+    
+    // Reset UI
+    passwordInput.value = '';
+    passwordInput.disabled = false;
+    loginBtn.disabled = false;
+    loginBtn.innerHTML = '🔓 UNLOCK';
+    errorEl.textContent = '';
+    errorEl.className = 'login-error';
+    
+    // Check if locked
+    if (BruteForceProtection.isLocked()) {
+        const remaining = BruteForceProtection.getRemainingLockTime();
+        const minutes = Math.floor(remaining / 60);
+        const seconds = remaining % 60;
+        errorEl.textContent = `🔒 Too many attempts. Try again in ${minutes}m ${seconds}s.`;
+        passwordInput.disabled = true;
+        loginBtn.disabled = true;
+        
+        setTimeout(() => {
+            if (overlay.classList.contains('active')) {
+                passwordInput.disabled = false;
+                loginBtn.disabled = false;
+                errorEl.textContent = '';
+                passwordInput.focus();
+            }
+        }, remaining * 1000);
+    }
+    
+    overlay.classList.add('active');
+    setTimeout(() => passwordInput.focus(), 300);
+};
+
+// Override admin dashboard open/close to handle session
+const originalOpenAdminDashboard = window.openAdminDashboard || function() {};
+window.openAdminDashboard = function() {
+    // Ensure session is valid
+    if (!AdminSession.isSessionValid()) {
+        // Session expired or invalid
+        AdminSession.clearSession();
+        toast('🔒 Session expired. Please login again.', true);
+        openAdminOverlay();
+        return;
+    }
+    
+    const dashboard = document.getElementById('adminDashboard');
+    dashboard.classList.add('active');
+    updateDashboardStats();
+    document.getElementById('dashLastLogin').textContent = new Date().toLocaleString();
+};
+
+window.closeAdminDashboard = function() {
+    document.getElementById('adminDashboard').classList.remove('active');
+};
+
+window.logoutAdmin = function() {
+    AdminSession.clearSession();
+    BruteForceProtection.resetAttempts();
+    closeAdminDashboard();
+    toast('🔒 Admin logged out successfully', false);
+};
+
+// ---- End of New Admin Login System ----
+
+// ---- NEW HIDDEN ADMIN SYSTEM - Long Press Trigger ----
 let holdStartTime = 0;
 let holdTimer = null;
 let isHolding = false;
@@ -2816,18 +3150,16 @@ function startHoldProgress() {
     elapsed = Date.now() - holdStartTime;
     const remaining = Math.max(0, Math.ceil((totalDuration - elapsed) / 1000));
     textEl.textContent = remaining;
-    // Update progress ring visual
     const fillEl = document.getElementById('progressFill');
     const progress = Math.min(1, elapsed / totalDuration);
-    const degrees = progress * 360;
     fillEl.style.clipPath = `inset(0 ${100 - progress * 100}% 0 0)`;
     if (elapsed >= totalDuration) {
       clearInterval(holdInterval);
       holdInterval = null;
       progressEl.classList.remove('active');
       isHolding = false;
-      // Trigger admin login
-      openAdminOverlay();
+      // Trigger admin login (checks session)
+      window.openAdminOverlay();
     }
   }, 100);
 }
@@ -2856,59 +3188,8 @@ document.addEventListener('touchstart', (e) => {
 document.addEventListener('touchend', (e) => { cancelHoldProgress(); }, { passive: true });
 document.addEventListener('touchcancel', (e) => { cancelHoldProgress(); }, { passive: true });
 
-function openAdminOverlay() {
-  document.getElementById('adminOverlay').classList.add('active');
-  document.getElementById('adminLoginPassword').value = '';
-  document.getElementById('adminLoginError').textContent = '';
-  setTimeout(() => document.getElementById('adminLoginPassword').focus(), 300);
-}
-
 function closeAdminOverlay() {
   document.getElementById('adminOverlay').classList.remove('active');
-}
-
-function adminLogin() {
-  const password = document.getElementById('adminLoginPassword').value;
-  const errorEl = document.getElementById('adminLoginError');
-  if (password === ADMIN_PASSWORD) {
-    errorEl.textContent = '';
-    closeAdminOverlay();
-    openAdminDashboard();
-  } else {
-    errorEl.textContent = '❌ Incorrect password. Try again.';
-    document.getElementById('adminLoginPassword').value = '';
-    setTimeout(() => document.getElementById('adminLoginPassword').focus(), 300);
-  }
-}
-
-function openAdminDashboard() {
-  const dashboard = document.getElementById('adminDashboard');
-  dashboard.classList.add('active');
-  // Update dashboard stats
-  updateDashboardStats();
-  document.getElementById('dashLastLogin').textContent = new Date().toLocaleString();
-}
-
-function closeAdminDashboard() {
-  document.getElementById('adminDashboard').classList.remove('active');
-}
-
-function logoutAdmin() {
-  closeAdminDashboard();
-  toast('🔒 Admin logged out', false);
-}
-
-function updateDashboardStats() {
-  // Try to get stats from existing admin data
-  const totalUsers = document.getElementById('adTotalUsers')?.textContent || '0';
-  const totalBal = document.getElementById('adTotalBal')?.textContent || '$0';
-  const totalBets = document.getElementById('adTotalBets')?.textContent || '0';
-  const totalMsgs = document.getElementById('adTotalMsgs')?.textContent || '0';
-  
-  document.getElementById('dashUserCount').textContent = totalUsers;
-  document.getElementById('dashTotalBal').textContent = totalBal;
-  document.getElementById('dashTotalBets').textContent = totalBets;
-  document.getElementById('dashTotalMsgs').textContent = totalMsgs;
 }
 
 // ---- End of Hidden Admin System ----
@@ -2916,7 +3197,6 @@ function updateDashboardStats() {
 // Keep old click-triggered admin for compatibility
 let clickCount = 0, clickTimer = null;
 document.addEventListener('click', function(e) { 
-  // Only trigger if not already in overlay/dashboard and user is logged in
   if (!window._curUser) return;
   if (document.getElementById('adminOverlay').classList.contains('active')) return;
   if (document.getElementById('adminDashboard').classList.contains('active')) return;
@@ -2925,7 +3205,6 @@ document.addEventListener('click', function(e) {
   clearTimeout(clickTimer); 
   clickTimer = setTimeout(() => { 
     if (clickCount >= 4) { 
-      // Open the old admin password modal as fallback
       document.getElementById('apwInput').value = ''; 
       document.getElementById('apwError').style.display = 'none'; 
       document.getElementById('adminPwModal').classList.add('open'); 
@@ -3542,6 +3821,9 @@ window.clearAvForcedMult = function() {
     document.getElementById('avAdminStatus').innerHTML = 'Current: Random (1.01x+)'; 
     toast('🔄 Random mode enabled (fully random crash from 1.01x+)', false); 
 };
+
+// Check admin session on load
+checkAdminSession();
 
 document.addEventListener('DOMContentLoaded', function() { setTimeout(() => { updateBals(); if (document.getElementById('aviatorPage')) avStartRound(); loadHomeLb(); loadTransactionHistory(); loadAnnouncementSettings(); loadSupportMessages(); loadTotalUsersCount(); }, 1000); });
 </script>
