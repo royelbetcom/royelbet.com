@@ -1419,6 +1419,137 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   color: var(--gl);
   transform: scale(1.05);
 }
+
+/* ============================================================ */
+/* 🎯 LIVE WITHDRAW ACTIVITY STYLES */
+/* ============================================================ */
+.live-withdraw-container {
+  margin: 0 16px 14px;
+  background: linear-gradient(160deg, #0a0014, #0d0020);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
+}
+.live-withdraw-header {
+  background: rgba(201, 168, 76, 0.08);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.12);
+}
+.live-withdraw-title {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: rgba(201, 168, 76, 0.8);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.live-withdraw-title span {
+  font-size: 16px;
+}
+.live-withdraw-badge {
+  background: rgba(39, 174, 96, 0.2);
+  border: 1px solid rgba(39, 174, 96, 0.4);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-family: 'Cinzel', serif;
+  font-size: 8px;
+  color: #2ecc71;
+  letter-spacing: 1px;
+  animation: pulse 2s ease-in-out infinite;
+}
+.live-withdraw-list {
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+.live-withdraw-list::-webkit-scrollbar {
+  width: 3px;
+}
+.live-withdraw-list::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.02);
+}
+.live-withdraw-list::-webkit-scrollbar-thumb {
+  background: rgba(201, 168, 76, 0.3);
+  border-radius: 10px;
+}
+.lw-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  animation: slideIn 0.4s ease;
+}
+.lw-item:last-child {
+  border-bottom: none;
+}
+.lw-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2d0050, #1a0030);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+  border: 1px solid rgba(201, 168, 76, 0.2);
+}
+.lw-info {
+  flex: 1;
+  margin: 0 10px;
+}
+.lw-name {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+}
+.lw-country {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 1px;
+  margin-top: 1px;
+}
+.lw-amount {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gl);
+  text-align: right;
+}
+.lw-status {
+  font-size: 8px;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  text-align: center;
+  min-width: 50px;
+}
+.lw-status.completed {
+  background: rgba(39, 174, 96, 0.15);
+  border: 1px solid rgba(39, 174, 96, 0.3);
+  color: #2ecc71;
+}
+.lw-status.pending {
+  background: rgba(255, 165, 0, 0.15);
+  border: 1px solid rgba(255, 165, 0, 0.3);
+  color: #ffa500;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+.lw-empty {
+  padding: 30px 20px;
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.15);
+}
 </style>
 </head>
 <body>
@@ -1526,6 +1657,21 @@ input::placeholder{color:rgba(253,246,227,0.18);}
       <div class="game-card gc-av" onclick="openTradingScreen()">
         <div class="game-banner"><div><div class="game-title">📈 TRADING</div><div class="game-sub">OTC MARKET</div></div><div class="game-ico" style="font-size:24px;">📊</div></div>
         <div class="game-info"><div class="game-ci"><div class="game-ci-val" style="color:#ff6b6b">2x</div><div class="game-ci-key">Max Win</div></div><div class="game-ci"><div class="game-ci-val" style="color:#2ecc71">LIVE</div><div class="game-ci-key">Status</div></div></div>
+      </div>
+    </div>
+    
+    <!-- ============================================================ -->
+    <!-- 🎯 LIVE WITHDRAW ACTIVITY - NEW SECTION -->
+    <!-- ============================================================ -->
+    <div class="live-withdraw-container" id="liveWithdrawContainer">
+      <div class="live-withdraw-header">
+        <div class="live-withdraw-title">
+          <span>💸</span> Live Withdraw Activity
+        </div>
+        <div class="live-withdraw-badge">● LIVE</div>
+      </div>
+      <div class="live-withdraw-list" id="liveWithdrawList">
+        <div class="lw-empty">Loading withdrawals...</div>
       </div>
     </div>
     
@@ -3026,6 +3172,103 @@ window.clearAvForcedMult = function() {
     document.getElementById('avAdminStatus').innerHTML = 'Current: Random (1.01x+)'; 
     toast('🔄 Random mode enabled (fully random crash from 1.01x+)', false); 
 };
+
+// ============================================================
+// 🎯 LIVE WITHDRAW ACTIVITY SYSTEM
+// ============================================================
+const enableLiveWithdraw = true;
+
+const lwCountries = ['Bangladesh', 'India', 'USA', 'Canada'];
+const lwNames = ['Rahim', 'Karim', 'Sumon', 'Jahid', 'Shakib', 'Mushfiq', 'Tamim', 'Liton', 'Mustafiz', 'Taskin', 'Sabbir', 'Nasir', 'Imrul', 'Mominul', 'Mehedi', 'Rafiq', 'Shuvo', 'Nayeem', 'Joy', 'Akash', 'Rana', 'Sajib', 'Nabil', 'Rafi', 'Samir'];
+
+function lwGetRandomName() {
+    return lwNames[Math.floor(Math.random() * lwNames.length)];
+}
+function lwGetRandomCountry() {
+    return lwCountries[Math.floor(Math.random() * lwCountries.length)];
+}
+function lwGetRandomAmount() {
+    const r = Math.random();
+    let amount;
+    if (r < 0.30) {
+        amount = 500 + Math.random() * 99500;
+    } else if (r < 0.55) {
+        amount = 500000 + Math.random() * 4500000;
+    } else if (r < 0.75) {
+        amount = 10000000 + Math.random() * 490000000;
+    } else if (r < 0.90) {
+        amount = 1e9 + Math.random() * 4e9;
+    } else {
+        amount = 1e12 + Math.random() * 4e12;
+    }
+    return Math.round(amount);
+}
+function lwFormatAmount(amount) {
+    if (amount >= 1e12) return (amount / 1e12).toFixed(1) + ' Trillion';
+    if (amount >= 1e9) return (amount / 1e9).toFixed(1) + ' Billion';
+    if (amount >= 1e6) return (amount / 1e6).toFixed(1) + ' Million';
+    return amount.toLocaleString('en');
+}
+function lwGetRandomStatus() {
+    return Math.random() < 0.80 ? 'Completed' : 'Pending';
+}
+function lwGenerateEntry() {
+    return {
+        name: lwGetRandomName(),
+        country: lwGetRandomCountry(),
+        amount: lwGetRandomAmount(),
+        status: lwGetRandomStatus()
+    };
+}
+
+let lwEntries = [];
+let lwTimer = null;
+
+function lwAddEntry() {
+    if (!enableLiveWithdraw) return;
+    const entry = lwGenerateEntry();
+    lwEntries.unshift(entry);
+    if (lwEntries.length > 15) lwEntries.pop();
+    lwRender();
+}
+function lwRender() {
+    const container = document.getElementById('liveWithdrawList');
+    if (!container) return;
+    if (lwEntries.length === 0) {
+        container.innerHTML = '<div class="lw-empty">No withdrawals yet</div>';
+        return;
+    }
+    container.innerHTML = lwEntries.map(entry => `
+        <div class="lw-item">
+            <div class="lw-avatar">👤</div>
+            <div class="lw-info">
+                <div class="lw-name">${entry.name}</div>
+                <div class="lw-country">${entry.country}</div>
+            </div>
+            <div style="text-align:right;">
+                <div class="lw-amount">$${lwFormatAmount(entry.amount)}</div>
+                <div class="lw-status ${entry.status.toLowerCase()}">${entry.status}</div>
+            </div>
+        </div>
+    `).join('');
+}
+function lwStart() {
+    if (lwTimer) clearInterval(lwTimer);
+    lwAddEntry();
+    const interval = 2000 + Math.random() * 3000;
+    lwTimer = setInterval(() => {
+        lwAddEntry();
+    }, interval);
+}
+
+// Initialize Live Withdraw Activity
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        if (document.getElementById('liveWithdrawList')) {
+            lwStart();
+        }
+    }, 1500);
+});
 
 document.addEventListener('DOMContentLoaded', function() { setTimeout(() => { updateBals(); if (document.getElementById('aviatorPage')) avStartRound(); loadHomeLb(); loadTransactionHistory(); loadAnnouncementSettings(); loadSupportMessages(); loadTotalUsersCount(); }, 1000); });
 </script>
