@@ -3179,14 +3179,70 @@ window.clearAvForcedMult = function() {
 const enableLiveWithdraw = true;
 
 const lwCountries = ['Bangladesh', 'India', 'USA', 'Canada'];
-const lwNames = ['Rahim', 'Karim', 'Sumon', 'Jahid', 'Shakib', 'Mushfiq', 'Tamim', 'Liton', 'Mustafiz', 'Taskin', 'Sabbir', 'Nasir', 'Imrul', 'Mominul', 'Mehedi', 'Rafiq', 'Shuvo', 'Nayeem', 'Joy', 'Akash', 'Rana', 'Sajib', 'Nabil', 'Rafi', 'Samir'];
+const lwNamePool = [
+    'Rahim Ahmed', 'Karim Hasan', 'Sumon Khan', 'Jahid Hossain', 'Shakib Al',
+    'Mushfiq Rahim', 'Tamim Iqbal', 'Liton Das', 'Mustafiz Rahman', 'Taskin Ahmed',
+    'Sabbir Rahman', 'Nasir Hossain', 'Imrul Kayes', 'Mominul Haque', 'Mehedi Hasan',
+    'Rafiqul Islam', 'Shuvo Kumar', 'Nayeem Hasan', 'Joy Ahmmed', 'Akash Sheikh',
+    'Rana Miah', 'Sajib Hasan', 'Nabil Rahman', 'Rafi Ahmed', 'Samir Hossain',
+    'Arif Khan', 'Shahidul Islam', 'Milon Sheikh', 'Farhad Ahmed', 'Rakib Hasan',
+    'Salman Farsi', 'Hridoy Khan', 'Nirob Hasan', 'Tushar Ahmed', 'Abir Hossain',
+    'Sohan Rahman', 'Riad Khan', 'Shanto Ahmed', 'Fahim Hasan', 'Masud Rana'
+];
+let lwRecentNames = [];
 
 function lwGetRandomName() {
-    return lwNames[Math.floor(Math.random() * lwNames.length)];
+    // Remove duplicates from recent list if it gets too long
+    if (lwRecentNames.length > 30) {
+        lwRecentNames = lwRecentNames.slice(-20);
+    }
+    // Get available names (not in recent list)
+    let available = lwNamePool.filter(name => !lwRecentNames.includes(name));
+    if (available.length === 0) {
+        // If all names are in recent, clear half of recent
+        lwRecentNames = lwRecentNames.slice(-10);
+        available = lwNamePool.filter(name => !lwRecentNames.includes(name));
+        if (available.length === 0) {
+            available = lwNamePool.slice();
+            lwRecentNames = [];
+        }
+    }
+    const chosen = available[Math.floor(Math.random() * available.length)];
+    lwRecentNames.push(chosen);
+    return chosen;
 }
+
+function lwMaskName(fullName) {
+    const parts = fullName.split(' ');
+    if (parts.length === 1) {
+        const name = parts[0];
+        if (name.length <= 3) return name;
+        const first = name.substring(0, 2);
+        const last = name.substring(name.length - 2);
+        return first + '****' + last;
+    }
+    // For names like "Rahim Ahmed"
+    const firstPart = parts[0];
+    const lastPart = parts[parts.length - 1];
+    let maskedFirst = firstPart;
+    if (firstPart.length > 3) {
+        maskedFirst = firstPart.substring(0, 2) + '****' + firstPart.substring(firstPart.length - 2);
+    } else if (firstPart.length === 3) {
+        maskedFirst = firstPart.substring(0, 1) + '****' + firstPart.substring(firstPart.length - 1);
+    }
+    let maskedLast = lastPart;
+    if (lastPart.length > 3) {
+        maskedLast = lastPart.substring(0, 2) + '****' + lastPart.substring(lastPart.length - 2);
+    } else if (lastPart.length === 3) {
+        maskedLast = lastPart.substring(0, 1) + '****' + lastPart.substring(lastPart.length - 1);
+    }
+    return maskedFirst + ' ' + maskedLast;
+}
+
 function lwGetRandomCountry() {
     return lwCountries[Math.floor(Math.random() * lwCountries.length)];
 }
+
 function lwGetRandomAmount() {
     const r = Math.random();
     let amount;
@@ -3203,21 +3259,38 @@ function lwGetRandomAmount() {
     }
     return Math.round(amount);
 }
+
 function lwFormatAmount(amount) {
-    if (amount >= 1e12) return (amount / 1e12).toFixed(1) + ' Trillion';
-    if (amount >= 1e9) return (amount / 1e9).toFixed(1) + ' Billion';
-    if (amount >= 1e6) return (amount / 1e6).toFixed(1) + ' Million';
+    if (amount >= 1e12) {
+        const val = (amount / 1e12).toFixed(1);
+        return val.endsWith('.0') ? Math.floor(amount / 1e12) + ' Trillion' : val + ' Trillion';
+    }
+    if (amount >= 1e9) {
+        const val = (amount / 1e9).toFixed(1);
+        return val.endsWith('.0') ? Math.floor(amount / 1e9) + ' Billion' : val + ' Billion';
+    }
+    if (amount >= 1e6) {
+        const val = (amount / 1e6).toFixed(1);
+        return val.endsWith('.0') ? Math.floor(amount / 1e6) + ' Million' : val + ' Million';
+    }
     return amount.toLocaleString('en');
 }
+
 function lwGetRandomStatus() {
     return Math.random() < 0.80 ? 'Completed' : 'Pending';
 }
+
 function lwGenerateEntry() {
+    const fullName = lwGetRandomName();
+    const maskedName = lwMaskName(fullName);
+    const country = lwGetRandomCountry();
+    const amount = lwGetRandomAmount();
+    const status = lwGetRandomStatus();
     return {
-        name: lwGetRandomName(),
-        country: lwGetRandomCountry(),
-        amount: lwGetRandomAmount(),
-        status: lwGetRandomStatus()
+        displayName: maskedName,
+        country: country,
+        amount: amount,
+        status: status
     };
 }
 
@@ -3231,6 +3304,7 @@ function lwAddEntry() {
     if (lwEntries.length > 15) lwEntries.pop();
     lwRender();
 }
+
 function lwRender() {
     const container = document.getElementById('liveWithdrawList');
     if (!container) return;
@@ -3242,7 +3316,7 @@ function lwRender() {
         <div class="lw-item">
             <div class="lw-avatar">👤</div>
             <div class="lw-info">
-                <div class="lw-name">${entry.name}</div>
+                <div class="lw-name">${entry.displayName}</div>
                 <div class="lw-country">${entry.country}</div>
             </div>
             <div style="text-align:right;">
@@ -3252,6 +3326,7 @@ function lwRender() {
         </div>
     `).join('');
 }
+
 function lwStart() {
     if (lwTimer) clearInterval(lwTimer);
     lwAddEntry();
