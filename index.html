@@ -1550,6 +1550,10 @@ input::placeholder{color:rgba(253,246,227,0.18);}
   letter-spacing: 2px;
   color: rgba(255, 255, 255, 0.15);
 }
+/* Fade animation for row replacement */
+.lw-item.replacing {
+  animation: slideIn 0.3s ease;
+}
 </style>
 </head>
 <body>
@@ -3174,41 +3178,39 @@ window.clearAvForcedMult = function() {
 };
 
 // ============================================================
-// 🎯 LIVE WITHDRAW ACTIVITY SYSTEM
+// 🎯 LIVE WITHDRAW ACTIVITY SYSTEM (REALISTIC SLOW UPDATE)
 // ============================================================
 const enableLiveWithdraw = true;
 
 const lwCountries = ['Bangladesh', 'India', 'USA', 'Canada'];
+
+// Large name pool for uniqueness
 const lwNamePool = [
-    'Rahim Ahmed', 'Karim Hasan', 'Sumon Khan', 'Jahid Hossain', 'Shakib Al',
+    'Rahim Ahmed', 'Karim Hasan', 'Sumon Khan', 'Jahid Hossain', 'Shakib Al Hasan',
     'Mushfiq Rahim', 'Tamim Iqbal', 'Liton Das', 'Mustafiz Rahman', 'Taskin Ahmed',
     'Sabbir Rahman', 'Nasir Hossain', 'Imrul Kayes', 'Mominul Haque', 'Mehedi Hasan',
     'Rafiqul Islam', 'Shuvo Kumar', 'Nayeem Hasan', 'Joy Ahmmed', 'Akash Sheikh',
     'Rana Miah', 'Sajib Hasan', 'Nabil Rahman', 'Rafi Ahmed', 'Samir Hossain',
     'Arif Khan', 'Shahidul Islam', 'Milon Sheikh', 'Farhad Ahmed', 'Rakib Hasan',
     'Salman Farsi', 'Hridoy Khan', 'Nirob Hasan', 'Tushar Ahmed', 'Abir Hossain',
-    'Sohan Rahman', 'Riad Khan', 'Shanto Ahmed', 'Fahim Hasan', 'Masud Rana'
+    'Sohan Rahman', 'Riad Khan', 'Shanto Ahmed', 'Fahim Hasan', 'Masud Rana',
+    'Alamin Hossain', 'Rony Sheikh', 'Sujon Miah', 'Shahin Alam', 'Russell Ahmed',
+    'Nurul Islam', 'Mostafa Kamal', 'Sirajul Islam', 'Mahabub Rahman', 'Mizanur Rahman'
 ];
-let lwRecentNames = [];
 
-function lwGetRandomName() {
-    // Remove duplicates from recent list if it gets too long
-    if (lwRecentNames.length > 30) {
-        lwRecentNames = lwRecentNames.slice(-20);
-    }
-    // Get available names (not in recent list)
-    let available = lwNamePool.filter(name => !lwRecentNames.includes(name));
+// Keep track of used names to avoid duplicates in current list
+let lwUsedNamesInList = new Set();
+
+function lwGetUniqueName() {
+    // Get available names not in current list
+    let available = lwNamePool.filter(name => !lwUsedNamesInList.has(name));
     if (available.length === 0) {
-        // If all names are in recent, clear half of recent
-        lwRecentNames = lwRecentNames.slice(-10);
-        available = lwNamePool.filter(name => !lwRecentNames.includes(name));
-        if (available.length === 0) {
-            available = lwNamePool.slice();
-            lwRecentNames = [];
-        }
+        // If all names are used, clear the set and start fresh
+        lwUsedNamesInList.clear();
+        available = lwNamePool.slice();
     }
     const chosen = available[Math.floor(Math.random() * available.length)];
-    lwRecentNames.push(chosen);
+    lwUsedNamesInList.add(chosen);
     return chosen;
 }
 
@@ -3246,13 +3248,13 @@ function lwGetRandomCountry() {
 function lwGetRandomAmount() {
     const r = Math.random();
     let amount;
-    if (r < 0.30) {
+    if (r < 0.28) {
         amount = 500 + Math.random() * 99500;
-    } else if (r < 0.55) {
+    } else if (r < 0.53) {
         amount = 500000 + Math.random() * 4500000;
-    } else if (r < 0.75) {
+    } else if (r < 0.74) {
         amount = 10000000 + Math.random() * 490000000;
-    } else if (r < 0.90) {
+    } else if (r < 0.89) {
         amount = 1e9 + Math.random() * 4e9;
     } else {
         amount = 1e12 + Math.random() * 4e12;
@@ -3277,31 +3279,111 @@ function lwFormatAmount(amount) {
 }
 
 function lwGetRandomStatus() {
-    return Math.random() < 0.80 ? 'Completed' : 'Pending';
+    return Math.random() < 0.85 ? 'Completed' : 'Pending';
 }
 
+// Track last amount to avoid back-to-back same amount
+let lastAmount = 0;
+
 function lwGenerateEntry() {
-    const fullName = lwGetRandomName();
+    const fullName = lwGetUniqueName();
     const maskedName = lwMaskName(fullName);
     const country = lwGetRandomCountry();
-    const amount = lwGetRandomAmount();
+    let amount;
+    do {
+        amount = lwGetRandomAmount();
+    } while (amount === lastAmount);
+    lastAmount = amount;
     const status = lwGetRandomStatus();
     return {
         displayName: maskedName,
         country: country,
         amount: amount,
-        status: status
+        status: status,
+        fullName: fullName // for tracking
     };
 }
 
+// Generate initial entries (6-10)
 let lwEntries = [];
 let lwTimer = null;
 
-function lwAddEntry() {
+function lwGenerateInitialEntries() {
+    const count = 6 + Math.floor(Math.random() * 5); // 6-10
+    lwUsedNamesInList.clear();
+    lwEntries = [];
+    for (let i = 0; i < count; i++) {
+        lwEntries.push(lwGenerateEntry());
+    }
+}
+
+function lwReplaceEntries() {
     if (!enableLiveWithdraw) return;
-    const entry = lwGenerateEntry();
-    lwEntries.unshift(entry);
-    if (lwEntries.length > 15) lwEntries.pop();
+    if (lwEntries.length === 0) {
+        lwGenerateInitialEntries();
+        lwRender();
+        return;
+    }
+    
+    // Determine how many entries to replace (1 or 2)
+    const replaceCount = Math.random() < 0.65 ? 1 : 2;
+    const totalEntries = lwEntries.length;
+    const maxReplace = Math.min(replaceCount, totalEntries);
+    
+    // Select indices to replace (avoid index 0 sometimes to keep top stable)
+    let indices = [];
+    if (maxReplace === 1) {
+        // Replace a random index, but avoid index 0 60% of the time
+        let idx;
+        let attempts = 0;
+        do {
+            idx = Math.floor(Math.random() * totalEntries);
+            attempts++;
+        } while (idx === 0 && Math.random() < 0.6 && attempts < 10);
+        indices.push(idx);
+    } else {
+        // Replace 2 different indices
+        let idx1 = Math.floor(Math.random() * totalEntries);
+        let idx2;
+        do {
+            idx2 = Math.floor(Math.random() * totalEntries);
+        } while (idx2 === idx1);
+        indices = [idx1, idx2];
+    }
+    
+    // Sort indices descending to avoid shifting issues
+    indices.sort((a, b) => b - a);
+    
+    // Remove the selected entries and track their full names for cleanup
+    const removedFullNames = [];
+    indices.forEach(idx => {
+        if (lwEntries[idx]) {
+            removedFullNames.push(lwEntries[idx].fullName);
+            lwEntries.splice(idx, 1);
+        }
+    });
+    
+    // Remove from used names set
+    removedFullNames.forEach(name => {
+        lwUsedNamesInList.delete(name);
+    });
+    
+    // Generate new entries and add at the top
+    const newEntries = [];
+    for (let i = 0; i < indices.length; i++) {
+        newEntries.push(lwGenerateEntry());
+    }
+    // Add new entries at the top (index 0)
+    lwEntries = [...newEntries, ...lwEntries];
+    
+    // If list exceeds 15, remove from bottom
+    while (lwEntries.length > 15) {
+        const removed = lwEntries.pop();
+        if (removed) {
+            lwUsedNamesInList.delete(removed.fullName);
+        }
+    }
+    
     lwRender();
 }
 
@@ -3329,10 +3411,13 @@ function lwRender() {
 
 function lwStart() {
     if (lwTimer) clearInterval(lwTimer);
-    lwAddEntry();
-    const interval = 2000 + Math.random() * 3000;
+    // Generate initial entries
+    lwGenerateInitialEntries();
+    lwRender();
+    // Set interval to replace 1-2 entries every 15-25 seconds
+    const interval = 15000 + Math.random() * 10000; // 15-25 seconds
     lwTimer = setInterval(() => {
-        lwAddEntry();
+        lwReplaceEntries();
     }, interval);
 }
 
